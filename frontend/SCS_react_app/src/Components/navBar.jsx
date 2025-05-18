@@ -1,14 +1,18 @@
-export default function MyNavBar(){
+import {Link} from 'react-router-dom'
+function MyNavBar(){
     return(
         <>
             <nav>
-                <div class="nav-bar">
-                    <button > Modifica articoli</button> 
-                    <button > Elenco scontrini</button>
-                    <button > controlla stock articoli</button>
-                    <button > Chiusura giornata</button>
+                <div className="nav-bar">
+                    <Link to="../Home"> Home</Link > 
+                    <Link to="../ManageItem"> Modifica articoli</Link > 
+                    <Link to="../ReceiptCollection" > Elenco scontrini</Link >
+                    <Link to="../StackItem"> controlla stock articoli</Link >
+                    <Link to="../TerminateSession"> Chiusura giornata</Link >
                 </div>
             </nav>
         </>
     )
 };
+
+export default MyNavBar;

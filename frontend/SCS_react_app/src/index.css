@@ -1,8 +1,23 @@
 body{
-  background-color: rgb(57, 57, 57);
+  background: linear-gradient(rgb(203,203,203),rgb(246,249,174))
   
 }
 
 h1{
   color: #eaa8a8;
+}
+
+
+.cash{
+  position: relative;
+  width: 600px;
+  height: 80rem;
+}
+.nav-bar{
+  position: relative;
+
+}
+
+Link{
+  background-color: black;
 }

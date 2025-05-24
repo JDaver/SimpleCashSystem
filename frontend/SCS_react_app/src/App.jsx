@@ -1,15 +1,14 @@
 import MyNavBar from "./Components/navBar";
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import ManageItem from "./ManageItem";
-import ReceiptColl from "./ReceiptCollection";
-import CheckStackItem from "./StackItem";
-import Terminate from "./TerminateSession";
-import Home from "./Home";
-
+import ManageItem from "./pages/ManageItem";
+import ReceiptColl from "./pages/ReceiptCollection";
+import CheckStackItem from "./pages/StackItem";
+import Terminate from "./pages/TerminateSession";
+import Home from "./pages/Home";
 
 function App() {
-  
-  return (
+
+    return (
     <>
       <div>
         <BrowserRouter>
@@ -27,6 +26,8 @@ function App() {
     
   )
 
-}
+  }
+  
+
 
 export default App

@@ -1,3 +1,12 @@
+import Cash from "../Components/cash"
+import Receipt from "../Components/currentReceipt"
 export default function Home(){
-    return <h1>Pagina Home</h1>
+    return (
+        <>
+            <Cash>
+            </Cash>
+            <Receipt>
+            </Receipt>
+        </>
+    )
 }

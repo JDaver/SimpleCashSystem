@@ -1,16 +1,14 @@
 import {Link} from 'react-router-dom'
 function MyNavBar(){
     return(
-        <>
-            <nav>
-                <div className="nav-bar">
-                    <Link to="../Home"> Home</Link > 
-                    <Link to="../ManageItem"> Modifica articoli</Link > 
-                    <Link to="../ReceiptCollection" > Elenco scontrini</Link >
-                    <Link to="../StackItem"> controlla stock articoli</Link >
-                    <Link to="../TerminateSession"> Chiusura giornata</Link >
-                </div>
-            </nav>
+        <>   
+         <div className="nav-bar">
+         <Link className='nav-btn' to="../Home"> Cassa</Link  >    
+         <Link className='nav-btn'  to="../ManageItem"> Modifica articoli</Link  > 
+         <Link className='nav-btn' to="../ReceiptCollection" > Elenco scontrini</Link  >  
+         <Link className='nav-btn'  to="../StackItem"> Controlla stock</Link  >   
+         <Link className='nav-btn' to="../TerminateSession"> Chiusura giornata</Link >   
+         </div>  
         </>
     )
 };

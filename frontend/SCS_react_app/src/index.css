@@ -15,7 +15,7 @@ h1{
   flex-direction: row;
   border: solid black;
   position: relative;
-  width: 900px;
+  width: 800px;
   height: 800px;
   float: left;
   margin-left: 20px;
@@ -47,36 +47,69 @@ h1{
 
 /*RECEIPT ELEMENT*/
 .rcpt-container{
-  display: flex;
-  margin: 25px;;
+ display: flex;
+ position: relative;
+  margin-left: 25px;
+  min-width: 150px;
+}
+.rcpt-img-wrapper{
+  position: relative;
+  width: 400px;
+  height: 600px;
+  margin-left: 10px;
 }
 .img-rcpt{
-  width: 250x;
-  height: 520px;
-  margin-left: auto;
-  margin-right: 50px;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.rcpt-total{
+  position: absolute;
+  bottom: 8rem;
+  left: 3rem;
+}
+
+.rcpt-items{
+  position: absolute;
+  left: 3rem;
+  top: 7rem;
+  font-size: 0.8rem;
+  max-height: 40%;
+  width: 80%;
+  overflow-y: auto;
+}
+.rcpt-items table th {
+  width: 2.5em;
+  table-layout:auto; 
+  font-size: 1.1em; 
+}
+.rcpt-items table td {
+  font-size: 1.4em; 
+}
+.rcpt-items table tbody tr:nth-child(odd){
+  background-color: rgba(0, 0, 0, 0.089);
 }
 
 
-
+/*NAVBAR*/
 .nav-bar{
-  /*border: solid black;*/
   display: flex;
   flex-direction: row;
   height: 5rem;
   margin: 50px auto;
-  
-  gap: 5px;
+  align-items: flex-end;
+  justify-content: center;
   
 }
 .nav-btn{
-  background-color: rgb(105, 212, 255);
+  background-color: rgb(101, 211, 255);
   color: black;
   text-shadow: 0px 0px 5px gray;
   font-size: 20px;
   text-decoration: none;
   box-shadow: 0px 0px 5px rgb(54, 54, 54);
   border-radius: 10px;
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,5 +119,34 @@ h1{
   width: fit-content;
   padding-left: 2rem;
   padding-right: 2rem;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nav-btn:active{
+  animation: btnPress;
+  animation-duration: 200ms;
+  
+}
+
+@keyframes btnPress{
+  /*from{
+    background-color: rgb(101, 211, 255);
+    height: 4rem;
+    
+  }
+  to{
+    background-color: rgb(149, 225, 255);
+    height: 3.4rem;
+  }*/
+  50%{transform: scale(0.7 ,0.7);}
+}
+
+@keyframes trill{
+  from{
+
+  }
+  to{
+
+  }
 }

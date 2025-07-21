@@ -9,7 +9,7 @@ export default function(){
               <div className="btn-section">
               <h2>test</h2>
               <h2>test</h2>
-              <h2>test</h2>
+              <h2>coca</h2>
               <h2>test</h2>
               <h2>test</h2>
               <h2>test</h2>
@@ -22,8 +22,8 @@ export default function(){
             <div className="food">
               <h1>Cucina</h1>
               <div className="btn-section">
-              <h2>test</h2>
-              <h2>test</h2>
+              <h2>Pasta alla norma</h2>
+              <h2>patatine</h2>
               <h2>test</h2>
               <h2>test</h2>
               <h2>test</h2>

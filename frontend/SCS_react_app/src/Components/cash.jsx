@@ -1,3 +1,13 @@
+import addImg from "../assets/plus.png"
+
+function SingleItem(){
+  return(
+      <div className="sngl-item">
+        <p>Name product</p>
+        <button className="plus-btn"><img  src={addImg}></img></button>
+      </div>
+  )
+}
 
 export default function(){
     return(
@@ -7,16 +17,11 @@ export default function(){
             <div className="drinks">  
               <h1>Bevande</h1>
               <div className="btn-section">
-              <h2>test</h2>
-              <h2>test</h2>
-              <h2>coca</h2>
-              <h2>test</h2>
-              <h2>test</h2>
-              <h2>test</h2>
-              <h2>test</h2>
-              <h2>test</h2>
-              <h2>test</h2>
-              <h2>test</h2>
+                <SingleItem />
+                <SingleItem />
+                <SingleItem />
+                <SingleItem />
+                <SingleItem />
               </div>
             </div>
             <div className="food">

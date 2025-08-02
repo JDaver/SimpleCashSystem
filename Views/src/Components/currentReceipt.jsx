@@ -25,6 +25,13 @@ function CostSummary(){
                         <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
                         <tr><td>pane</td><td>2</td><td>2.0</td></tr>
                         <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
+                        <tr><td>pane</td><td>2</td><td>2.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
+                        <tr><td>pane</td><td>2</td><td>2.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
                     </tbody>
                 </table>
             </div>

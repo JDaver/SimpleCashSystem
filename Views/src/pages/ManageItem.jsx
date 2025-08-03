@@ -1,30 +1,47 @@
-function ManageTable(){
+import { useState } from "react"
+import '../style/manage.css'
+
+function ManageTable({onClick,active}){
     return(
         <>
-            <div className="manage-table">
-                <div className="header-table"></div>
-                <div className="body-table"></div>
+            <div className={`manage-table ${active ? "active" : ""}`}>
+                <div className="header-table" onClick={()=> onClick("table")}>
+                    Modifica Articoli
+                </div>
+                <div className="body-table"> contenuto </div>
             </div>
         </>
     )
 }
 
-function InsertItem(){
+function InsertItem({onClick,active}){
     return(
         <>
-            <div className="insert-form">
-                <div></div>
+            <div className={`insert-table ${active ? "active" : ""}`}>
+                <div className="header-table" onClick={()=> onClick("insert")}>
+                    Inserisci un nuovo articolo
+                </div>
+                <div className="body-table"> contenuto 2</div>
             </div>
         </>
     )
 }
 
 export default function ManageItem(){
+    const [ selectedForm , setSelectedForm ] = useState("table");
+    
     return  (
         <>
-            <div className="manageItem-page">
-                <ManageTable/>
-                <InsertItem />
+            <div className="manageItem-page">  
+                <ManageTable 
+                    onClick = {setSelectedForm}
+                    active = {selectedForm === "table"}
+                />
+                <InsertItem
+                    onClick = {setSelectedForm}
+                    active = {selectedForm === "insert"}
+
+                />
             </div>
         </>
     )

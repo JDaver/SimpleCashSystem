@@ -1,10 +1,12 @@
 import addImg from "../assets/plus.png"
+import remImg from "../assets/minus.png"
 
 function SingleItem(){
   return(
       <div className="sngl-item">
         <p>Name product</p>
         <button className="plus-btn"><img  src={addImg}></img></button>
+        <button className="minus-btn"><img src={remImg}/></button>
       </div>
   )
 }
@@ -14,24 +16,20 @@ export default function(){
         <>
           
           <div className="cash">
-            <div className="drinks">  
-              <h1>Bevande</h1>
-              <div className="btn-section">
-                <SingleItem />
-                <SingleItem />
-                <SingleItem />
-                <SingleItem />
-                <SingleItem />
-              </div>
-            </div>
-            <div className="food">
+            <div className="food">  
               <h1>Cucina</h1>
               <div className="btn-section">
-              <h2>Pasta alla norma</h2>
-              <h2>patatine</h2>
-              <h2>test</h2>
-              <h2>test</h2>
-              <h2>test</h2>
+                <SingleItem />
+                <SingleItem />
+                <SingleItem />
+                <SingleItem />
+                <SingleItem />
+                  <SingleItem />
+                <SingleItem />
+                <SingleItem />
+                <SingleItem />
+                <SingleItem />
+              
               </div>
             </div>
           </div>

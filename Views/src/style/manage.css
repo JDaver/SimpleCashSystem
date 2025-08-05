@@ -6,8 +6,7 @@
   height: 60vh;
 }
 
-.manage-table,
-.insert-table {
+.manage-table{
   flex: 1;
   transition: all 0.4s ease;
   overflow: hidden;
@@ -15,20 +14,17 @@
   border-radius: 5px;
 }
 
-.manage-table.active,
-.insert-table.active {
+.manage-table.active {
   flex: 3;
   background-color: #f5f5f5;
 }
 
-.manage-table:not(.active),
-.insert-table:not(.active) {
+.manage-table:not(.active){
   flex: 1;
-  background-color: #e0e0e0;
+  background-color: #c7c7c7;
 }
 
-.manage-table:not(.active) .body-table,
-.insert-table:not(.active) .body-table{
+.manage-table:not(.active) .body-table{
     pointer-events: none;
   opacity: 0.5;
 }

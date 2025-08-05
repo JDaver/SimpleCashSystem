@@ -8,114 +8,6 @@ h1{
   color: black;
 }
 
-/*CASH ELEMENT*/
-.cash{
-  
-  display: flex;
-  flex-direction: row;
-  border: solid black;
-  position: relative;
-  width: 800px;
-  height: 800px;
-  float: left;
-  margin-left: 20px;
-}
-.drinks,.food{
-  border: solid black;
-  display: flex;
-  flex-direction: column;
-  margin:auto;
-  width: 40%;
-  height: 90%;
-  
-}
-.btn-section{
-  max-height: fit-content;
-  overflow-y: auto;
-  margin-top: 10px;
-  margin-right: 35px;
-  margin-left: 15px;
-}
-.btn-section>*{
-  padding: 10px;
-}
-.cash h1{
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.sngl-item{
-  display: flex;
-  flex-direction: row;
-  }
-.sngl-item > p{
-  font-size: 1.5em;
-  margin: auto;
-}
-.plus-btn{
-  width: 50px;
-  height: 50px;
-  display: inline-flex;
-  background: none;
-  border: none;
-}
-.plus-btn:active{
-  animation: btnPress;
-  animation-duration: 150ms;
-  
-}
-
-
-/*RECEIPT ELEMENT*/
-.rcpt-container{
- display: flex;
- position: relative;
-  margin-left: 25px;
-  min-width: 150px;
-}
-.rcpt-img-wrapper{
-  position: relative;
-  width: 400px;
-  height: 600px;
-  margin-left: 10px;
-}
-.img-rcpt{
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-.rcpt-total{
-  position: absolute;
-  bottom: 8rem;
-  left: 3rem;
-}
-
-.rcpt-items{
-  position: absolute;
-  left: 3rem;
-  top: 7rem;
-  font-size: 0.8rem;
-  max-height: 40%;
-  width: 80%;
-  overflow-y: auto;
-}
-.rcpt-items table th {
-  width: 2.5em;
-  table-layout:auto; 
-  font-size: 1.1em; 
-}
-.rcpt-items table td {
-  font-size: 1.4em; 
-}
-.rcpt-items table tbody tr:nth-child(odd){
-  background-color: rgba(0, 0, 0, 0.089);
-}
-.add-btn,.remove-btn{
-  width: 15px;
-  height: 15px;
-  background: none;
-  border: none;
-}
 
 
 /*NAVBAR*/
@@ -157,25 +49,56 @@ h1{
 }
 
 
+/*NOT FOUND PAGE*/
+.not-found{
+  display: flex;
+}
 
+.not-found-text{
+  align-items: center;
+  margin: 50px;
+}
+/*CAT*/
+.cat{
+  width: 300px;
+  height: 80%;
+  animation: cat-join;
+  animation-duration: 2s;
+}
+
+
+
+@keyframes cat-join {
+  0% {
+    transform: translateX(-250px);
+  }
+  100%{
+    transform: translateX(0px);
+  }
+  
+}
 @keyframes btnPress{
-  /*from{
-    background-color: rgb(101, 211, 255);
-    height: 4rem;
-    
+  0% {
+    transform: scale(1);
   }
-  to{
-    background-color: rgb(149, 225, 255);
-    height: 3.4rem;
-  }*/
-  50%{transform: scale(0.7 ,0.7);}
-}
-
-@keyframes trill{
-  from{
-
-  }
-  to{
-
+  100% {
+    transform: scale(0.9);
   }
 }
+
+@keyframes tiltPress {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    transform: scale(1.2);
+  }
+  50% {
+    transform: translate(1px, 1px) rotate(1deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  
+  }
+}
+
+
+

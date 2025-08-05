@@ -1,48 +1,23 @@
 import { useState } from "react"
 import '../style/manage.css'
+import ManageTable from "../Components/ManageTable";
 
-function ManageTable({onClick,active}){
-    return(
-        <>
-            <div className={`manage-table ${active ? "active" : ""}`}>
-                <div className="header-table" onClick={()=> onClick("table")}>
-                    Modifica Articoli
-                </div>
-                <div className="body-table"> contenuto </div>
-            </div>
-        </>
-    )
-}
 
-function InsertItem({onClick,active}){
-    return(
-        <>
-            <div className={`insert-table ${active ? "active" : ""}`}>
-                <div className="header-table" onClick={()=> onClick("insert")}>
-                    Inserisci un nuovo articolo
-                </div>
-                <div className="body-table"> contenuto 2</div>
-            </div>
-        </>
-    )
-}
+export default function ManageItem() {
+  const [selected, setSelected] = useState("manage-box1");
 
-export default function ManageItem(){
-    const [ selectedForm , setSelectedForm ] = useState("table");
-    
-    return  (
-        <>
-            <div className="manageItem-page">  
-                <ManageTable 
-                    onClick = {setSelectedForm}
-                    active = {selectedForm === "table"}
-                />
-                <InsertItem
-                    onClick = {setSelectedForm}
-                    active = {selectedForm === "insert"}
-
-                />
-            </div>
-        </>
-    )
+  return (
+    <div className="manageItem-page">
+      <ManageTable
+        title="Modifica Articoli"
+        active={selected === "manage-box1"}
+        onClick={() => setSelected("manage-box1")}
+      />
+      <ManageTable
+        title="Inserisci un nuovo articolo"
+        active={selected === "manage-box2"}
+        onClick={() => setSelected("manage-box2")}
+      />
+    </div>
+  );
 }

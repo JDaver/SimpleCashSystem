@@ -1,6 +1,9 @@
 import { useState } from "react"
 import '../style/manage.css'
-import ManageTable from "../Components/ManageTable";
+import '../style/form.css'
+import ManageTable from "../Components/manageTable";
+import InsertItemForm from "../Components/insertItemForm";
+import UpdateItem from "../Components/updateItem";
 
 
 export default function ManageItem() {
@@ -12,11 +15,13 @@ export default function ManageItem() {
         title="Modifica Articoli"
         active={selected === "manage-box1"}
         onClick={() => setSelected("manage-box1")}
+        children={<UpdateItem/>}
       />
       <ManageTable
         title="Inserisci un nuovo articolo"
         active={selected === "manage-box2"}
         onClick={() => setSelected("manage-box2")}
+        children = {<InsertItemForm/>}
       />
     </div>
   );

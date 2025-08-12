@@ -10,7 +10,7 @@
   flex: 1;
   transition: all 0.4s ease;
   overflow: hidden;
-  padding: 0.5rem;
+  padding: 1rem;
   border-radius: 5px;
 }
 
@@ -39,5 +39,5 @@
 }
 
 .body-table {
-  padding: 1rem;
+  padding: auto;
 }

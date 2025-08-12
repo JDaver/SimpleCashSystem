@@ -1,0 +1,17 @@
+form{
+    display: flex;
+    margin: auto;
+    margin-top: 15px;
+    flex-direction: column;
+    border-radius: 5px;
+    height: 50vh;
+    width: 65vw;
+    background-color: rgba(0, 0, 0, 0.24);
+
+}
+
+.sngl-label{
+    display:flex;
+    flex-direction: row;
+    margin: 5px;
+}

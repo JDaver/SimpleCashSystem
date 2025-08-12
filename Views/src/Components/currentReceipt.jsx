@@ -12,12 +12,9 @@ function CostSummary(){
                             <th>Articolo</th>
                             <th>Quantita</th>
                             <th>Prezzo</th>
-                            <th>+++</th>
-                            <th>---</th>
                         </tr>
                     </thead>
                     <tbody> 
-                        {/*<tr><td>pane</td><td>2</td><td>2.0</td><td className='add-btn'><img src={addImg} alt="" /></td><td className='remove-btn'><img src={minusImg} alt="" /></td></tr>*/}
                         <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
                         <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
                         <tr><td>pane</td><td>2</td><td>2.0</td></tr>
@@ -27,6 +24,29 @@ function CostSummary(){
                         <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
                         <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
                         <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
+                        <tr><td>pane</td><td>2</td><td>2.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
+                        <tr><td>pane</td><td>2</td><td>2.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>pane</td><td>2</td><td>2.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
+                        <tr><td>pane</td><td>2</td><td>2.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
+                        <tr><td>pane</td><td>2</td><td>2.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
+                        <tr><td>pane</td><td>2</td><td>2.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
+                        <tr><td>pane</td><td>2</td><td>2.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
+                        <tr><td>acqua</td><td>2</td><td>1.0</td></tr>
+                        <tr><td>pane</td><td>2</td><td>2.0</td></tr>
+                        <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
                         <tr><td>pane</td><td>2</td><td>2.0</td></tr>
                         <tr><td>pizza</td><td>1</td><td>6.0</td></tr>
                         <tr><td>acqua</td><td>2</td><td>1.0</td></tr>

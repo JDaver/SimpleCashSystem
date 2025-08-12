@@ -1,6 +1,6 @@
 import { useState } from "react"
 import '../style/manage.css'
-import ManageTable from "../Components/ManageTable";
+import ManageTable from "../Components/manageTable";
 
 
 export default function CollectionItem() {

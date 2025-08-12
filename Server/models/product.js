@@ -4,7 +4,7 @@ module.exports = class Product {
     constructor(name,price,allergens){
         this.name = name;
         this.price =  price;
-        this.allergens = Array.isArray(allergens) ? JSON.stringify(allergens) : allergens;
+        this.allergens = JSON.stringify(allergens);
     }
 
     async create(){

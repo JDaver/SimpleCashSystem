@@ -3,10 +3,13 @@ const path = require('path');
 const app = express();
 const pool = require('./db/db');
 const apiCall = require('./api/api');
+const cors = require('cors');
 
 const reactPath = path.join(__dirname, '..', 'Views', 'dist');
 app.use(express.static(reactPath));
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(express.json());
 
 app.use('/api',apiCall);
 

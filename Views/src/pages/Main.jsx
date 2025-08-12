@@ -1,5 +1,5 @@
-import Cash from "../Components/cash"
-import Receipt from "../Components/currentReceipt"
+import Cash from "../Components/main/cash"
+import Receipt from "../Components/main/receipt"
 import '../style/cash.css'
 
 export default function Main(){

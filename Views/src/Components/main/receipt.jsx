@@ -1,6 +1,5 @@
-import receiptImage from '../assets/receipt.png';
-import minusImg from '../assets/minus.png';
-import addImg from "../assets/plus.png"
+import receiptImage from '../../assets/receipt.png';
+
 
 function CostSummary(){
     return(

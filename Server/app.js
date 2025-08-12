@@ -11,6 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 
+//API handler middleware
 app.use('/api',apiCall);
 
 //Main route handler

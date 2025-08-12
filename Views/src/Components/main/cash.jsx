@@ -1,6 +1,6 @@
-import addImg from "../assets/plus.png"
-import remImg from "../assets/minus.png"
-import { useDisplay } from "../hooks/productHook"
+import addImg from "../../assets/plus.png"
+import remImg from "../../assets/minus.png"
+import { useFetchAll } from "../../hooks/productHook"
 
 function SingleItem({name, price, allergens}){
   return(
@@ -14,7 +14,7 @@ function SingleItem({name, price, allergens}){
 }
 
 export default function(){
-  const {products, loading, error} = useDisplay();
+  const {products, loading, error} = useFetchAll();
 
   if(loading) return <p>Caricamento...</p>
   if(error) return <p>Errore!</p>

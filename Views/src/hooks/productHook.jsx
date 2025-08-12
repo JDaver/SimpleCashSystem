@@ -2,7 +2,7 @@ import { useState } from "react";
 import { fetchAllProducts } from "../services/productService";
 import { useEffect } from "react";
 
-export function useDisplay(){
+export function useFetchAll(){
     const [products, setProducts] = useState([]);
     const [loading,  setLoading] = useState(true);
     const [error, setError] = useState(null);

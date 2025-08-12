@@ -7,7 +7,7 @@ module.exports = class Product {
         this.allergens = JSON.stringify(allergens);
     }
 
-    async create(){
+    async createProd(){
         try{
             await pool.query(
                 'INSERT INTO product (name, price, allergens) VALUES ($1, $2, $3)',
@@ -21,7 +21,7 @@ module.exports = class Product {
         }
     }
 
-    async modify(id){
+    async modifyProd(id){
         try{
             await pool.query(
                 "UPDATE product SET name = $1, price = $2, allergens = $3 where id = $4",
@@ -34,7 +34,7 @@ module.exports = class Product {
         }
     }
 
-    async delete(id){
+    async deleteProd(id){
         try{
             await pool.query('DELETE FROM product WHERE id = $1', id);
             return this.name;
@@ -44,17 +44,10 @@ module.exports = class Product {
         }
     }
 
-    static async displayAll(){
+    static async selectAllProd(){
         try{
             const result = await pool.query("SELECT * FROM product");
             return result.rows;
-            /*
-            return result.rows.map(row => ({
-                id: row.id,
-                name: row.name,
-                price: row.price,
-                allergens: row.allergens ? JSON.parse(row.allergens) : []
-            }));*/
         }catch(err){
             console.log("errore: ",err)
             throw new Error("Impossibile scaricare i prodotti, riprovare.");

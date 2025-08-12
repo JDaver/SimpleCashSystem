@@ -2,8 +2,8 @@ import { useState } from "react"
 import '../style/manage.css'
 import '../style/form.css'
 import ManageTable from "../Components/manageTable";
-import InsertItemForm from "../Components/insertItemForm";
-import UpdateItem from "../Components/updateItem";
+import InsertItemForm from "../Components/manageItem/insertItemForm";
+import UpdateItem from "../Components/manageItem/updateItem";
 
 
 export default function ManageItem() {

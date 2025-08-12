@@ -1,6 +1,6 @@
-import { useDisplay } from "../hooks/productHook";
+import { useFetchAll } from "../../hooks/productHook";
 export default function UpdateItem(){
-    const {products,loading, error } = useDisplay();
+    const {products,loading, error } = useFetchAll();
 
     if(loading) return <p>Caricamento...</p>
     if(error) return <p>Errore!</p>

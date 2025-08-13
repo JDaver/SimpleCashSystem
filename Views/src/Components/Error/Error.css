@@ -1,0 +1,37 @@
+.error {
+  align-items: center;
+  display: flex;
+  animation: slideIn;
+  animation-duration: 2s;
+}
+
+.error__text-wrapper {
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  animation-delay: 1s;
+}
+
+.error__img {
+  height: auto;
+  max-height: 80vh;
+  max-width: 300px;
+  object-fit: cover;
+  width: 100%;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

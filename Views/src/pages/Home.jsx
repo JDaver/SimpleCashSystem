@@ -1,14 +1,13 @@
-import Cash from "../Components/cash"
-import Receipt from "../Components/currentReceipt"
-import '../style/cash.css'
+import CashierScreen from '../components/CashierScreen/CashierScreen';
+import Receipt from '../components/Receipt/Receipt';
 
-export default function Home(){
-    return (
-        <>
-            <Cash>
-            </Cash>
-            <Receipt>
-            </Receipt>
-        </>
-    )
+function Home() {
+  return (
+    <>
+      <CashierScreen />
+      <Receipt />
+    </>
+  );
 }
+
+export default Home;

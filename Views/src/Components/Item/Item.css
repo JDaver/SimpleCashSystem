@@ -1,0 +1,33 @@
+.item {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+.item__name {
+  font-size: 1.5em;
+}
+
+.item__btns-container {
+  align-items: center;
+  display: flex;
+  gap: 2rem;
+}
+
+.item__plus-btn,
+.item__minus-btn {
+  width: 50px;
+  height: 40px;
+  display: inline-flex;
+  background: none;
+  border: none;
+}
+.item__minus-btn img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+.item__plus-btn:active,
+.item__minus-btn:active {
+  animation: tiltPress;
+  animation-duration: 160ms;
+}

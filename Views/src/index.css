@@ -1,88 +1,71 @@
-body{
-  background: linear-gradient(rgb(203,203,203),rgb(164, 182, 164));
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#page-transition {
+  min-height: calc(100vh - 8rem);
+}
+
+body {
+  background-color: rgb(203, 203, 203);
+  background-image: linear-gradient(rgb(203, 203, 203), rgb(164, 182, 164));
   background-repeat: no-repeat;
   background-attachment: fixed;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
 }
 
-h1{
+h1 {
   color: black;
 }
 
-
-
-/*NAVBAR*/
-.nav-bar{
-  display: flex;
-  flex-direction: row;
-  height: 5rem;
-  margin: 50px auto;
-  align-items: flex-end;
-  justify-content: center;
-  
-}
-.nav-btn{
-  background-color: rgb(101, 211, 255);
-  color: black;
-  text-shadow: 0px 0px 5px gray;
-  font-size: 20px;
-  text-decoration: none;
-  box-shadow: 0px 0px 5px rgb(54, 54, 54);
-  border-radius: 10px;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  height: 4rem;
-  width: fit-content;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  margin-left: auto;
-  margin-right: auto;
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: fade 300ms ease;
 }
 
-.nav-btn:active{
-  animation: btnPress;
-  animation-duration: 200ms;
-  
-}
-
-
-/*NOT FOUND PAGE*/
-.not-found{
-  display: flex;
-}
-
-.not-found-text{
-  align-items: center;
-  margin: 50px;
-}
-/*CAT*/
-.cat{
-  width: 300px;
-  height: 80%;
-  animation: cat-join;
-  animation-duration: 2s;
-}
-
-
-
-@keyframes cat-join {
-  0% {
-    transform: translateX(-250px);
+@keyframes fade {
+  from {
+    opacity: 0;
   }
-  100%{
-    transform: translateX(0px);
-  }
-  
-}
-@keyframes btnPress{
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0.9);
+  to {
+    opacity: 1;
   }
 }
 
@@ -96,9 +79,5 @@ h1{
   }
   100% {
     transform: translate(0, 0) rotate(0deg);
-  
   }
 }
-
-
-

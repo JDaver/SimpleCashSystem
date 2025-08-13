@@ -1,0 +1,13 @@
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding-block: 6rem;
+  padding-inline: 2rem;
+}
+
+#page-transition {
+  view-transition-name: page;
+  background-color: rgb(203, 203, 203);
+  background-image: linear-gradient(rgb(203, 203, 203), rgb(164, 182, 164));
+}

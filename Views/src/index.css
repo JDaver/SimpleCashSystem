@@ -1,3 +1,48 @@
+:root {
+  /* Colors */
+  --neutral-100: oklch(99% 0 0);
+  --neutral-200: oklch(95% 0 0);
+  --neutral-300: oklch(93% 0 0);
+  --neutral-400: oklch(45% 0 0);
+  --neutral-500: oklch(35% 0 0);
+  --neutral-600: oklch(29.6% 0 0);
+  --neutral-700: oklch(26.7% 0 0);
+  --neutral-800: oklch(15% 0 0);
+  --neutral-900: oklch(10% 0 0);
+
+  --gradient-fallback: oklch(88% 0 0);
+  --gradient-start: oklch(90% 0 0);
+  --gradient-end: oklch(85% 0 0);
+  --gradient: linear-gradient(to bottom, var(--gradient-start) 0%, var(--gradient-end) 100%);
+
+  /* Spacing */
+  --space-0: 0rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Typography */
+  --font-family-base: 'Inter', sans-serif;
+  --font-family-receipt: monospace;
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+}
+
 *,
 *::before,
 *::after {
@@ -38,21 +83,18 @@ body,
   padding: 0;
 }
 
-#page-transition {
-  min-height: calc(100vh - 8rem);
-}
-
 body {
-  background-color: rgb(203, 203, 203);
-  background-image: linear-gradient(rgb(203, 203, 203), rgb(164, 182, 164));
-  background-repeat: no-repeat;
   background-attachment: fixed;
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
+  background-color: var(--gradient-fallback);
+  background-image: var(--gradient);
+  background-repeat: no-repeat;
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-regular);
 }
 
-h1 {
-  color: black;
+#page-transition {
+  min-height: calc(100dvh - 8rem);
+  overflow: hidden;
 }
 
 ::view-transition-old(root),

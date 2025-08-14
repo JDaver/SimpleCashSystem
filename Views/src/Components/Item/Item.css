@@ -4,27 +4,27 @@
   justify-content: space-between;
 }
 .item__name {
-  font-size: 1.5em;
+  font-size: var(--font-size-xl);
 }
 
 .item__btns-container {
   align-items: center;
   display: flex;
-  gap: 2rem;
+  gap: var(--space-6);
 }
 
 .item__plus-btn,
 .item__minus-btn {
-  width: 50px;
-  height: 40px;
   display: inline-flex;
   background: none;
   border: none;
+  height: 40px;
+  width: 50px;
 }
 .item__minus-btn img {
+  object-fit: contain;
   height: 100%;
   width: 100%;
-  object-fit: contain;
 }
 .item__plus-btn:active,
 .item__minus-btn:active {

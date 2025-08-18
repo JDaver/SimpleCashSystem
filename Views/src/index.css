@@ -10,6 +10,7 @@
   --neutral-800: oklch(15% 0 0);
   --neutral-900: oklch(10% 0 0);
 
+  --shadow: oklch(35% 0 0 / 0.3);
   --gradient-fallback: oklch(88% 0 0);
   --gradient-start: oklch(90% 0 0);
   --gradient-end: oklch(85% 0 0);
@@ -27,7 +28,7 @@
   --space-8: 4rem;
 
   /* Typography */
-  --font-family-base: 'Inter', sans-serif;
+  --font-family-base: 'Inter', system-ui, sans-serif;
   --font-family-receipt: monospace;
 
   --font-weight-light: 300;
@@ -43,36 +44,21 @@
   --font-size-2xl: 2rem;
 }
 
+/* CSS Reset */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
+
 * {
   margin: 0;
-}
-body {
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-}
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
-
-html,
-body {
-  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  touch-action: manipulation;
 }
 
 html,
@@ -81,15 +67,83 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-body {
+  overflow-x: hidden;
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background-attachment: fixed;
   background-color: var(--gradient-fallback);
   background-image: var(--gradient);
   background-repeat: no-repeat;
-  font-family: var(--font-family-base);
-  font-weight: var(--font-weight-regular);
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea,
+a {
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+}
+
+input,
+textarea {
+  user-select: text;
+}
+
+textarea {
+  overflow: auto;
+}
+
+:focus {
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--neutral-300);
+  outline-offset: 2px;
+}
+
+[role='button'],
+button {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+[role='button']:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--neutral-300);
+  outline-offset: 2px;
 }
 
 #page-transition {
@@ -113,13 +167,12 @@ body {
 
 @keyframes tiltPress {
   0% {
-    transform: translate(0, 0) rotate(0deg);
-    transform: scale(1.2);
+    transform: scale(1.2) translate(0, 0) rotate(0deg);
   }
   50% {
-    transform: translate(1px, 1px) rotate(1deg);
+    transform: scale(1) translate(1px, 1px) rotate(1deg);
   }
   100% {
-    transform: translate(0, 0) rotate(0deg);
+    transform: scale(1.2) translate(0, 0) rotate(0deg);
   }
 }

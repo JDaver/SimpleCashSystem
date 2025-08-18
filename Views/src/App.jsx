@@ -1,10 +1,13 @@
 import { BrowserRouter } from 'react-router-dom';
 import AppWrapper from './components/AppWrapper/AppWrapper';
+import { ThemeProvider } from './contexts/ThemeProvider';
 
 function App() {
   return (
     <BrowserRouter>
-      <AppWrapper />
+      <ThemeProvider>
+        <AppWrapper />
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 function Navbar() {
   return (
-    <nav className="navbar" id="navbar-transition">
+    <nav className="navbar">
       <ul className="navbar__list">
         <li className="navbar__item">
           <NavLink

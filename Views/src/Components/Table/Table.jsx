@@ -14,8 +14,16 @@ function Table({ id, icon, title, children, ...props }) {
 
   // Measure height to enable smooth animation on the content div
   useEffect(() => {
-    if (contentRef.current) {
-      setHeight(active ? contentRef.current.scrollHeight : 0);
+    if (!contentRef.current) return;
+    if (active) {
+      setHeight(contentRef.current.scrollHeight);
+      const onTransitionEnd = () => setHeight('auto');
+      const el = contentRef.current;
+      el.addEventListener('transitionend', onTransitionEnd);
+      return () => el.removeEventListener('transitionend', onTransitionEnd);
+    } else {
+      setHeight(contentRef.current.scrollHeight);
+      requestAnimationFrame(() => setHeight(0));
     }
   }, [active]);
 
@@ -30,7 +38,6 @@ function Table({ id, icon, title, children, ...props }) {
         className="table__body"
         style={{
           maxHeight: `${height}px`,
-          overflow: 'hidden',
           transition: 'max-height 0.4s ease, opacity 0.3s ease',
           opacity: active ? 1 : 0,
         }}

@@ -1,6 +1,5 @@
 .table {
   min-width: 60px;
-  overflow: hidden;
   transition: width 0.4s ease;
   width: 5%;
 }
@@ -31,37 +30,25 @@
 }
 
 .table__header {
+  align-items: center;
   background-color: var(--neutral-500);
   color: var(--neutral-100);
   cursor: pointer;
   display: flex;
-  height: 60px;
-  padding: var(--space-4);
+  height: var(--space-7);
+  justify-content: center;
+  padding: var(--space-2);
+  position: relative;
+  overflow: hidden;
 }
 
 .table__body {
-  max-height: 0;
   opacity: 0;
-  overflow: hidden;
-  transition:
-    max-height 0.4s ease,
-    opacity 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .table.active .table__body {
-  max-height: 1000px;
   opacity: 1;
-}
-
-.table__header {
-  align-items: center;
-  cursor: pointer;
-  display: flex;
-  height: 60px;
-  justify-content: center;
-  padding: var(--space-4);
-  position: relative;
-  overflow: hidden;
 }
 
 .table__icon,

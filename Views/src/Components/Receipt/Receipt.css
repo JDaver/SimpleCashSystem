@@ -18,11 +18,12 @@
   max-height: 350px;
   position: relative;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .receipt__content {
   border-collapse: collapse;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   table-layout: fixed;
   width: 100%;
 }

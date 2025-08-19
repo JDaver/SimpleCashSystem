@@ -6,11 +6,11 @@ function CashierScreen() {
     <div className="cashier-screen">
       <div className="cashier-screen__wrapper">
         <h1 className="cashier-screen__header">Cucina</h1>
-        <div className="cashier-screen__content">
+        <ul className="cashier-screen__content">
           {Array.from({ length: 50 }).map((_, idx) => {
             return <Item key={idx} name={`Prodotto ${idx + 1}`} />;
           })}
-        </div>
+        </ul>
       </div>
     </div>
   );

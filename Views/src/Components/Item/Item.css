@@ -2,6 +2,9 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
+  min-height: var(--space-7);
+  padding-inline: var(--space-4);
+  padding-block: var(--space-6);
 }
 .item__name {
   font-size: var(--font-size-xl);
@@ -16,18 +19,24 @@
 .item__plus-btn,
 .item__minus-btn {
   display: inline-flex;
+  justify-content: center;
+  align-items: center;
   background: none;
   border: none;
-  height: 40px;
-  width: 50px;
+  border-radius: 6px;
+  height: var(--space-7);
+  width: var(--space-7);
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
-.item__minus-btn img {
-  object-fit: contain;
-  height: 100%;
-  width: 100%;
-}
+
 .item__plus-btn:active,
 .item__minus-btn:active {
-  animation: tiltPress;
-  animation-duration: 160ms;
+  background-color: var(--neutral-400);
+  color: var(--neutral-100);
+  animation: tiltPress 160ms;
+}
+
+.item:not(:last-child) {
+  border-bottom: 1px solid var(--neutral-900);
 }

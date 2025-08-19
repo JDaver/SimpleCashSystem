@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import Navbar from '../Navbar/Navbar';
 import PageWrapper from '../PageWrapper/PageWrapper';
 import ManageItem from '../../pages/ManageItem';
 import Collection from '../../pages/Collection';
 import Terminate from '../../pages/TerminateSession';
 import Home from '../../pages/Home';
 import NotFound from '../../pages/NotFound';
+import Header from '../Header/Header';
 
 function AppWrapper() {
   const location = useLocation();
@@ -29,7 +29,7 @@ function AppWrapper() {
 
   return (
     <div id="view-wrapper">
-      <Navbar />
+      <Header />
       <PageWrapper>
         <Routes location={currentLocation}>
           <Route path="/" element={<Home />} />

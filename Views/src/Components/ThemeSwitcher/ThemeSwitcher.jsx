@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { useTheme } from '../../contexts/useTheme';
+import { memo, useCallback } from 'react';
+import { useTheme } from '@contexts/useTheme';
 import './ThemeSwitcher.css';
 
 function ThemeSwitcher() {
@@ -8,13 +8,15 @@ function ThemeSwitcher() {
   const toggleTheme = useCallback(() => {
     // nomi dei temi non definitivi
     const newTheme = theme === 'Minimal' ? 'Vibrant' : 'Minimal';
-    switchTheme(newTheme);
+    setTimeout(() => {
+      switchTheme(newTheme);
+    }, 50);
   }, [theme, switchTheme]);
 
   return (
     <div className="theme-switcher">
       <label className="theme-switcher__content">
-        <input type="checkbox" onClick={toggleTheme} defaultChecked={theme === 'Minimal'} />
+        <input type="checkbox" onChange={toggleTheme} defaultChecked={theme === 'Minimal'} />
         <span className="theme-switcher__slider" />
       </label>
       <p className="theme-switcher__label">{theme}</p>
@@ -22,4 +24,4 @@ function ThemeSwitcher() {
   );
 }
 
-export default ThemeSwitcher;
+export default memo(ThemeSwitcher);

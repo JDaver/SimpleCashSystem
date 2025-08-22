@@ -1,19 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import PageWrapper from '../PageWrapper/PageWrapper';
-import ManageItem from '../../pages/ManageItem';
-import Collection from '../../pages/Collection';
-import Terminate from '../../pages/TerminateSession';
-import Home from '../../pages/Home';
-import NotFound from '../../pages/NotFound';
-import Header from '../Header/Header';
+import PageWrapper from '@components/PageWrapper';
+import ManageItem from '@pages/ManageItem';
+import Collection from '@pages/Collection';
+import Terminate from '@pages/TerminateSession';
+import Home from '@pages/Home';
+import NotFound from '@pages/NotFound';
+import { loadThemedComponent } from '@utils/LoadThemedComponent';
+import { useTheme } from '@contexts/useTheme';
 
 function AppWrapper() {
   const location = useLocation();
   const [currentLocation, setCurrentLocation] = useState(location);
+  const { theme } = useTheme();
+
+  const Header = useMemo(() => loadThemedComponent(theme, 'Header'), [theme]);
 
   useEffect(() => {
-    if (!document.startViewTransition || currentLocation.key === location.key) {
+    if (!document.startViewTransition || currentLocation.pathname === location.pathname) {
       setCurrentLocation(location);
       return;
     }

@@ -1,5 +1,5 @@
-import CashierScreen from '../components/CashierScreen/CashierScreen';
-import Receipt from '../components/Receipt/Receipt';
+import CashierScreen from '@themes/Minimal/CashierScreen';
+import Receipt from '@components/Receipt';
 
 function Home() {
   return (

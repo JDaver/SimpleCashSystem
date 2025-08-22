@@ -1,4 +1,4 @@
-import Error from '../components/Error/Error';
+import Error from '@components/Error';
 
 function NotFound() {
   return <Error code={'404'} message={'Pagina non trovata!'} />;

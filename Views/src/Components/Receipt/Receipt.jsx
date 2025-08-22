@@ -13,11 +13,15 @@ function Receipt() {
             </tr>
           </thead>
           <tbody>
-            <tr className="receipt__item">
-              <td className="receipt__item-name">pizza</td>
-              <td className="receipt__item-quantity">1</td>
-              <td className="receipt__item-price">$6.0</td>
-            </tr>
+            {Array.from({ length: 10 }).map((_, idx) => {
+              return (
+                <tr key={idx} className="receipt__item">
+                  <td className="receipt__item-name">pizza</td>
+                  <td className="receipt__item-quantity">1</td>
+                  <td className="receipt__item-price">$6.0</td>
+                </tr>
+              );
+            })}
           </tbody>
           <tfoot>
             <tr className="receipt__total">

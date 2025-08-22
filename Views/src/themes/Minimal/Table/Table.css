@@ -1,0 +1,89 @@
+.table {
+  min-width: 60px;
+  transition: width 0.4s ease;
+  width: 5%;
+}
+
+.table.active {
+  width: clamp(300px, 95%, 1000px);
+}
+
+.table__icon {
+  text-align: center;
+}
+
+.table.active {
+  background-color: var(--neutral-300);
+  width: 95%;
+}
+
+.table:not(.active) .table__header {
+  background-color: var(--neutral-400);
+}
+
+.table:first-of-type .table__header {
+  border-radius: 5px 0 0 0;
+}
+
+.table:last-of-type .table__header {
+  border-radius: 0 5px 0 0;
+}
+
+.table__header {
+  align-items: center;
+  background-color: var(--neutral-500);
+  color: var(--neutral-100);
+  cursor: pointer;
+  display: flex;
+  height: var(--space-7);
+  justify-content: center;
+  padding: var(--space-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.table__body {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.table.active .table__body {
+  opacity: 1;
+}
+
+.table__icon,
+.table__title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  white-space: nowrap;
+  will-change: opacity, transform;
+}
+
+.table:not(.active) .table__icon {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  transition-delay: 0.3s;
+}
+
+.table.active .table__icon {
+  opacity: 0;
+  transform: translate(-50%, -60%) scale(0.98);
+  transition-delay: 0s;
+}
+
+.table:not(.active) .table__title {
+  opacity: 0;
+  transform: translate(-50%, -40%) scale(0.98);
+  transition-delay: 0s;
+}
+
+.table.active .table__title {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  transition-delay: 0.3s;
+}

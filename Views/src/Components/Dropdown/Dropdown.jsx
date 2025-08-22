@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './Dropdown.css';
 
-function Dropdown({ icon, ...props }) {
+function Dropdown({ icon, side, ...props }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -20,18 +20,35 @@ function Dropdown({ icon, ...props }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const buttonId = 'dropdown-button';
+  const menuId = 'dropdown-menu';
+
   return (
-    <div className="dropdown" ref={dropdownRef} {...props}>
-      <button className="dropdown__trigger" onClick={handleClick}>
+    <div className="dropdown" side={side} ref={dropdownRef} {...props}>
+      <button
+        aria-expanded={isOpen}
+        aria-controls={menuId}
+        aria-haspopup="true"
+        className="dropdown__trigger"
+        onClick={handleClick}
+      >
         {icon}
       </button>
       {isOpen && (
-        <div className="dropdown__wrapper">
-          <ul className="dropdown__content">
-            <li className="dropdown__option">opt 1</li>
-            <li className="dropdown__option">opt 2</li>
-            <li className="dropdown__option">opt 3</li>
-            <li className="dropdown__option">opt 4</li>
+        <div className={`dropdown__wrapper ${side}`}>
+          <ul role="menu" aria-labelledby={buttonId} className="dropdown__content">
+            <li role="menuitem" className="dropdown__option">
+              opt 1
+            </li>
+            <li role="menuitem" className="dropdown__option">
+              opt 2
+            </li>
+            <li role="menuitem" className="dropdown__option">
+              opt 3
+            </li>
+            <li role="menuitem" className="dropdown__option">
+              opt 4
+            </li>
           </ul>
         </div>
       )}

@@ -1,0 +1,39 @@
+/*NAVBAR*/
+.navbar__list {
+  align-items: center;
+  display: flex;
+  gap: var(--space-6);
+  height: 100%;
+}
+
+.navbar__link {
+  background-color:var(--nav-buttons);
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px var(--neutral-600);
+  color: var(--neutral-100);
+  font-size: var(--font-size-lg);
+  padding-block: var(--space-5);
+  padding-inline: var(--space-6);
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.navbar__link:active {
+  background-color: var(--neutral-400);
+  transform: scale(0.97);
+}
+
+.navbar__link:focus-visible {
+  outline: 2px solid var(--neutral-100);
+  outline-offset: 2px;
+}
+
+.active {
+  background-color: var(--neutral-300);
+  color: var(--neutral-900);
+}

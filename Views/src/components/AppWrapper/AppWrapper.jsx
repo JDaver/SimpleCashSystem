@@ -15,6 +15,7 @@ function AppWrapper() {
   const { theme } = useTheme();
 
   const Header = useMemo(() => loadThemedComponent(theme, 'Header'), [theme]);
+  
 
   useEffect(() => {
     if (!document.startViewTransition || currentLocation.pathname === location.pathname) {

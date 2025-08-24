@@ -1,5 +1,5 @@
 :root {
-  /* Colors */
+  /* Colors*/
   --neutral-100: oklch(99% 0 0);
   --neutral-200: oklch(95% 0 0);
   --neutral-300: oklch(93% 0 0);
@@ -15,6 +15,10 @@
   --gradient-start: oklch(90% 0 0);
   --gradient-end: oklch(85% 0 0);
   --gradient: linear-gradient(to bottom, var(--gradient-start) 0%, var(--gradient-end) 100%);
+
+  /*Colors Vibrant*/
+  --dynamic-bg: linear-gradient(50deg, #1ba362, #f7d794);
+  --nav-buttons: oklch(20% 0.13116 261.983 / 0.627);
 
   /* Spacing */
   --space-0: 0rem;

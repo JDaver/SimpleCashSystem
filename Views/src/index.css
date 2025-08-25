@@ -18,7 +18,8 @@
 
   /*Colors Vibrant*/
   --dynamic-bg: linear-gradient(50deg, #1ba362, #f7d794);
-  --nav-buttons: oklch(20% 0.13116 261.983 / 0.627);
+  --vibrant-blue: oklch(20% 0.13116 261.983 / 0.627);
+  --blue-soft: oklch(51.046% 0.1112 258.327 / 0.504);
 
   /* Spacing */
   --space-0: 0rem;

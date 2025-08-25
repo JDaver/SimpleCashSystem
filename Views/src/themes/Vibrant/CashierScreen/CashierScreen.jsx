@@ -28,6 +28,7 @@ import './CashierScreen.css';
 function SingleItem({product}){
   return(
       <li className="sngl-item">
+        <button>allergens</button>
         <p>{product.name}</p>
         <p>{product.price}</p>
         {product.allergens != null ? /*<DropdownDisplay items = {product.allergens}/>*/"" : ""}

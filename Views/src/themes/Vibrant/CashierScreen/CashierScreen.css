@@ -37,20 +37,22 @@
 }
 
 
-
 .sngl-item{
   padding: 0.5rem;
   display: flex;
   flex-direction: row;
-  }
+  position: relative;
+}
 
-  .sngl-item:not(:last-child) {
+.sngl-item:not(:last-child) {
   border-bottom: 1px solid var(--neutral-900);
 }
+
 .sngl-item > p{
   font-size: 1.5em;
   margin: auto;
 }
+
 .plus-btn,
 .minus-btn{
   margin: 1rem;
@@ -69,5 +71,20 @@
 .minus-btn:active{
   animation: tiltPress;
   animation-duration: 160ms;
-  
+}
+.btn-allergens{
+font-size: larger;
+}
+
+.allergensPopOver{
+  position: absolute;
+  border-radius: 0.5rem;
+  left:3%;
+  margin-left: 0.5rem;
+  padding: 0.5rem;
+  top: 0;
+  background-color: var(--blue-dark);
+  color: var(--neutral-300);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 10;
 }

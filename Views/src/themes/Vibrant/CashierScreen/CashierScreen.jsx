@@ -1,42 +1,8 @@
 //import { useState } from "react";
-import addImg from "@assets/plus.png"
-import remImg from "@assets/minus.png"
+import SingleItem from "./SingleItem";
 import { useFetchAll } from "@hooks/productsHook"
 import './CashierScreen.css';
 
-/*function DropdownDisplay({items}){
-    const [isOpen,setIsOpen] = useState(false);
-
-    return(
-        <>
-        <button onClick={() => setIsOpen(!isOpen)}>
-                Allergeni
-                <span>{isOpen ? "▲" : "▼" }</span>
-            </button>
-
-            {isOpen && (
-                <ul>
-                    {(Array.isArray(items) ? items : [items]).map((item, index) =>(
-                        <li key={index}>{item}</li>
-                    ))}
-                </ul>
-            )}
-        </>
-    )
-}*/
-
-function SingleItem({product}){
-  return(
-      <li className="sngl-item">
-        <button>allergens</button>
-        <p>{product.name}</p>
-        <p>{product.price}</p>
-        {product.allergens != null ? /*<DropdownDisplay items = {product.allergens}/>*/"" : ""}
-        <button className="plus-btn"><img  src={addImg} ></img></button>
-        <button className="minus-btn"><img src={remImg}/></button>
-      </li>
-  )
-}
 function RepresentationBox({children}){
   return(
     <>

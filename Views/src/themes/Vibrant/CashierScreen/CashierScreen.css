@@ -38,10 +38,25 @@
 
 
 .sngl-item{
+  width: 100%;
+  height: 100%;
   padding: 0.5rem;
   display: flex;
   flex-direction: row;
   position: relative;
+}
+
+.sngl-item:nth-of-type(even){
+  background-color: var(--shadow);
+}
+
+.item-name-active{
+  color: var(--blue-dark);
+}
+
+.item-name:active{
+  animation: tiltPress;
+  animation-duration: 160ms;
 }
 
 .sngl-item:not(:last-child) {

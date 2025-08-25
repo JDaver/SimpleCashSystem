@@ -3,42 +3,25 @@ import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
+   const navLocations = [
+    { id: 'main', label: 'Cassa', to: '/' },
+    { id: 'manage', label: 'Modifica articoli', to: '/ManageItem' },
+    { id: 'collection', label: 'Storico', to: '/Collection' },
+    { id: 'terminate', label: 'Chiusura giornata', to: '/TerminateSession' }
+   ]
+
   return (
     <nav className="navbar">
       <ul className="navbar__list">
-        <li className="navbar__item">
-          <NavLink
+        {navLocations.map(location =>(
+          <li className="navbar__item">
+          <NavLink key={location.id}
             className={({ isActive }) => (isActive ? 'navbar__link active' : 'navbar__link')}
-            to="/"
-            end
-          >
-            Cassa
+            to={location.to} end>
+          {location.label}
           </NavLink>
-        </li>
-        <li className="navbar__item">
-          <NavLink
-            className={({ isActive }) => (isActive ? 'navbar__link active' : 'navbar__link')}
-            to="/ManageItem"
-          >
-            Modifica articoli
-          </NavLink>
-        </li>
-        <li className="navbar__item">
-          <NavLink
-            className={({ isActive }) => (isActive ? 'navbar__link active' : 'navbar__link')}
-            to="/Collection"
-          >
-            Storico
-          </NavLink>
-        </li>
-        <li className="navbar__item">
-          <NavLink
-            className={({ isActive }) => (isActive ? 'navbar__link active' : 'navbar__link')}
-            to="/TerminateSession"
-          >
-            Chiusura giornata
-          </NavLink>
-        </li>
+          </li>
+        ))}
       </ul>
     </nav>
   );

@@ -72,10 +72,6 @@
   animation: tiltPress;
   animation-duration: 160ms;
 }
-.btn-allergens{
-font-size: larger;
-}
-
 .allergensPopOver{
   position: absolute;
   border-radius: 0.5rem;

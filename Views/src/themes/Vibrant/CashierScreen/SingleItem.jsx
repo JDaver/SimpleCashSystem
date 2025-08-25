@@ -12,7 +12,7 @@ export default function SingleItem({product}){
 
   return(
       <li className="sngl-item">
-        {product.allergens ? <button className="btn-allergens" onClick={() => setShow(prev => !prev)}>{show ? "★" : "☆"}</button> : "" } 
+        {product.allergens ? <button className="btn-allergens" onClick={() => setShow(prev => !prev)}>{show ? "🔵" : "🔴"}</button> : "" } 
         {show && (<div ref ={popOverRef} className="allergensPopOver">
             <ul>
                 {(Array.isArray(allergens) ? allergens : [allergens]).map((item, index) =>(

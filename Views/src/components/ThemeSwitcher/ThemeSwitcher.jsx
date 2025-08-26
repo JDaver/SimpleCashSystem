@@ -6,7 +6,6 @@ function ThemeSwitcher() {
   const { theme, switchTheme } = useTheme();
 
   const toggleTheme = useCallback(() => {
-    // nomi dei temi non definitivi
     const newTheme = theme === 'Minimal' ? 'Vibrant' : 'Minimal';
     setTimeout(() => {
       switchTheme(newTheme);
@@ -16,7 +15,12 @@ function ThemeSwitcher() {
   return (
     <div className="theme-switcher">
       <label className="theme-switcher__content">
-        <input type="checkbox" onChange={toggleTheme} defaultChecked={theme === 'Minimal'} />
+        <input
+          id="theme-switcher"
+          type="checkbox"
+          onChange={toggleTheme}
+          defaultChecked={theme === 'Minimal'}
+        />
         <span className="theme-switcher__slider" />
       </label>
       <p className="theme-switcher__label">{theme}</p>

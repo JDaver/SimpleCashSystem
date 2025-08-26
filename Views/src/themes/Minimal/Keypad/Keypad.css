@@ -1,0 +1,44 @@
+.keypad {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.numeric {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 240px;
+}
+
+.alphabet {
+  grid-template-columns: repeat(7, 1fr);
+  max-width: 500px;
+}
+
+.keypad__key {
+  align-items: center;
+  background-color: var(--neutral-200);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.keypad__key-numeric {
+  width: 70px;
+  height: 60px;
+}
+
+.keypad__key-alphabet {
+  width: 60px;
+  height: 60px;
+}
+
+.keypad__key:active {
+  background-color: var(--neutral-300);
+}
+
+.keypad__key-delete {
+  background-color: oklch(0.8643 0.1518 24.74);
+  color: oklch(0.4284 0.2513 27.95);
+}

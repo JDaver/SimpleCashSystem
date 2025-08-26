@@ -14,7 +14,7 @@ function Navbar() {
     <nav className="navbar">
       <ul className="navbar__list">
         {navLocations.map(location =>(
-          <li className="navbar__item">
+          <li className="navbar__item" key={location.id}>
           <NavLink key={location.id}
             className={({ isActive }) => (isActive ? 'navbar__link active' : 'navbar__link')}
             to={location.to} end>

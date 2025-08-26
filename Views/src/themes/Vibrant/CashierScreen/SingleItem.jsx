@@ -2,6 +2,8 @@ import addImg from "@assets/plus.png"
 import remImg from "@assets/minus.png";
 import { useClickOutside } from '@hooks/useClickOutside';
 import { useState,useRef } from "react";
+import { ExclamationTriangleIcon} from '@heroicons/react/24/outline';
+
 
 export default function SingleItem({product}){
     const [show,setShow] = useState(false);
@@ -12,7 +14,7 @@ export default function SingleItem({product}){
 
   return(
       <li className="sngl-item">
-        <p onClick={() => setShow(prev => !prev)} className={(show ? 'item-name-active' : 'item-name')}>{product.name}</p>
+        {allergens ? <ExclamationTriangleIcon onClick={() => setShow(prev => !prev)} className={(show ? 'allergens-btn-active' : 'allergens-btn')} width={30} height={30}/>  : ""}
         {show && (<div ref ={popOverRef} className="allergensPopOver">
             <ul>
                 {(Array.isArray(allergens) ? allergens : [allergens]).map((item, index) =>(
@@ -20,6 +22,7 @@ export default function SingleItem({product}){
                 )) }
             </ul>
             </div>)}
+        <p>{product.name}</p>
         <p>{product.price}</p>
         <button className="plus-btn"><img  src={addImg} ></img></button>
         <button className="minus-btn"><img src={remImg}/></button>

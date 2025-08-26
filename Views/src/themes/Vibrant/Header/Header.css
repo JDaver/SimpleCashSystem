@@ -9,7 +9,7 @@
   z-index: 1000;
 
   /*transition: background-color 0.3s ease;*/
-  animation: gradient-translation 10s ease infinite;
+  animation: gradient-translation 8s ease infinite;
 }
 
 .header__wrapper {

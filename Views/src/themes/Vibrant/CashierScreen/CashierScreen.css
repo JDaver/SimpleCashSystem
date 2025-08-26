@@ -21,7 +21,7 @@
   flex-direction: column;
   margin-block: var(--space-4);
   padding-top: 0.5rem;
-  padding-inline: var(--space-6);
+  padding-inline: var(--space-4);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
@@ -36,7 +36,7 @@
   text-align: center;
 }
 
-
+/*Single Item*/
 .sngl-item{
   width: 100%;
   height: 100%;
@@ -45,24 +45,12 @@
   flex-direction: row;
   position: relative;
 }
-
 .sngl-item:nth-of-type(even){
-  background-color: var(--shadow);
+  background-color: var(--blue-velvet);
 }
-
-.item-name-active{
-  color: var(--blue-dark);
-}
-
-.item-name:active{
-  animation: tiltPress;
-  animation-duration: 160ms;
-}
-
 .sngl-item:not(:last-child) {
   border-bottom: 1px solid var(--neutral-900);
 }
-
 .sngl-item > p{
   font-size: 1.5em;
   margin: auto;
@@ -87,10 +75,21 @@
   animation: tiltPress;
   animation-duration: 160ms;
 }
+
+/*Allergens*/
+.allergens-btn{
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+  touch-action: manipulation;
+}
+.allergens-btn-active{
+ color: brown;
+}
+
 .allergensPopOver{
   position: absolute;
   border-radius: 0.5rem;
-  left:3%;
+  left:5%;
   margin-left: 0.5rem;
   padding: 0.5rem;
   top: 0;

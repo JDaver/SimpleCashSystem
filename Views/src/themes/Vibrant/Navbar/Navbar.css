@@ -7,7 +7,7 @@
 }
 
 .navbar__link {
-  background-color:var(--nav-buttons);
+  background-color:var(--blue-dark);
   border-radius: 10px;
   box-shadow: 0px 0px 5px var(--neutral-600);
   color: var(--neutral-100);

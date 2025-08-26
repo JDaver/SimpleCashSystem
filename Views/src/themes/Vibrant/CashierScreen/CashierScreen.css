@@ -21,7 +21,7 @@
   flex-direction: column;
   margin-block: var(--space-4);
   padding-top: 0.5rem;
-  padding-inline: var(--space-6);
+  padding-inline: var(--space-4);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
@@ -30,25 +30,32 @@
 }
 
 .cashier-screen__header {
+  background-color: var(--blue-soft);
+  border-radius: 7px;
   color: var(--neutral-800);
   text-align: center;
 }
 
-
-
+/*Single Item*/
 .sngl-item{
+  width: 100%;
+  height: 100%;
   padding: 0.5rem;
   display: flex;
   flex-direction: row;
-  }
-
-  .sngl-item:not(:last-child) {
+  position: relative;
+}
+.sngl-item:nth-of-type(even){
+  background-color: var(--blue-velvet);
+}
+.sngl-item:not(:last-child) {
   border-bottom: 1px solid var(--neutral-900);
 }
 .sngl-item > p{
   font-size: 1.5em;
   margin: auto;
 }
+
 .plus-btn,
 .minus-btn{
   margin: 1rem;
@@ -67,57 +74,27 @@
 .minus-btn:active{
   animation: tiltPress;
   animation-duration: 160ms;
-  
 }
 
+/*Allergens*/
+.allergens-btn{
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+  touch-action: manipulation;
+}
+.allergens-btn-active{
+ color: brown;
+}
 
-/*RECEIPT ELEMENT*/
-.rcpt-container{
- display: flex;
- position: relative;
-  margin-left: 25px;
-  min-width: 150px;
-}
-.rcpt-img-wrapper{
-  position: relative;
-  width: 400px;
-  height: 600px;
-  margin-left: 10px;
-}
-.img-rcpt{
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-.rcpt-total{
+.allergensPopOver{
   position: absolute;
-  bottom: 8rem;
-  left: 3rem;
-}
-
-.rcpt-items{
-  position: absolute;
-  left: 3rem;
-  top: 7rem;
-  font-size: 0.8rem;
-  max-height: 40%;
-  width: 80%;
-  overflow-y: auto;
-}
-.rcpt-items table th {
-  width: 2.5em;
-  table-layout:auto; 
-  font-size: 1.1em; 
-}
-.rcpt-items table td {
-  font-size: 1.4em; 
-}
-.rcpt-items table tbody tr:nth-child(odd){
-  background-color: rgba(0, 0, 0, 0.089);
-}
-.add-btn,.remove-btn{
-  width: 15px;
-  height: 15px;
-  background: none;
-  border: none;
+  border-radius: 0.5rem;
+  left:5%;
+  margin-left: 0.5rem;
+  padding: 0.5rem;
+  top: 0;
+  background-color: var(--blue-dark);
+  color: var(--neutral-300);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 10;
 }

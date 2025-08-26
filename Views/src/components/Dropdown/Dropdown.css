@@ -33,7 +33,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
+  max-height: 200px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .dropdown__option {
@@ -42,11 +44,12 @@
   color: var(--neutral-900);
   cursor: pointer;
   font-size: 1.125rem;
+  gap: var(--space-2);
   min-height: var(--space-7);
   padding-inline: var(--space-4);
   transition: background 0.2s;
 }
 
-.dropdown__option:active {
+.dropdown__option[data-selected] {
   background-color: var(--neutral-300);
 }

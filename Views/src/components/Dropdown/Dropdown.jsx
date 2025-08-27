@@ -93,6 +93,8 @@ function DropdownTrigger({ children, ...props }) {
   const { handleClick, isOpen, baseId } = useDropdownContext();
   return (
     <button
+      type="button"
+      data-state={isOpen ? 'open' : 'closed'}
       id={`dropdown-button-${baseId}`}
       aria-haspopup="menu"
       aria-expanded={isOpen}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Keypad from '@themes/Minimal/Keypad';
 import Dropdown from '@components/Dropdown';
+import { insertItem } from '../../../utils/productService';
 import './InsertItem.css';
 import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
@@ -27,7 +28,7 @@ function InsertItem() {
   const [allergens, setAllergens] = useState([]);
 
   const handlePriceInput = key => {
-    if (key === '.' && price.includes('.')) return;
+    if (key === ',' && price.includes(',')) return;
     setPrice(prev => prev + key);
   };
 
@@ -44,7 +45,7 @@ function InsertItem() {
   };
 
   return (
-    <form className="form insert-item">
+    <form className="form insert-item" onSubmit={insertItem} method='POST' >
       <div className="form__columns">
         <div className="form__column">
           <div className="form__field">
@@ -53,7 +54,7 @@ function InsertItem() {
             </label>
             <input
               id="name"
-              name="name"
+              name="product_name"
               className="form__input"
               type="text"
               value={name}
@@ -100,12 +101,15 @@ function InsertItem() {
                 })}
               </Dropdown.Content>
             </Dropdown>
-            <input type="hidden" name="allergens" value={allergens.join(',')} />
+            {allergens.map((allergen) => {
+              return <input key={allergen} type="hidden" name="allergens" value={allergen} />
+            })}
+            
           </div>
         </div>
       </div>
       <div className="form__button-wrapper">
-        <button className="form__button">Inserisci Prodotto</button>
+        <button className="form__button" >Inserisci Prodotto</button>
       </div>
     </form>
   );

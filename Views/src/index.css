@@ -23,6 +23,7 @@
   --blue-velvet: oklch(51.046% 0.1112 258.327 / 0.24);
   --blue-dark:oklch(37.525% 0.09995 258.214 / 0.902);
   --green-soft: oklch(63.164% 0.1479 155.395 / 0.414);
+  --green-btn: linear-gradient(50deg, oklch(64.073% 0.19497 145.082 / 0.636), oklch(54.369% 0.16113 146.523 / 0.531));
 
   /* Spacing */
   --space-0: 0rem;

@@ -2,9 +2,9 @@
 .cashier-screen {
   display: flex;
   border-radius: 10px;
-  padding: 0.875rem;
+  padding: 0.8rem;
   width: 80%;
-  height: 550px;
+  height: 600px;
   background-color: var(--neutral-500);
 }
 .cashier-screen__wrapper {
@@ -30,7 +30,7 @@
 }
 
 .cashier-screen__header {
-  background-color: var(--blue-soft);
+  background-color: var(--blue-velvet);
   border-radius: 7px;
   color: var(--neutral-800);
   text-align: center;
@@ -39,6 +39,7 @@
 /*Single Item*/
 .sngl-item{
   width: 100%;
+  border-radius: 3px;
   height: 100%;
   padding: 0.5rem;
   display: flex;
@@ -50,6 +51,9 @@
 }
 .sngl-item:not(:last-child) {
   border-bottom: 1px solid var(--neutral-900);
+}
+.sngl-item:not(:first-child) {
+ border-top: 1px solid var(--neutral-900);
 }
 .sngl-item > p{
   font-size: 1.5em;
@@ -65,9 +69,16 @@
   background: none;
   border: none;
 }
-.minus-btn img {
-  height: 100%;
-  width: 100%;
+.minus-btn-disabled{
+  margin: 1rem;
+  width: 50px;
+  height: 50px;
+  filter: grayscale(80%);
+  display: inline-flex;
+  background: none;
+  border: none;
+}
+.minus-btn img,.minus-btn-disabled img {
   object-fit: contain;
 }
 .plus-btn:active,

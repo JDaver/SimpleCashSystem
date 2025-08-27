@@ -2,13 +2,17 @@
 import SingleItem from "./SingleItem";
 import { useFetchAll } from "@hooks/productsHook"
 import './CashierScreen.css';
+import { useReceipt } from "@contexts/receiptHandlerContext";
 
 export default function CashierScreen(){
   const {products, loading, error} = useFetchAll();
+  const {receipt , clearReceipt} = useReceipt();
 
+  
   const isLoading= (loading ? "Caricamento..." : "");
   const notLoaded =(error ? "Errore!" : "");
 
+  
     return(
          <div className="cashier-screen">
           <div className="cashier-screen__wrapper">

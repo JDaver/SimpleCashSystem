@@ -2,7 +2,7 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import './Keypad.css';
 
 const PRESET_KEYS = {
-  numeric: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0'],
+  numeric: ['1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '0'],
   alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
 };
 

@@ -8,3 +8,15 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>
 );
+
+const loader = document.getElementById('initial-loader');
+if (loader) {
+  requestAnimationFrame(() => {
+    loader.style.opacity = '0';
+    loader.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+      loader.remove();
+    }, 300);
+  });
+}

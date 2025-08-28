@@ -20,7 +20,7 @@
 }
 
 .receipt__table-wrapper {
-  height: calc(100% - 350px);
+  height: calc(100% - 300px);
   margin-left: var(--space-2);
   margin-right: var(--space-5);
   position: absolute;
@@ -69,7 +69,7 @@
 }
 
 .empty-table{
-  color: brown;
+  color: brown;;
 }
 
 

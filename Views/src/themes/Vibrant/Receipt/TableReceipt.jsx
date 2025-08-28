@@ -8,6 +8,11 @@ function TableReceipt() {
     <div className="receipt">
       <div className="receipt__table-wrapper">
         <table className="receipt__content">
+           <colgroup>
+            <col style={{ width: "45%" }} /> {/* 2/3 */}
+            <col style={{ width: "30%" }} /> {/* 1/6 */}
+            <col style={{ width: "25%" }} /> {/* 1/6 */}
+          </colgroup>
           <thead>
             <tr>
               <th>Articolo</th>

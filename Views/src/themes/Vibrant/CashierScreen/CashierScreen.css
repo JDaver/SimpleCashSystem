@@ -44,6 +44,7 @@
   height: 100%;
   padding: 0.5rem;
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
   position: relative;
 }
@@ -55,6 +56,17 @@
 }
 .sngl-item:not(:first-child) {
  border-top: 1px solid var(--neutral-900);
+}
+
+.exclamation-triangle{
+  margin: auto;
+  flex: 0.5;
+}
+.product-name{
+  flex: 2;
+}
+.product-price{
+  flex: 1;
 }
 .sngl-item > p{
   font-size: 1.5em;

@@ -16,16 +16,18 @@ export default function SingleItem({product}){
     
   return(
       <li className="sngl-item">
-        {allergens ? <ExclamationTriangleIcon onClick={() => setShow(prev => !prev)} className={(show ? 'allergens-btn-active' : 'allergens-btn')} width={30} height={30}/>  : ""}
+        <div className="exclamation-triangle">
+        {allergens ? <ExclamationTriangleIcon onClick={() => setShow(prev => !prev)} width={30} height={30} className={(show ? 'allergens-btn-active' : 'allergens-btn')} />: ""}
         {show && (<div ref ={popOverRef} className="allergensPopOver">
             <ul>
                 {(Array.isArray(allergens) ? allergens : [allergens]).map((item, index) =>(
                     <li key={index}>{item}</li>
-                )) }
+                ))}
             </ul>
             </div>)}
-        <p>{product.name}</p>
-        <p>{product.price}</p>
+        </div>
+        <p className="product-name">{product.name}</p>
+        <p className="product-price">{product.price}</p>
         <button className="plus-btn" onClick={()=> addToReceipt(product)}><img  src={addImg} ></img></button>
         <button className={productIsOnReceipt(product.id) ? "minus-btn" : "minus-btn-disabled"} onClick={() => decrementQuantityInReceipt(product.id)}> <img src={remImg}/></button>
       </li>

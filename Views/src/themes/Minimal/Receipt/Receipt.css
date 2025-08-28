@@ -6,8 +6,8 @@
   background-repeat: no-repeat;
   background-size: 100% auto;
   font-family: var(--font-family-receipt);
-  min-height: 685px;
-  padding-top: 7.875rem;
+  min-height: 600px;
+  padding-top: 6.825rem;
   padding-inline: var(--space-5);
   padding-bottom: var(--space-6);
   position: relative;

@@ -1,14 +1,19 @@
 /* Receipt styling */
+.receipt_wrapper{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 800px;
+}
 .receipt {
   background-image: url('@assets/receipt.png');
-  background-position: top center;
+  background-position: top;
   background-repeat: no-repeat;
   background-size: 100% auto;
   font-family: var(--font-family-receipt);
-  min-height: 685px;
+  min-height: 620px;
   padding-top: 7.875rem;
   padding-inline: var(--space-5);
-  padding-bottom: var(--space-6);
   position: relative;
   width: 400px;
   min-width: 30px;
@@ -67,19 +72,20 @@
   color: brown;
 }
 
-/*
+
 .control-area{
   background-color: aqua;
-
-}
+  display: flex;
+  position: relative;
+  }
  .control-btn-clear{
-  background-color: var(--blue-dark);
+  background-color: oklch(40% 0.25768 29.223);
   border-radius: 10px;
   box-shadow: 0px 0px 5px var(--neutral-600);
   color: var(--neutral-100);
   font-size: var(--font-size-lg);
-  padding-block: var(--space-5);
-  padding-inline: var(--space-6);
+  padding-block: var(--space-4);
+  padding-inline: var(--space-4);
   text-align: center;
   text-decoration: none;
   width: fit-content;
@@ -96,4 +102,4 @@
   text-align: center;
   text-decoration: none;
   width: fit-content;
- }*/
+ }

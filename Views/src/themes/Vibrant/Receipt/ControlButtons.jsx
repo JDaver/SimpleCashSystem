@@ -1,3 +1,4 @@
+
 import { useReceipt } from "@contexts/receiptHandlerContext";
 
 export default function ControlButtons(){

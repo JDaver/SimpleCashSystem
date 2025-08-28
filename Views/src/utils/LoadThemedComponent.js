@@ -5,10 +5,12 @@ const componentMap = {
   Minimal: {
     Header: () => import('@themes/Minimal/Header'),
     CashierScreen: () => import('@themes/Minimal/CashierScreen'),
+    Receipt: () => import('@themes/Minimal/Receipt')
   },
   Vibrant: {
     Header: () => import('@themes/Vibrant/Header'),
     CashierScreen: () => import('@themes/Vibrant/CashierScreen'),
+    Receipt: () => import('@themes/Vibrant/Receipt')
   },
 };
 

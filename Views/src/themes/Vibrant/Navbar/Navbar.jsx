@@ -7,7 +7,7 @@ function Navbar() {
     { id: 'main', label: 'Cassa', to: '/' },
     { id: 'manage', label: 'Modifica articoli', to: '/ManageItem' },
     { id: 'collection', label: 'Storico', to: '/Collection' },
-    { id: 'terminate', label: 'Chiusura giornata', to: '/TerminateSession' }
+    { id: 'settings', label: 'Impostazioni', to: '/SettingsPage' }
    ]
 
   return (

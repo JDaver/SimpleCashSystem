@@ -1,0 +1,99 @@
+/* Receipt styling */
+.receipt {
+  background-image: url('@assets/receipt.png');
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  font-family: var(--font-family-receipt);
+  min-height: 685px;
+  padding-top: 7.875rem;
+  padding-inline: var(--space-5);
+  padding-bottom: var(--space-6);
+  position: relative;
+  width: 400px;
+  min-width: 30px;
+}
+
+.receipt__table-wrapper {
+  height: calc(100% - 350px);
+  margin-left: var(--space-2);
+  margin-right: var(--space-5);
+  position: absolute;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.receipt__content {
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  table-layout: fixed;
+  width: 100%;
+}
+
+.receipt__content thead th {
+  background-color: var(--gray-soft);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-5);
+  position: sticky;
+  top: 0;
+  text-align: left;
+  z-index: 2;
+}
+
+.receipt__content tfoot td {
+  background-color: var(--gray-soft);
+  font-weight: var(--font-weight-bold);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-5);
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+}
+
+.receipt__content td {
+  padding-block: var(--space-2);
+  padding-inline: var(--space-5);
+  text-align: left;
+}
+ tr:nth-of-type(even){
+  background-color: var(--gray-velvet);
+}
+
+.receipt__total {
+  font-size: var(--font-size-md);
+}
+
+.empty-table{
+  color: brown;
+}
+
+/*
+.control-area{
+  background-color: aqua;
+
+}
+ .control-btn-clear{
+  background-color: var(--blue-dark);
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px var(--neutral-600);
+  color: var(--neutral-100);
+  font-size: var(--font-size-lg);
+  padding-block: var(--space-5);
+  padding-inline: var(--space-6);
+  text-align: center;
+  text-decoration: none;
+  width: fit-content;
+  cursor: pointer; 
+ }
+ .control-btn-submit{
+  background-color:var(--blue-dark);
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px var(--neutral-600);
+  color: var(--neutral-100);
+  font-size: var(--font-size-lg);
+  padding-block: var(--space-5);
+  padding-inline: var(--space-6);
+  text-align: center;
+  text-decoration: none;
+  width: fit-content;
+ }*/

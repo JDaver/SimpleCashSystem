@@ -1,11 +1,11 @@
 /* Receipt styling */
 .receipt {
-  background-image: url('../../assets/receipt.png');
+  background-image: url('@assets/receipt.png');
   background-position: top center;
   background-repeat: no-repeat;
   background-size: 100% auto;
   font-family: var(--font-family-receipt);
-  min-height: 600px;
+  min-height: 685px;
   padding-top: 7.875rem;
   padding-inline: var(--space-5);
   padding-bottom: var(--space-6);

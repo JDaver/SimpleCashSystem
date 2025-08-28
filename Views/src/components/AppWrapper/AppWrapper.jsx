@@ -3,11 +3,12 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import PageWrapper from '@components/PageWrapper';
 import ManageItem from '@pages/ManageItem';
 import Collection from '@pages/Collection';
-import Terminate from '@pages/TerminateSession';
+import SettingsPage from '../../pages/SettingsPage';
 import Home from '@pages/Home';
 import NotFound from '@pages/NotFound';
 import { loadThemedComponent } from '@utils/LoadThemedComponent';
 import { useTheme } from '@contexts/useTheme';
+import Settings from '../../pages/SettingsPage';
 
 function AppWrapper() {
   const location = useLocation();
@@ -41,7 +42,7 @@ function AppWrapper() {
           <Route path="/Home" element={<Navigate to="/" replace />} />
           <Route path="/ManageItem" element={<ManageItem />} />
           <Route path="/Collection" element={<Collection />} />
-          <Route path="/TerminateSession" element={<Terminate />} />
+          <Route path="/SettingsPage" element={<SettingsPage/>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </PageWrapper>

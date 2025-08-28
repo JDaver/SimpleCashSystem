@@ -1,4 +1,3 @@
-
 import { useReceipt } from '@contexts/receiptHandlerContext';
 
 
@@ -33,8 +32,8 @@ function TableReceipt() {
            </tbody>
           <tfoot>
             <tr className="receipt__total">
-              <td colSpan="2">TOTALE</td>
-              <td>{totalOfReceipt} €</td>
+              <td colSpan="1">TOTALE</td>
+              <td colSpan={2}>{totalOfReceipt} €</td>
             </tr>
           </tfoot>
         </table>

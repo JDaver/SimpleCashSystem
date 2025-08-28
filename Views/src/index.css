@@ -19,11 +19,14 @@
   /*Colors Vibrant*/
   --dynamic-bg: linear-gradient(50deg, oklch(63.184% 0.14697 155.744), oklch(89.095% 0.0918 85.097));
   --vibrant-blue: oklch(20% 0.13116 261.983 / 0.627);
+  --white-active: oklch(93.1% 0.00011 271.152 / 0.751);
   --blue-soft: oklch(51.046% 0.1112 258.327 / 0.504);
   --blue-velvet: oklch(51.046% 0.1112 258.327 / 0.24);
   --blue-dark:oklch(37.525% 0.09995 258.214 / 0.902);
   --green-soft: oklch(63.164% 0.1479 155.395 / 0.414);
   --green-btn: linear-gradient(50deg, oklch(64.073% 0.19497 145.082 / 0.636), oklch(54.369% 0.16113 146.523 / 0.531));
+  --gray-soft: oklch(80% 0 0);
+  --gray-velvet: oklch(90% 0 0);
 
   /* Spacing */
   --space-0: 0rem;

@@ -24,7 +24,7 @@
 }
 
 .navbar__link:active {
-  background-color: var(--neutral-400);
+  background-color: var(--neutral-300);
   transform: scale(0.97);
 }
 
@@ -34,6 +34,6 @@
 }
 
 .active {
-  background-color: var(--neutral-300);
+  background-color: var(--white-active);
   color: var(--neutral-900);
 }

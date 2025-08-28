@@ -5,6 +5,13 @@ const ReceiptContext = createContext();
 export function ReceiptProvider({children}){
     const [receipt,setReceipt] = useState([]);
 
+
+    //filtering dell'oggetto product
+    const filterProduct = (product) => {
+        const { allergens, ...filtered } = product;
+        return filtered;
+    }
+    
     //check del prodotto
     const productIsOnReceipt =((productId) => {
         return receipt.some((item) => item.id === productId);
@@ -12,11 +19,12 @@ export function ReceiptProvider({children}){
 
     //adding items
     const addToReceipt = (product) => {
+        product = filterProduct(product);
         setReceipt ((prevReceipt) => {
             const exist = productIsOnReceipt(product.id);
             if(exist){
                 return prevReceipt.map((item)=>
-                    item.id === product.id ? {...item, quantity: item.quantity + 1} : item);
+                    item.id === product.id ? {id: item.id, name:item.name, price:item.price, quantity: item.quantity + 1} : item);
             }else{
                 return [...prevReceipt, {...product, quantity: 1}]
             }

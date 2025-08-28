@@ -1,21 +1,26 @@
 /* Receipt styling */
+.receipt_wrapper{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 800px;
+}
 .receipt {
   background-image: url('@assets/receipt.png');
-  background-position: top center;
+  background-position: top;
   background-repeat: no-repeat;
   background-size: 100% auto;
   font-family: var(--font-family-receipt);
-  min-height: 685px;
+  min-height: 620px;
   padding-top: 7.875rem;
   padding-inline: var(--space-5);
-  padding-bottom: var(--space-6);
   position: relative;
   width: 400px;
   min-width: 30px;
 }
 
 .receipt__table-wrapper {
-  height: calc(100% - 350px);
+  height: calc(100% - 300px);
   margin-left: var(--space-2);
   margin-right: var(--space-5);
   position: absolute;
@@ -64,36 +69,44 @@
 }
 
 .empty-table{
-  color: brown;
+  color: brown;;
 }
 
-/*
+
 .control-area{
-  background-color: aqua;
-
-}
+  width:100%;
+  display: flex;
+  position: relative;
+  }
  .control-btn-clear{
-  background-color: var(--blue-dark);
+  background-image:var(--red-btn);
   border-radius: 10px;
   box-shadow: 0px 0px 5px var(--neutral-600);
   color: var(--neutral-100);
   font-size: var(--font-size-lg);
-  padding-block: var(--space-5);
-  padding-inline: var(--space-6);
+  padding-block: var(--space-3);
+  padding-inline: var(--space-3);
   text-align: center;
   text-decoration: none;
   width: fit-content;
   cursor: pointer; 
+  margin: var(--space-4);
  }
  .control-btn-submit{
-  background-color:var(--blue-dark);
+  background-image:var(--green-btn);
   border-radius: 10px;
   box-shadow: 0px 0px 5px var(--neutral-600);
   color: var(--neutral-100);
   font-size: var(--font-size-lg);
-  padding-block: var(--space-5);
-  padding-inline: var(--space-6);
+  padding-block: var(--space-3);
+  padding-inline: var(--space-3);
   text-align: center;
   text-decoration: none;
   width: fit-content;
+  cursor: pointer; 
+  margin: var(--space-4);
+ }
+
+ /*.control-btn-clear:active, .control-btn-submit:active{
+  Animation
  }*/

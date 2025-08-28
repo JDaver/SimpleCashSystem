@@ -1,4 +1,5 @@
 /* Receipt styling */
+
 .receipt {
   background-image: url('@assets/receipt.png');
   background-position: top center;

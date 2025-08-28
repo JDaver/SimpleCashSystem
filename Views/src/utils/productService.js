@@ -13,7 +13,6 @@ export async function insertItem(event) {
     const values = formData.getAll(key);
     data[key] = values.length > 1 ? values : values[0];
   }
-  console.log("data",data);
   fetch('http://localhost:4444/api/insert_item', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

@@ -5,7 +5,7 @@ export default function Receipt(){
     return(
     <div className="Receipt_wrapper">
         <TableReceipt/>
-        {/*<ControlButtons/}*/}
+        <ControlButtons/>
         </div>
     )
 }

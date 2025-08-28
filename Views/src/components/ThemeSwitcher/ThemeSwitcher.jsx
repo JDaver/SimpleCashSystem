@@ -6,7 +6,7 @@ function ThemeSwitcher() {
   const { theme, switchTheme } = useTheme();
 
   const toggleTheme = useCallback(() => {
-    const newTheme = theme === 'Minimal' ? 'Vibrant' : 'Minimal';
+    const newTheme = theme === 'minimal' ? 'vibrant' : 'minimal';
     setTimeout(() => {
       switchTheme(newTheme);
     }, 50);
@@ -19,7 +19,7 @@ function ThemeSwitcher() {
           id="theme-switcher"
           type="checkbox"
           onChange={toggleTheme}
-          defaultChecked={theme === 'Minimal'}
+          defaultChecked={theme === 'minimal'}
         />
         <span className="theme-switcher__slider" />
       </label>

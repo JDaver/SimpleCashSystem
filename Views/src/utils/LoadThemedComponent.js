@@ -1,14 +1,11 @@
 import React from 'react';
 
-
 const componentMap = {
-  Minimal: {
-    Header: () => import('@themes/Minimal/Header'),
+  minimal: {
     CashierScreen: () => import('@themes/Minimal/CashierScreen'),
     Receipt: () => import('@themes/Minimal/Receipt')
   },
-  Vibrant: {
-    Header: () => import('@themes/Vibrant/Header'),
+  vibrant: {
     CashierScreen: () => import('@themes/Vibrant/CashierScreen'),
     Receipt: () => import('@themes/Vibrant/Receipt')
   },

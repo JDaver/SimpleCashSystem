@@ -2,7 +2,7 @@ import { useState } from "react";
 import NumericKeypad from "./numericKeypad";
 import SelectAllergenes from "./selectAllergenes";
 
-function handleSubmit(event) {
+/*function handleSubmit(event) {
   event.preventDefault();
   console.log(event);
   const formData = new FormData(event.target);
@@ -20,7 +20,7 @@ function handleSubmit(event) {
   .catch(err => {
     console.error('Error:', err);
   });
-}
+}*/
 
 export default function InsertItemForm() {
     return <>

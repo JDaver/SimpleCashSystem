@@ -1,7 +1,8 @@
-import React, { Suspense, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import PageWrapper from '@components/PageWrapper';
 import Header from '@components/Header';
+import { useViewTransition } from '../../hooks/useViewTransition';
 
 const Home = React.lazy(() => import('@pages/Home'));
 const ManageItem = React.lazy(() => import('@pages/ManageItem'));
@@ -10,23 +11,7 @@ const SettingsPage = React.lazy(() => import('@pages/SettingsPage'));
 const NotFound = React.lazy(() => import('@pages/NotFound'));
 
 function AppWrapper() {
-  const location = useLocation();
-  const [currentLocation, setCurrentLocation] = useState(location);
-
-  useEffect(() => {
-    if (!document.startViewTransition || currentLocation.pathname === location.pathname) {
-      setCurrentLocation(location);
-      return;
-    }
-
-    const transition = document.startViewTransition(() => {
-      setCurrentLocation(location);
-    });
-
-    return () => {
-      transition?.finished?.catch(() => {});
-    };
-  }, [location]);
+  const currentLocation = useViewTransition();
 
   return (
     <div id="view-wrapper">

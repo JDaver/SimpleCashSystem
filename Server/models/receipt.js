@@ -18,6 +18,7 @@ module.exports = class Receipt{
             console.log("errore: ", err);
             throw new Error("Impossibile inserire il prodotto, riprovare.");
         }
+        
     }
 
     async deleteReceipt(){

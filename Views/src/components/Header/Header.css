@@ -15,11 +15,11 @@
   width: 100%;
 }
 
-.minimal {
+.header.minimal{
   background-color: var(--neutral-700);
 }
 
-.vibrant {
+.header.vibrant {
   background: var(--dynamic-bg);
   background-size: 200% 200%;
   animation: gradient-translation 8s ease infinite;

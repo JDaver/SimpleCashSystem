@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import PageWrapper from '@components/PageWrapper';
 import Header from '@components/Header';
-import { useViewTransition } from '../../hooks/useViewTransition';
+import { useViewTransition } from '@hooks/useViewTransition';
 
 const Home = React.lazy(() => import('@pages/Home'));
 const ManageItem = React.lazy(() => import('@pages/ManageItem'));

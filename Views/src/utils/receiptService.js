@@ -10,19 +10,21 @@ async function productsConstructor(formData){
 }
 
 export async function createReceipt(event){
-    event.preventDefault()
-
     const formData = new FormData(event.target);
     const data = await productsConstructor(formData);
-    console.log("data:   ***",JSON.stringify(data));
-    fetch('http://localhost:4444/api/create_receipt', {
+
+    if (data.receipt.length === 0) throw new Error('Impossibile emettere scontrino, devi selezionare almeno un ogggetto.')
+
+    return fetch('http://localhost:4444/api/create_receipt', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(data),
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log('scontrino emesso correttamente! ',data);
-    })
-    .catch(err => console.error('Errore inaspettato: ',err)); 
+        })
+        .then(res => {
+            if(!res.ok) throw new Error('Errore, impossibile Emettere Scontrino');
+            res.json();
+        })
+        .then(data => {
+            console.log('scontrino emesso correttamente! ',data);
+        });
 }

@@ -1,15 +1,10 @@
-.header-vibrant {
-  background: var(--dynamic-bg);
-  background-size: 200% 200%;
+.header {
   height: 8rem;
   padding-inline: var(--space-6);
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
-
-  /*transition: background-color 0.3s ease;*/
-  animation: gradient-translation 8s ease infinite;
 }
 
 .header__wrapper {
@@ -20,12 +15,28 @@
   width: 100%;
 }
 
+.minimal {
+  background-color: var(--neutral-700);
+}
+
+.vibrant {
+  background: var(--dynamic-bg);
+  background-size: 200% 200%;
+  animation: gradient-translation 8s ease infinite;
+}
+
 #header-transition {
   view-transition-name: header;
 }
 
 @keyframes gradient-translation {
-      0% { background-position: 0% 0%; }
-      50% { background-position: 75% 100%; }
-      100% { background-position: 0% 0%; }
-    }
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 75% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}

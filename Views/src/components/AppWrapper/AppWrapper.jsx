@@ -1,22 +1,17 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import PageWrapper from '@components/PageWrapper';
-import ManageItem from '@pages/ManageItem';
-import Collection from '@pages/Collection';
-import SettingsPage from '../../pages/SettingsPage';
-import Home from '@pages/Home';
-import NotFound from '@pages/NotFound';
-import { loadThemedComponent } from '@utils/LoadThemedComponent';
-import { useTheme } from '@contexts/useTheme';
-import Settings from '../../pages/SettingsPage';
+import Header from '@components/Header';
+
+const Home = React.lazy(() => import('@pages/Home'));
+const ManageItem = React.lazy(() => import('@pages/ManageItem'));
+const Collection = React.lazy(() => import('@pages/Collection'));
+const SettingsPage = React.lazy(() => import('@pages/SettingsPage'));
+const NotFound = React.lazy(() => import('@pages/NotFound'));
 
 function AppWrapper() {
   const location = useLocation();
   const [currentLocation, setCurrentLocation] = useState(location);
-  const { theme } = useTheme();
-
-  const Header = useMemo(() => loadThemedComponent(theme, 'Header'), [theme]);
-  
 
   useEffect(() => {
     if (!document.startViewTransition || currentLocation.pathname === location.pathname) {
@@ -37,14 +32,16 @@ function AppWrapper() {
     <div id="view-wrapper">
       <Header />
       <PageWrapper>
-        <Routes location={currentLocation}>
-          <Route path="/" element={<Home />} />
-          <Route path="/Home" element={<Navigate to="/" replace />} />
-          <Route path="/ManageItem" element={<ManageItem />} />
-          <Route path="/Collection" element={<Collection />} />
-          <Route path="/SettingsPage" element={<SettingsPage/>} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<div>Page Loader...</div>}>
+          <Routes location={currentLocation}>
+            <Route path="/" element={<Home />} />
+            <Route path="/Home" element={<Navigate to="/" replace />} />
+            <Route path="/ManageItem" element={<ManageItem />} />
+            <Route path="/Collection" element={<Collection />} />
+            <Route path="/SettingsPage" element={<SettingsPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </PageWrapper>
     </div>
   );

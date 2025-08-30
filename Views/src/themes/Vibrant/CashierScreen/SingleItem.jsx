@@ -28,8 +28,8 @@ export default function SingleItem({product}){
         </div>
         <p className="product-name">{product.name}</p>
         <p className="product-price">{product.price}</p>
-        <button className="plus-btn" onClick={()=> addToReceipt(product)}><img  src={addImg} ></img></button>
-        <button className={productIsOnReceipt(product.id) ? "minus-btn" : "minus-btn-disabled"} onClick={() => decrementQuantityInReceipt(product.id)}> <img src={remImg}/></button>
+        <button className="plus-btn" onTouchEnd={()=> addToReceipt(product)}><img  src={addImg} ></img></button>
+        <button className={productIsOnReceipt(product.id) ? "minus-btn" : "minus-btn-disabled"} onTouchEnd={() => decrementQuantityInReceipt(product.id)}> <img src={remImg}/></button>
       </li>
   )
 }

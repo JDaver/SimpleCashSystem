@@ -3,11 +3,21 @@ import React from 'react';
 const componentMap = {
   minimal: {
     CashierScreen: () => import('@themes/Minimal/CashierScreen'),
-    Receipt: () => import('@themes/Minimal/Receipt')
+    Receipt: () => import('@themes/Minimal/Receipt'),
+    TableGroup: () => import('@themes/Minimal/TableGroup'),
+    Table: () => import('@themes/Minimal/Table'),
+    TableSection: () => import('@themes/Minimal/TableSection'),
+    TableControls: () => import('@themes/Minimal/TableControls'),
+    InsertItem: () => import('@themes/Minimal/InsertItem')
   },
   vibrant: {
     CashierScreen: () => import('@themes/Vibrant/CashierScreen'),
-    Receipt: () => import('@themes/Vibrant/Receipt')
+    Receipt: () => import('@themes/Vibrant/Receipt'),
+    TableGroup: () => import('@themes/Vibrant/tableComponents/TableGroup'),
+    Table: () => import('@themes/Vibrant/tableComponents/Table'),
+    TableSection: () => import('@themes/Vibrant/tableComponents/TableSection'),
+    TableControls: () => import('@themes/Vibrant/tableComponents/TableControls'),
+    InsertItem: () => import('@themes/Vibrant/InsertItem')
   },
 };
 

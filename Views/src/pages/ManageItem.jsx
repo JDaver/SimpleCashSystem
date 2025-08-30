@@ -1,19 +1,29 @@
 import { PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
-import Table from '@themes/Minimal/Table';
-import TableGroup from '@themes/Minimal/TableGroup';
-import TableSection from '@themes/Minimal/TableSection';
-import TableControls from '@themes/Minimal/TableControls';
-import InsertItem from '@themes/Minimal/InsertItem';
+import { useTheme } from '@contexts/useTheme';
+import { loadThemedComponent} from '@utils/LoadThemedComponent';
+import { useMemo } from 'react';
+import DisplayElements from '../themes/Vibrant/DisplayElements';
 
-const tables = [
-  { id: 'box1', title: 'Modifica Articoli', icon: <PencilIcon width={30} height={20} /> },
-  { id: 'box2', title: 'Inserisci un nuovo articolo', icon: <PlusIcon width={30} height={20} /> },
-];
+
 
 function ManageItem() {
+  
+const { theme } = useTheme();
+  const TableGroup = useMemo(() => loadThemedComponent(theme, 'TableGroup'), [theme]);
+  const Table = useMemo(() => loadThemedComponent(theme, 'Table'), [theme]);
+  const TableSection = useMemo(() => loadThemedComponent(theme, 'TableSection'), [theme]);
+  const TableControls = useMemo(() => loadThemedComponent(theme, 'TableControls'), [theme]);
+  const InsertItem = useMemo(() => loadThemedComponent(theme, 'InsertItem'), [theme]);
+
+  const tables = [
+  { id: 'box1', title: 'Modifica Articoli', content: <DisplayElements/>, icon: <PencilIcon width={30} height={20} /> },
+  { id: 'box2', title: 'Inserisci un nuovo articolo', content:<InsertItem/>, icon: <PlusIcon width={30} height={20} /> },
+];
+
   return (
     <TableGroup defaultActive={'box1'}>
       {tables.map(table => {
+        const Component = table.content;
         return (
           <Table key={table.id} id={table.id} title={table.title} icon={table.icon}>
             <TableSection>
@@ -26,7 +36,7 @@ function ManageItem() {
                   flexDirection: 'column',
                 }}
               >
-                <InsertItem />
+                {table.content}
               </div>
             </TableSection>
           </Table>

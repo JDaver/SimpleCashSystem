@@ -20,7 +20,7 @@ export default function CashierScreen(){
             <ul className="cashier-screen__content">
                 {products.map((product)=>{
                   return (
-                    <SingleItem key={product.id} product={product}>{product.name}</SingleItem>
+                    <SingleItem key={product.id} product={product}/>
                   )
                 })}
           </ul>

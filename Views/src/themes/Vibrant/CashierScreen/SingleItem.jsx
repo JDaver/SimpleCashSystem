@@ -1,13 +1,11 @@
-import addImg from "@assets/plus.png"
-import remImg from "@assets/minus.png";
-import { useReceipt } from "@contexts/receiptHandlerContext";
 import { useClickOutside } from '@hooks/useClickOutside';
 import { useState,useRef } from "react";
 import { ExclamationTriangleIcon} from '@heroicons/react/24/outline';
+import CashierButtons from './CashierButtons';
 
 
-export default function SingleItem({product}){
-    const {addToReceipt, productIsOnReceipt, decrementQuantityInReceipt} = useReceipt();
+export default function SingleItem({product,showButtons = true}){
+    
     const [show,setShow] = useState(false);
     const popOverRef = useRef(null);
     const allergens = product.allergens
@@ -28,8 +26,8 @@ export default function SingleItem({product}){
         </div>
         <p className="product-name">{product.name}</p>
         <p className="product-price">{product.price}</p>
-        <button className="plus-btn" onTouchEnd={()=> addToReceipt(product)}><img  src={addImg} ></img></button>
-        <button className={productIsOnReceipt(product.id) ? "minus-btn" : "minus-btn-disabled"} onTouchEnd={() => decrementQuantityInReceipt(product.id)}> <img src={remImg}/></button>
+        {showButtons && <CashierButtons product={product}/>}
+        
       </li>
   )
 }

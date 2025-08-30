@@ -5,7 +5,7 @@ import SingleItem from "../CashierScreen/SingleItem";
 import './DisplayElements.css';
 
 function DisplayElements(){
-    const [active,setActive] = useState();
+    const [active,setActive] = useState(false);
     const longPress = useLongPress(() => {
     console.log("premuto");
     setActive(prev => !prev);}
@@ -14,7 +14,7 @@ function DisplayElements(){
 
     return(
         <div className="display-elements-wrapper">
-            <div {...longPress} className={active ? "display-element" : "display-element-DelMode"}>
+            <div {...longPress} className={!active ? "display-element" : "display-element-DelMode"}>
                 <ul>
                     {products.map((product) => {
                         return(

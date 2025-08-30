@@ -8,6 +8,11 @@
     height: 100%;
 }
 
+.display-element-DelMode .sngl-item > *{
+    animation: vibrateDel 400ms infinite linear;
+    will-change: transform;
+}
+
 .sngl-item{
   width: 100%;
   border-radius: 3px;
@@ -20,9 +25,10 @@
 }
 .sngl-item:nth-of-type(even){
   background-color: var(--blue-velvet);
+  transition: background-color 0.2s ease, transform 0.5s ease;
 }
 .display-element-DelMode .sngl-item:nth-of-type(even){
-  background-color: red;
+  background-color: var(--del-mode);
 }
 .sngl-item:not(:last-child) {
   border-bottom: 1px solid var(--neutral-900);

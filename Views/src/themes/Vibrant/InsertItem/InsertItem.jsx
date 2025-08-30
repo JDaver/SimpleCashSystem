@@ -44,6 +44,10 @@ function InsertItem() {
     setName(prev => prev.slice(0, -1));
   };
 
+  const handleEraseNumber = () => {
+    setName(prev => prev.slice(0, 0));
+  };
+
   return (
     <form className="form insert-item" onSubmit={insertItem} method='POST' >
       <div className="form__columns">
@@ -61,7 +65,7 @@ function InsertItem() {
               readOnly
               autoComplete="off"
             />
-            <Keypad preset={'alphabet'} onInput={handleNameInput} onDelete={handleNameDelete} />
+            <Keypad preset={'alphabet'} onInput={handleNameInput} onDelete={handleNameDelete} onErase = {handleEraseNumber} />
           </div>
         </div>
         <div className="form__column">

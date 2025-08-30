@@ -15,7 +15,7 @@
 
 .sngl-item{
   width: 100%;
-  border-radius: 3px;
+  border-radius: 1px;
   height: 100%;
   padding: 0.5rem;
   display: flex;
@@ -23,6 +23,8 @@
   flex-direction: row;
   position: relative;
 }
+
+/*NTH (odd/even) logic*/
 .sngl-item:nth-of-type(even){
   background-color: var(--blue-velvet);
   transition: background-color 0.2s ease, transform 0.5s ease;
@@ -43,6 +45,7 @@
 }
 .product-name{
   flex: 2;
+  font-size: var(--font-size-xl);
 }
 .product-price{
   flex: 1;

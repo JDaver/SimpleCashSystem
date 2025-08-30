@@ -27,7 +27,6 @@ export default function SingleItem({product,showButtons = true}){
         <p className="product-name">{product.name}</p>
         <p className="product-price">{product.price}</p>
         {showButtons && <CashierButtons product={product}/>}
-        
       </li>
   )
 }

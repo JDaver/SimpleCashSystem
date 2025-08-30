@@ -23,7 +23,7 @@ const { theme } = useTheme();
   return (
     <TableGroup defaultActive={'box1'}>
       {tables.map(table => {
-        const Component = table.content;
+        const DynamicComponent = table.content;
         return (
           <Table key={table.id} id={table.id} title={table.title} icon={table.icon}>
             <TableSection>
@@ -36,7 +36,7 @@ const { theme } = useTheme();
                   flexDirection: 'column',
                 }}
               >
-                {table.content}
+                {DynamicComponent}
               </div>
             </TableSection>
           </Table>

@@ -2,7 +2,7 @@ import addImg from "@assets/plus.png"
 import remImg from "@assets/minus.png";
 import { useReceipt } from "@contexts/receiptHandlerContext";
 
-export default function CashierButtons(product){
+export default function CashierButtons({product}){
     const {addToReceipt, productIsOnReceipt, decrementQuantityInReceipt} = useReceipt();
 
     return (

@@ -1,10 +1,9 @@
 import { useClickOutside } from '@hooks/useClickOutside';
 import { useState,useRef } from "react";
 import { ExclamationTriangleIcon} from '@heroicons/react/24/outline';
-import CashierButtons from './CashierButtons';
 
 
-export default function SingleItem({product,showButtons = true}){
+export default function SingleItem({product, ShowButtons = false, Buttons = null, ShowPlaceHolder = false, PlaceHolder = null}){
     
     const [show,setShow] = useState(false);
     const popOverRef = useRef(null);
@@ -26,7 +25,8 @@ export default function SingleItem({product,showButtons = true}){
         </div>
         <p className="product-name">{product.name}</p>
         <p className="product-price">{product.price}</p>
-        {showButtons && <CashierButtons product={product}/>}
+        {ShowButtons && <Buttons product={product}/> }
+        {ShowPlaceHolder && <p>{PlaceHolder}</p>}
       </li>
   )
 }

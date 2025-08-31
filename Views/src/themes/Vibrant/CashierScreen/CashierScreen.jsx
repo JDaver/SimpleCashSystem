@@ -1,8 +1,9 @@
 //import { useState } from "react";
-import SingleItem from "./SingleItem";
+import SingleItem from "../Components/SingleItem";
 import { useFetchAll } from "@hooks/productsHook"
 import './CashierScreen.css';
 import { useReceipt } from "@contexts/receiptHandlerContext";
+import CashierButtons from "./CashierButtons";
 
 export default function CashierScreen(){
   const {products, loading, error} = useFetchAll();
@@ -20,7 +21,11 @@ export default function CashierScreen(){
             <ul className="cashier-screen__content">
                 {products.map((product)=>{
                   return (
-                    <SingleItem key={product.id} product={product}/>
+                    <SingleItem key={product.id}
+                    product={product}
+                    ShowButtons={true}
+                    Buttons={CashierButtons}
+                    >{product.name}</SingleItem>
                   )
                 })}
           </ul>

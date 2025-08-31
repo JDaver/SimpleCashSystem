@@ -4,6 +4,7 @@ import { createReceipt } from "@utils/receiptService";
 
 export default function ControlButtons(){
     const {clearReceipt,receipt,totalOfReceipt} = useReceipt();
+    const filteredReceipt = JSON.stringify(receipt.map(({ id, quantity }) => ({ id, quantity })));
     console.log(receipt); //Debug
 
    async function handleSubmit(event){
@@ -16,7 +17,7 @@ export default function ControlButtons(){
 
     return(
         <form onSubmit={handleSubmit} method='POST'>
-            <input type="hidden" name="receipt" value={JSON.stringify(receipt)}/>
+            <input type="hidden" name="receipt" value={filteredReceipt}/>
             <input type="hidden" name="id_party" value="1"/>
             <input type="hidden" name="tot_price" value={(totalOfReceipt > 0) ? totalOfReceipt : ""} required/>
             

@@ -1,0 +1,65 @@
+.keypad {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.numeric {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 240px;
+}
+
+.alphabet {
+  grid-template-columns: repeat(7, 1fr);
+  max-width: 500px;
+}
+
+.keypad__key {
+  align-items: center;
+  background-color: var(--neutral-200);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.keypad__key-numeric {
+  width: 70px;
+  height: 60px;
+}
+
+.keypad__key-alphabet {
+  width: 60px;
+  height: 60px;
+}
+
+.keypad__key:active {
+  background-color: var(--neutral-300);
+}
+
+.keypad__key-delete {
+  background-color: oklch(0.8643 0.1518 24.74);
+  color: oklch(0.4284 0.2513 27.95);
+}
+
+.space-bar {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;       /* più largo per la spacebar */
+  height: 40px;      /* altezza standard dei tasti */
+  margin: 4px;
+  border-radius: 6px;
+  border: 1px solid #888;
+  background-color: #f0f0f0;
+  font-size: 18px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.space-bar:active {
+  background-color: #ddd;
+  transform: scale(0.97);
+}

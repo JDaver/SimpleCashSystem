@@ -1,0 +1,6 @@
+.table__section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-inline: 2rem;
+}

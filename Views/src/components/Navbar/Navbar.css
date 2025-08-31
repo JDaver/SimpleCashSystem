@@ -46,7 +46,18 @@
   color: var(--neutral-900);
 }
 
+
+/*Vibrant Theme*/
 .vibrant .navbar__link {
   background-color: var(--blue-dark);
   color: white;
+}
+
+.vibrant .active {
+  background-color:var(--neutral-300);
+  color: var(--neutral-900);
+}
+
+.vibrant .navbar__link:active {
+  background-color: var(--neutral-200);
 }

@@ -7,8 +7,17 @@ export default function CashierButtons({product}){
 
     return (
          <div>
-                <button className="plus-btn" onTouchEnd={()=> addToReceipt(product)}><img  src={addImg} ></img></button>
-                <button className={productIsOnReceipt(product.id) ? "minus-btn" : "minus-btn-disabled"} onTouchEnd={() => decrementQuantityInReceipt(product.id)}> <img src={remImg}/></button>
+                <button 
+                    className="plus-btn" 
+                    onTouchEnd={()=> addToReceipt(product)}>
+                        <img  src={addImg} />
+                </button>
+
+                <button
+                    className={productIsOnReceipt(product.id) ? "minus-btn" : "minus-btn-disabled"} 
+                    onTouchEnd={() => decrementQuantityInReceipt(product.id)}> 
+                        <img src={remImg}/>
+                </button>
             </div>
     );
 }

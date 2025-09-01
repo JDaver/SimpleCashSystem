@@ -1,8 +1,10 @@
+import ModArrow from '@assets/blueArrow.png';
+import DelArrow from '@assets/redArrow.png';
 
-export default function SlideButton(){
+export default function SlideButton({extraMode = false}){
     return(
-        <div>
-            Bottone
-        </div>
+        <button className="slide-button">
+            <img src={extraMode ? DelArrow : ModArrow} alt="" />
+        </button>
     )
 }

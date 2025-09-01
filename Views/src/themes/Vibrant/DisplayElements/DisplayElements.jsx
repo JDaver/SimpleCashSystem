@@ -31,7 +31,7 @@ function DisplayElements(){
                             <SingleItem key={product.id}
                             product={product} 
                             ShowButtons={true}
-                            Buttons={SlideButton}/>
+                            Buttons={(props) => <SlideButton {...props} extraMode= {active}/>}/>
                         )
                     })}
                 </ul>

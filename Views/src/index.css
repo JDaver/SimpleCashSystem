@@ -18,6 +18,7 @@
 
   /*Colors Vibrant*/
   --dynamic-bg: linear-gradient(50deg, oklch(63.184% 0.14697 155.744), oklch(89.095% 0.0918 85.097));
+  --dynamic-bg2: linear-gradient(50deg,var(--neutral-700), var(--blue-dark), oklch(81.171% 0.24266 146.175));
   --vibrant-blue: oklch(20% 0.13116 261.983 / 0.627);
   --white-active: oklch(93.1% 0.00011 271.152 / 0.751);
   --blue-soft: oklch(51.046% 0.1112 258.327 / 0.504);

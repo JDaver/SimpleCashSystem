@@ -16,7 +16,7 @@ const { theme } = useTheme();
   const InsertItem = useMemo(() => loadThemedComponent(theme, 'InsertItem'), [theme]);
 
   const tables = [
-  { id: 'box1', title: 'Modifica Articoli', content: <DisplayElements/>, icon: <PencilIcon width={30} height={20} /> },
+  { id: 'box1', title: 'Elenco Articoli', content: <DisplayElements/>, icon: <PencilIcon width={30} height={20} /> },
   { id: 'box2', title: 'Inserisci un nuovo articolo', content:<InsertItem/>, icon: <PlusIcon width={30} height={20} /> },
 ];
 

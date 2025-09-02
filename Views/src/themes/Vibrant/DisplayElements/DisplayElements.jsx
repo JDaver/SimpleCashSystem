@@ -16,15 +16,19 @@ function DisplayElements(){
         console.log("premuto");
         setActive(prev => !prev);}
     ,2000);
-    const {products, loading, error} = useFetchAll();
 
+    const {products, loading, error} = useFetchAll();
+    console.log(active);
     return(
-        <div className="display-elements-wrapper">
+       <>
+        <div {...longPress} className="display-elements-wrapper">
             <SingleItem product={label}
              showButtons={false}
              ShowPlaceHolder={true}
              PlaceHolder={active ? "Elimina" : "Modifica"} />
-            <div {...longPress} className={!active ? "display-element" : "display-element-DelMode"}>
+        </div>
+
+        <div className={!active ? "display-element" : "display-element-DelMode"}>
                 <ul>
                     {products.map((product) => {
                         return(
@@ -34,9 +38,9 @@ function DisplayElements(){
                             Buttons={(props) => <SlideButton {...props} extraMode= {active}/>}/>
                         )
                     })}
-                </ul>
-            </div>
+                </ul>    
         </div>
+       </>
     )
 }
 

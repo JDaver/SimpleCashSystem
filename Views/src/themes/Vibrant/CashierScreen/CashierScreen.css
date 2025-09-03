@@ -31,47 +31,17 @@
 }
 
 .cashier-screen__header {
-  /*background-color: var(--blue-velvet);
-  border-radius: 7px;*/
   color: var(--neutral-800);
   text-align: center;
 }
 
 /*Single Item*/
-.sngl-item{
-  width: 100%;
-  border-radius: 3px;
-  height: 100%;
-  padding: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  position: relative;
-}
-.sngl-item:nth-of-type(even){
-  background-color: var(--blue-velvet);
-}
-.sngl-item:not(:last-child) {
-  border-bottom: 1px solid var(--neutral-900);
-}
-.sngl-item:not(:first-child) {
- border-top: 1px solid var(--neutral-900);
+.label{
+    background-color: var(--neutral-400);
+    border-radius: 3px;
+    color: var(--neutral-300);
 }
 
-.exclamation-triangle{
-  margin: auto;
-  flex: 0.5;
-}
-.product-name{
-  flex: 2;
-}
-.product-price{
-  flex: 1;
-}
-.sngl-item > p{
-  font-size: 1.5em;
-  margin: auto;
-}
 
 .plus-btn,
 .minus-btn{
@@ -100,25 +70,3 @@
   animation-duration: 160ms;
 }
 
-/*Allergens*/
-.allergens-btn{
-  cursor: pointer;
-  transition: transform 0.1s ease-in-out;
-  touch-action: manipulation;
-}
-.allergens-btn-active{
- color: brown;
-}
-
-.allergensPopOver{
-  position: absolute;
-  border-radius: 0.5rem;
-  left:5%;
-  margin-left: 0.5rem;
-  padding: 0.5rem;
-  top: 0;
-  background-color: var(--blue-dark);
-  color: var(--neutral-300);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  z-index: 10;
-}

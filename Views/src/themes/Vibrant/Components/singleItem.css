@@ -1,0 +1,64 @@
+.sngl-item{
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
+}
+
+.sngl-item:nth-of-type(even){
+  background-color: var(--blue-velvet);
+}
+.sngl-item:not(:last-child) {
+  border-bottom: 1px solid var(--neutral-900);
+}
+.sngl-item:not(:first-child) {
+ border-top: 1px solid var(--neutral-900);
+}
+
+
+.sngl-item > span{
+    font-size: 1.5em;
+}
+
+.extra,.label-1{
+    flex: 0.5;
+}
+.first-record, .label-2{
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+.second-record,.label-3{
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+
+.info-button{
+  cursor: pointer;
+  transition: transform 1s ease-in-out;
+  touch-action: manipulation;
+
+}
+.info-button-active{
+    color: brown;
+}
+.allergensPopOver{
+  position: absolute;
+  border-radius: 0.5rem;
+  left:5%;
+  margin-left: 0.5rem;
+  padding: 0.5rem;
+  top: 0;
+  background-color: var(--blue-dark);
+  color: var(--neutral-300);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.412);
+  z-index: 10;
+}
+
+

@@ -1,34 +1,53 @@
-import InfoButton from './AllergensButton';
+import InfoButton from './InfoButton';
 import { useClickOutside } from '@hooks/useClickOutside';
 import { useState,useRef } from "react";
+import './singleItem.css';
 
-export default function SingleItem({Showextra = false , Extra = null, product, ShowButtons = false, Buttons = null, ShowPlaceHolder = false, PlaceHolder = null}){
-    const allergens = product.allergens
-    const [show,setShow] = useState(false);
-    const popOverRef = useRef(null);
-    
+export default function SingleItem({
+   Showextra = false, 
+   Extra = null,
+   ShowRecord = true, 
+   record = null, 
+   ShowButtons = false, 
+   Buttons = null, 
+   ShowPlaceHolders = false, 
+   PlaceHolders = null
+}) {
+   
+  const {allergens, items, name, price, id, total, date, quantity} = record || {};
 
-    useClickOutside(popOverRef, () => setShow(false));
+  const [show,setShow] = useState(false);
+  const popOverRef = useRef(null);
+  useClickOutside(popOverRef, () => setShow(false));
     
   return(
       <li className="sngl-item">
-        <div className="exclamation-triangle">
 
-        {allergens ? <div ref={popOverRef}>
-            <InfoButton
-            Data = {product.allergens}
-            active = {show}
-            onClick={() => setShow(prev => !prev)}
-            width={30} height={30} 
-            className={(show ? 'allergens-btn-active' : 'allergens-btn')}/>
-        </div> : "" }
+        {Showextra &&
+        <div className="extra" ref={popOverRef}>
+          
+              <InfoButton
+              Data = {allergens ? allergens : items}
+              active = {show}
+              onClick={() => setShow(prev => !prev)}
+              width={40} height={40} 
+              className={(show ? 'info-button-active' : 'info-button')}/> 
+          </div> }
+        {ShowRecord &&
+        <>
+          <span className="first-record">{name ? name : id + "~" + date}</span> 
+          <span className="second-record">{price ? price : total }€</span>
+          {quantity && <span>{quantity} </span>}
+        </>
+      }
         
-
-        </div>
-        <p className="product-name">{product.name}</p>
-        <p className="product-price">{product.price}</p>
-        {ShowButtons && <Buttons product={product}/> }
-        {ShowPlaceHolder && <p>{PlaceHolder}</p>}
+      {ShowButtons && <Buttons product={record}/> }
+      {ShowPlaceHolders && PlaceHolders.map((label,i) =>{
+        return(
+          <span key={i} className={`label-${i+1}`}>{label}</span>
+          )
+        }
+      )}
       </li>
   )
 }

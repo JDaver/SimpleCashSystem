@@ -55,9 +55,12 @@
 
 .vibrant .active {
   background-color: oklch(86.378% 0.0001 271.152 / 0.576);
+  
   color: var(--neutral-900);
 }
 
 .vibrant .navbar__link:active {
   background-color: transparent;
+  filter: drop-shadow(20px 20px 20px var(--neutral-200));
 }
+

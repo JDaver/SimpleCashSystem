@@ -18,7 +18,7 @@
 
   /*Colors Vibrant*/
   --dynamic-bg: linear-gradient(50deg, oklch(63.184% 0.14697 155.744), oklch(89.095% 0.0918 85.097));
-  --dynamic-bg2: linear-gradient(50deg,var(--neutral-700), var(--blue-dark), oklch(81.171% 0.24266 146.175));
+  --dynamic-bg2: linear-gradient(50deg,var(--neutral-700), var(--blue-dark), var(--perfect-green));
   --vibrant-blue: oklch(20% 0.13116 261.983 / 0.627);
   --white-active: oklch(93.1% 0.00011 271.152 / 0.751);
   --blue-soft: oklch(51.046% 0.1112 258.327 / 0.504);
@@ -30,6 +30,8 @@
   --del-mode: oklch(63.487% 0.19475 24.57 / 0.505);
   --gray-soft: oklch(80% 0 0);
   --gray-velvet: oklch(90% 0 0);
+  --perfect-green: oklch(81.171% 0.24266 146.175);
+  --green-velvet: oklch(37.058% 0.13715 266.775 / 0.346);
 
   /* Spacing */
   --space-0: 0rem;

@@ -17,6 +17,7 @@
   position: relative;
   width: 400px;
   min-width: 30px;
+  filter:drop-shadow(16px 16px 20px rgb(83, 83, 83));
 }
 
 .receipt__table-wrapper {

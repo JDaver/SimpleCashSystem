@@ -1,7 +1,3 @@
-.keypad {
-  display: grid;
-  gap: 0.5rem;
-}
 
 .numeric {
   grid-template-columns: repeat(3, 1fr);
@@ -9,11 +5,56 @@
 }
 
 .alphabet {
-  grid-template-columns: repeat(7, 1fr);
-  max-width: 500px;
+  display: grid;
+  /* gap: 0.5rem; */
+  width: 100%;
+  max-width: 600px;
+}
+.row {
+  display: grid;
+  /* gap: 5px; */
+  justify-content: center;
+  grid-auto-rows: 3rem;
 }
 
+/*QWERTYUIOP*/
+.row1 { 
+  grid-template-columns: repeat(10, 3rem);
+ } 
+ /*ASDFGHJKL*/
+.row2 { 
+  grid-template-columns: repeat(9, 3rem); 
+} 
+/*ZXCVBNM*/
+.row3 { 
+  grid-template-columns: repeat(7, 3rem); 
+} 
+
+/* Stile dei tasti */
+.key {
+  grid-area: 1;
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  background-color: var(--blue-dark);
+  color: white;
+
+  border: 1px solid var(--neutral-700);
+  border-radius: 5px;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.key:active{
+  background-color: aqua;
+}
+
+
 .keypad__key {
+
+  grid-area: 1;
   align-items: center;
   background-color: var(--neutral-200);
   border: none;
@@ -30,8 +71,8 @@
 }
 
 .keypad__key-alphabet {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
 }
 
 .keypad__key:active {
@@ -47,8 +88,8 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 80px;       /* più largo per la spacebar */
-  height: 40px;      /* altezza standard dei tasti */
+  width: 100%;       
+  height: 40px;      
   margin: 4px;
   border-radius: 6px;
   border: 1px solid #888;

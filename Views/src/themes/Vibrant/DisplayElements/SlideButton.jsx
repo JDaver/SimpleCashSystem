@@ -1,5 +1,5 @@
 import ModArrow from '@assets/blueArrow.png';
-import DelArrow from '@assets/redArrow.png';
+import DelArrow from '@assets/redCross.png';
 
 export default function SlideButton({extraMode = false}){
     return(

@@ -1,16 +1,39 @@
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { ExclamationTriangleIcon, TrashIcon} from '@heroicons/react/24/outline';
+import { useState,useRef } from 'react';
+import { useClickOutside } from '@hooks/useClickOutside';
 
-export default function InfoButton({ Icon = ExclamationTriangleIcon, Data = null, active = false, ...props }) {
+export default function InfoButton({
+  Data = null, 
+  mode = "display",
+   ...props }) {
+  
+  let Icon = ExclamationTriangleIcon;  
+  if(mode === "delete") Icon = TrashIcon;
+
   const items = Array.isArray(Data) ? Data : Data ? [Data] : [];
+  const [show,setShow] = useState();
+  const popOverRef = useRef(null);
+  useClickOutside(popOverRef, () => setShow(false));
+
+  const handleClick = () => {
+    if(mode === "display"){
+      setShow(prev => !prev);
+    }else if(mode === "delete"){
+      console.log('deleted');
+    }
+  }
 
   return (
     <>
-
-      <button {...props }>
+      <button 
+      {...props } 
+      onClick={handleClick} 
+      ref={popOverRef}
+      className={(show ? 'info-button-active' : 'info-button')}>
         <Icon  style={{ width: props.width || 24, height: props.height || 24 }} />
       </button>
       
-      {active && items.length > 0 && (
+      {show && items.length > 0 && (
         <div className="allergensPopOver">
           <ul>
             {items.map((item, index) => (

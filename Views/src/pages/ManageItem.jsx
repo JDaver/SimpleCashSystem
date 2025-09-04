@@ -26,18 +26,18 @@ const { theme } = useTheme();
         const DynamicComponent = table.content;
         return (
           <Table key={table.id} id={table.id} title={table.title} icon={table.icon}>
-            <TableSection>
+            <TableSection >
               <TableControls />
               <div
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column'
+                }}>
                 {DynamicComponent}
-              </div>
+                </div>
+              
             </TableSection>
           </Table>
         );

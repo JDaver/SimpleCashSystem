@@ -7,10 +7,8 @@ import SlideButton from "./SlideButton";
 
 
 function DisplayElements(){
-    const label = {
-    name: "Nome Prodoto",
-    price: "prezzo",
-};
+    const labelNormal = ["Allergeni","Nome Prodoto","Prezzo","Modifica" ];
+    const labelDeleteMode = ["Elimina","Nome Prodoto","Prezzo","Seleziona" ];
     const [active,setActive] = useState(false);
     const longPress = useLongPress(() => {
         console.log("premuto");
@@ -20,27 +18,37 @@ function DisplayElements(){
     const {products, loading, error} = useFetchAll();
     console.log(active);
     return(
-       <>
-        <div {...longPress} className="display-elements-wrapper">
-            <SingleItem product={label}
-             showButtons={false}
-             ShowPlaceHolder={true}
-             PlaceHolder={active ? "Elimina" : "Modifica"} />
+       <div className="elements-container">
+        <div {...longPress} className={active ? "label-DelMode" : "label"}>
+            <SingleItem PlaceHolders={active ? labelDeleteMode : labelNormal} />
         </div>
 
-        <div className={!active ? "display-element" : "display-element-DelMode"}>
+        <div className={active ? "display-element-DelMode" : "display-element"}>
                 <ul>
-                    {products.map((product) => {
+                    {active && 
+                    (products.map((product) => {
                         return(
                             <SingleItem key={product.id}
-                            product={product} 
-                            ShowButtons={true}
-                            Buttons={(props) => <SlideButton {...props} extraMode= {active}/>}/>
+                            mode="delete"
+                            Extra={true}
+                            Record={product} 
+                            ButtonsComponent={(props) => <SlideButton {...props} extraMode= {active}/>}/>
                         )
-                    })}
+                    }))}
+
+                    {!active && (products.map((product) => {
+                        return(
+                            <SingleItem key={product.id}
+                            mode="display"
+                            Extra={product.allergens}
+                            Record={product} 
+                            ButtonsComponent={(props) => <SlideButton {...props} extraMode= {active}/>}/>
+                        )
+                    }))}
+                    
                 </ul>    
         </div>
-       </>
+       </div>
     )
 }
 

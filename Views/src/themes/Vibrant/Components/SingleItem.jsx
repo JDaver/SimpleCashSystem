@@ -1,32 +1,29 @@
 import InfoButton from './InfoButton';
-import { useClickOutside } from '@hooks/useClickOutside';
-import { useState,useRef } from "react";
 import './singleItem.css';
 
 export default function SingleItem({
+   mode = null,
    Extra = null,
    Record = null, 
    ButtonsComponent = null, 
-   PlaceHolders = null
+   PlaceHolders = null 
 }) {
-   
-  const {allergens, items, name, price, id, total, date, quantity} = Record || {};
 
-  const [show,setShow] = useState(false);
-  const popOverRef = useRef(null);
-  useClickOutside(popOverRef, () => setShow(false));
+  const {allergens, items, name, price, id, total, date, quantity} = Record || {};
+  const dataToShow = allergens?.length > 0 ? allergens : items?.length > 0 ? items : [];
+ 
     
   return(
       <li className="sngl-item">
 
-        {Extra &&
-        <div className="extra" ref={popOverRef}>
+        {Extra && 
+        <div className="extra" >
               <InfoButton
               Data = {allergens}
-              active = {show}
-              onClick={() => setShow(prev => !prev)}
+              active={dataToShow.length > 0 ? true : false}
               width={40} height={40} 
-              className={(show ? 'info-button-active' : 'info-button')}/> 
+              mode={mode}
+              /> 
           </div> }
 
         {Record &&

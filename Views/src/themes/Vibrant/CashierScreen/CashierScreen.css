@@ -36,11 +36,6 @@
 }
 
 /*Single Item*/
-.label{
-    background-color: var(--neutral-400);
-    border-radius: 3px;
-    color: var(--neutral-300);
-}
 
 
 .plus-btn,

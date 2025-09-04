@@ -19,10 +19,25 @@
 }
 
 
+.label{
+    background-image: var(--gradient-label);
+    background-size: 300% 100%;
+    background-position: 50% 0;
+    border-radius: 3px;
+    color: var(--neutral-300);
+    transition:ease-out 0.5s;
+}
+.label-DelMode{
+  background-image: var(--gradient-label);
+  background-size: 300% 100%;
+  background-position: 0% 0;
+  border-radius: 3px;
+  color: var(--neutral-300);
+  animation: slide-left 1s forwards;
+}
 .sngl-item > span{
     font-size: 1.5em;
 }
-
 .extra,.label-1{
   grid-column: 1;
 }
@@ -58,4 +73,9 @@
   z-index: 10;
 }
 
+
+@keyframes slide-left {
+  from { background-position: 50% 0; }
+  to   { background-position: 0% 0; }
+}
 

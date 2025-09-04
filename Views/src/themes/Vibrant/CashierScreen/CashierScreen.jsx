@@ -1,5 +1,4 @@
 //import { useState } from "react";
-/*TO DO: fixx allineation of labels with chore records row */
 import SingleItem from "../Components/SingleItem";
 import { useFetchAll } from "@hooks/productsHook"
 import './CashierScreen.css';

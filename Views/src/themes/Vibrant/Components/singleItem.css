@@ -2,10 +2,9 @@
   width: 100%;
   height: 100%;
   padding: 0.5rem;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 150px 1fr 1fr auto;
   align-items: center;
-  flex-direction: row;
   position: relative;
 }
 
@@ -25,17 +24,15 @@
 }
 
 .extra,.label-1{
-    flex: 0.5;
+  grid-column: 1;
 }
 .first-record, .label-2{
-    display: flex;
-    justify-content: center;
-    flex: 1;
+  grid-column: 2;
+  text-align: center;
 }
 .second-record,.label-3{
-    display: flex;
-    justify-content: center;
-    flex: 1;
+    grid-column: 3;
+    text-align: center;
 }
 
 

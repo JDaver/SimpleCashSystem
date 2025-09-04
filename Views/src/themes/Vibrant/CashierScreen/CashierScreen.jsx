@@ -26,18 +26,18 @@ export default function CashierScreen(){
           <div className="cashier-screen__wrapper">
             <h1 className="cashier-screen__header">Cucina</h1>
             <div className="label"> <SingleItem
-                  ShowRecord = {false}
-                  ShowPlaceHolders={true}
                   PlaceHolders={label}/></div>
             <ul className="cashier-screen__content">
 
+            {error}
+            {loading}
                 {products.map((product)=>{
                   return (
                     <SingleItem key={product.id}
-                    Showextra={true}
-                    record={product}
+                    Extra={product.allergens}
+                    Record={product}
                     ShowButtons={true}
-                    Buttons={CashierButtons}
+                    ButtonsComponent={CashierButtons}
                     />
                     
                   )

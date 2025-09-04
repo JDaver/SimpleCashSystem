@@ -4,17 +4,13 @@ import { useState,useRef } from "react";
 import './singleItem.css';
 
 export default function SingleItem({
-   Showextra = false, 
    Extra = null,
-   ShowRecord = true, 
-   record = null, 
-   ShowButtons = false, 
-   Buttons = null, 
-   ShowPlaceHolders = false, 
+   Record = null, 
+   ButtonsComponent = null, 
    PlaceHolders = null
 }) {
    
-  const {allergens, items, name, price, id, total, date, quantity} = record || {};
+  const {allergens, items, name, price, id, total, date, quantity} = Record || {};
 
   const [show,setShow] = useState(false);
   const popOverRef = useRef(null);
@@ -23,17 +19,17 @@ export default function SingleItem({
   return(
       <li className="sngl-item">
 
-        {Showextra &&
+        {Extra &&
         <div className="extra" ref={popOverRef}>
-          
               <InfoButton
-              Data = {allergens ? allergens : items}
+              Data = {allergens}
               active = {show}
               onClick={() => setShow(prev => !prev)}
               width={40} height={40} 
               className={(show ? 'info-button-active' : 'info-button')}/> 
           </div> }
-        {ShowRecord &&
+
+        {Record &&
         <>
           <span className="first-record">{name ? name : id + "~" + date}</span> 
           <span className="second-record">{price ? price : total }€</span>
@@ -41,8 +37,8 @@ export default function SingleItem({
         </>
       }
         
-      {ShowButtons && <Buttons product={record}/> }
-      {ShowPlaceHolders && PlaceHolders.map((label,i) =>{
+      {ButtonsComponent && <ButtonsComponent product={Record}/> }
+      {PlaceHolders && PlaceHolders.map((label,i) =>{
         return(
           <span key={i} className={`label-${i+1}`}>{label}</span>
           )

@@ -5,6 +5,7 @@ export default function InfoButton({ Icon = ExclamationTriangleIcon, Data = null
 
   return (
     <>
+
       <button {...props }>
         <Icon  style={{ width: props.width || 24, height: props.height || 24 }} />
       </button>

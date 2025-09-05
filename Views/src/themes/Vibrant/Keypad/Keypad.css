@@ -1,87 +1,53 @@
 
-.numeric {
-  grid-template-columns: repeat(3, 1fr);
-  max-width: 240px;
-}
-
+/*****Alphabetic KeyPad*****/
 .alphabet {
+  padding-top: 2rem;
   display: grid;
-  /* gap: 0.5rem; */
+  gap: 0.5rem;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
+  height: 350px;
 }
 .row {
   display: grid;
-  /* gap: 5px; */
   justify-content: center;
   grid-auto-rows: 3rem;
+  gap: 0.5rem;
 }
 
 /*QWERTYUIOP*/
 .row1 { 
-  grid-template-columns: repeat(10, 3rem);
+  grid-template-columns: repeat(10, 55px);
+
  } 
  /*ASDFGHJKL*/
 .row2 { 
-  grid-template-columns: repeat(9, 3rem); 
+  grid-template-columns: repeat(9,55px); 
 } 
 /*ZXCVBNM*/
 .row3 { 
-  grid-template-columns: repeat(7, 3rem); 
+  grid-template-columns: repeat(7, 55px); 
 } 
 
 /* Stile dei tasti */
-.key {
-  grid-area: 1;
+.key-alphabet {
   display: flex; 
   justify-content: center;
   align-items: center;
   background-color: var(--blue-dark);
   color: white;
-
   border: 1px solid var(--neutral-700);
   border-radius: 5px;
   font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 55px;
+  height: 55px;
 }
 
 .key:active{
-  background-color: aqua;
-}
-
-
-.keypad__key {
-
-  grid-area: 1;
-  align-items: center;
-  background-color: var(--neutral-200);
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  transition: background-color 0.2s;
-}
-
-.keypad__key-numeric {
-  width: 70px;
-  height: 60px;
-}
-
-.keypad__key-alphabet {
-  width: 50px;
-  height: 50px;
-}
-
-.keypad__key:active {
-  background-color: var(--neutral-300);
-}
-
-.keypad__key-delete {
-  background-color: oklch(0.8643 0.1518 24.74);
-  color: oklch(0.4284 0.2513 27.95);
+  background-color:var(--blue-abyss);
 }
 
 .space-bar {
@@ -89,12 +55,12 @@
   justify-content: center;
   align-items: center;
   width: 100%;       
-  height: 40px;      
+  height: 60px;      
   margin: 4px;
   border-radius: 6px;
   border: 1px solid #888;
   background-color: #f0f0f0;
-  font-size: 18px;
+  font-size: 2rem;
   cursor: pointer;
   user-select: none;
   transition: background-color 0.2s, transform 0.1s;
@@ -103,4 +69,74 @@
 .space-bar:active {
   background-color: #ddd;
   transform: scale(0.97);
+}
+
+.alphabet .key-delete{
+  display: flex;
+  justify-content: end;
+}
+.alphabet .keypad__key-delete {
+  display: flex;
+  width: 120px;
+  height: 55px;
+  border-radius: 6px;
+  justify-content: center;
+  background-color: oklch(0.8643 0.1518 24.74);
+  color: oklch(0.4284 0.2513 27.95);
+}
+
+
+
+/*****Numeric KeyPad*****/
+
+.numeric {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  max-width: 240px;
+}
+
+.key-numeric {
+  align-items: center;
+  background-color: var(--blue-dark);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  transition: background-color 0.2s;
+  padding: 1rem;
+}
+
+.key-numeric {
+  width: 70px;
+  height: 60px;
+  font-size: 2.5rem;
+}
+
+.key-numeric:active {
+  background-color: var(--blue-dark);
+}
+
+
+.numeric.key-delete{
+  grid-area: 1;
+  display: flex;
+  justify-content: end;
+}
+.numeric .keypad__key-delete {
+  display: flex;
+  width: 70px;
+  height: 60px;
+  border-radius: 6px;
+  justify-content: center;
+  background-color: oklch(0.8643 0.1518 24.74);
+  color: oklch(0.4284 0.2513 27.95);
+}
+
+.keypad__key-delete:active{
+  background-color: oklch(0.4284 0.2513 27.95) ;
+  color: oklch(0.8643 0.1518 24.74);
+  transform: scale(0.90);
 }

@@ -3,7 +3,7 @@ import './Keypad.css';
 import { useLongPress } from '@hooks/useLongPress';
 
 const PRESET_KEYS = {
-  numeric: ['1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '0'],
+  numeric: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0'],
   alphabet: [
     'QWERTYUIOP'.split(''),
     'ASDFGHJKL'.split(''),
@@ -20,7 +20,7 @@ function Keypad({ keys = [], preset = null, onInput, onDelete, showDelete = true
 
   /*TODO FIXX range action of key buttons, it isn't sensitive on whole grid single box */
   return (
-    <div className={`keypad ${preset}`}>
+    <div className={`${preset}`}>
       
       {(preset === 'alphabet') &&( 
         finalKeys.map((rowLetters, rowIndex) => (
@@ -29,8 +29,8 @@ function Keypad({ keys = [], preset = null, onInput, onDelete, showDelete = true
               <button
                 key={key}
                 type="button"
-                className={`keypad__key keypad__key-${preset}`}
-                onTouchEnd={() => onInput?.(key)}
+                className='key-alphabet'
+                onTouchEnd={() => onInput?.(key)} //verify best practice for touch behaviour
                 aria-label={`Key ${key}`}>
               {key}
               </button>
@@ -38,30 +38,28 @@ function Keypad({ keys = [], preset = null, onInput, onDelete, showDelete = true
           </div>)))}
 
       {(preset === 'numeric') && (
-        finalKeys.map(key => (
-        <button
-          key={key}
-          aria-label={`Key ${key}`}
-          type="button"
-          className={`keypad__key keypad__key-${preset}`}
-          onClick={() => onInput?.(key)}
-        >
-          {key}
-        </button>
-      ))
-      )}
+          finalKeys.map(key => (
+            <button
+              key={key}
+              aria-label={`Key ${key}`}
+              type="button"
+              className={`key-numeric`}
+              onClick={() => onInput?.(key)}
+            >
+              {key}
+            </button>)))}
           
       {showDelete && (
-        <button
-          aria-label="Delete"
-          type="button"
-          className={`keypad__key keypad__key-${preset} keypad__key-delete`}
-          {...longPress}
-          onClick={onDelete}
-          
-        >
-          <ArrowLeftIcon width={40} height={40} />
-        </button>
+        <div className='key-delete'>
+          <button
+            aria-label="Delete"
+            type="button"
+            className={`keypad__key-delete`}
+            {...longPress}
+            onClick={onDelete}>
+            <ArrowLeftIcon width={40} height={40} />
+          </button>
+        </div>
       )}
       {preset == 'alphabet' && (
             <button 

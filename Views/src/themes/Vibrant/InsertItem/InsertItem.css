@@ -2,10 +2,9 @@
   display: grid;
   gap: var(--space-8);
   grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: 3fr 1fr;
+  grid-template-rows: 2fr 1fr;
   height: 100%;
 
-  border: solid black;
 }
 
 .form__columns {
@@ -19,17 +18,20 @@
   flex-direction: column;
   gap: var(--space-4);
   align-items: flex-start;
-  border: solid black;
+  
 }
 
 .form__field {
+
   display: flex;
   padding: 1rem;
+  padding-top: 4rem;
+  align-items: center;
   flex-direction: column;
   gap: var(--space-1);
-  width: fit-content;
-
-  border: solid red;
+  width: 100%;
+  height: 100%;
+  
 }
 
 .form__input {
@@ -37,6 +39,7 @@
   border-radius: 5px;
   height:2.5rem;
   margin-bottom: 1rem;
+  width: 70%;
 }
 
 .form__button-wrapper {
@@ -74,5 +77,12 @@
 }
 
 .insert-item .dropdown__content {
-  max-height: 300px;
+  max-height: 400px;
+  width: 100%;
+}
+
+.form__field.dropdown{
+  display: flex;
+  align-items: flex-start;
+
 }

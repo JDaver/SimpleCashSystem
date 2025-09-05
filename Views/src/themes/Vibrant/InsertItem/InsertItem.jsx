@@ -28,7 +28,7 @@ function InsertItem() {
   const [allergens, setAllergens] = useState([]);
 
   const handlePriceInput = key => {
-    if (key === ',' && price.includes(',')) return;
+    if (key === '.' && price.includes('.')) return;
     setPrice(prev => prev + key);
   };
 
@@ -90,7 +90,7 @@ function InsertItem() {
           </div>
         </div>
         <div className="form__column">
-          <div className="form__field">
+          <div className="form__field dropdown">
             <Dropdown side={'left'} selected={allergens} onChange={setAllergens} multiple>
               <Dropdown.Trigger aria-label="Seleziona allergeni">
                 <p>Allergeni</p>

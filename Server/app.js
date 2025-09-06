@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const pool = require('./db/db');
-const apiCall = require('./api/ProductsApi');
+const apiCall = require('./api/ApiHandler');
 const cors = require('cors')
 const reactPath = path.join(__dirname, '..', 'Views', 'dist');
 app.use(express.static(reactPath));

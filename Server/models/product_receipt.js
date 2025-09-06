@@ -18,6 +18,7 @@ module.exports = class Product_receipt{
 
         try{
             const result = await pool.query(query,values);
+            console.log("reslt+ "+result)
             return result;
         }catch(err){
             console.log("errore: ",err);

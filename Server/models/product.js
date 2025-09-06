@@ -9,38 +9,35 @@ module.exports = class Product {
 
     async createProd(){
         try{
-            await pool.query(
-                'INSERT INTO product (name, price, allergens) VALUES ($1, $2, $3)',
+            const result = await pool.query(
+                'INSERT INTO product (name, price, allergens) VALUES ($1, $2, $3) RETURNING *',
                 [this.name, this.price, this.allergens]
             );
-            return {name : this.name, price: this.price};
+            return result.rows[0];
 
         }catch(err){
-            console.log("errore: ", err);
-            throw new Error("Impossibile inserire il prodotto, riprovare.");
+            throw new Error(`Error from DB in createProd(): ${err.message}`);
         }
     }
 
     async modifyProd(id){
         try{
-            await pool.query(
-                "UPDATE product SET name = $1, price = $2, allergens = $3 where id = $4",
+            const result = await pool.query(
+                "UPDATE product SET name = $1, price = $2, allergens = $3 where id = $4 RETURNING *",
                 [this.name, this.price, this.allergens, id]
             )
-            return this.name;
+            return result.rows[0];
         }catch(err){
-            console.log("errore: ", err);
-            throw new Error("Impossibile inserire il prodotto, riprovare.");
+            throw new Error(`Error from DB in modifyProd(): ${err.message}`);
         }
     }
 
-    async deleteProd(id){
+    static async deleteProd(id){
         try{
-            await pool.query('DELETE FROM product WHERE id = $1', id);
-            return this.name;
+            const result = await pool.query('DELETE FROM product WHERE id = $1 RETURNING *', id);
+            return result.rows[0];
         }catch(err){
-            console.log("errore: ", err);
-            throw new Error("Impossibile eliminare il prodotto, riprovare.");
+            throw new Error(`Error from DB in deleteProd(): ${err.message}`);
         }
     }
 
@@ -50,7 +47,7 @@ module.exports = class Product {
             return result.rows;
         }catch(err){
             console.log("errore: ",err)
-            throw new Error("Impossibile scaricare i prodotti, riprovare.");
+            throw new Error(`Error from DB during selectAllProd(): ${err.message}`);
         }
     }
 }

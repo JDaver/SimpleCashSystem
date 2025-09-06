@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const item = require('../controllers/controllerProduct');
-const createReceipt = require('./apiServices/createReceipt');
+const receiptService = require('./apiServices/ReceiptService');
 
 //const deleteItem = require('../controllers/deleteItem');
 
@@ -13,7 +13,7 @@ router.put('update_item/:id',item.updateProduct);
 router.get('/items',item.displayProducts);
 
 //Receipts related op:
-router.post('/create_receipt',createReceipt.insertReceipt);
+router.post('/create_receipt', receiptService.insertReceipt);
 
 //Other stuff 
 module.exports = router;

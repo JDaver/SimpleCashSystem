@@ -2,7 +2,7 @@ import InfoButton from './InfoButton';
 import './singleItem.css';
 
 export default function SingleItem({
-   mode = null,
+   mode = 'display',
    Extra = null,
    Record = null, 
    ButtonsComponent = null, 

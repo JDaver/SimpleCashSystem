@@ -15,7 +15,7 @@ export async function createReceipt(event){
 
     if (data.receiptOBJ.length === 0) throw new Error('Impossibile emettere scontrino, devi selezionare almeno un ogggetto.')
     
-    console.log(data.receipt);
+    
 
     return fetch('http://localhost:4444/api/create_receipt', {
         method: 'POST',

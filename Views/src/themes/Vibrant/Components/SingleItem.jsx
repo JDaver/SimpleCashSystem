@@ -9,17 +9,19 @@ export default function SingleItem({
    PlaceHolders = null 
 }) {
 
-  const {allergens, items, name, price, id, total, date, quantity} = Record || {};
+  const {allergens, items, inHowManyReceipts, name, price, id, total, date, quantity} = Record || {};
+  
   const dataToShow = allergens?.length > 0 ? allergens : items?.length > 0 ? items : [];
  
     
   return(
       <li className="sngl-item">
 
-        {Extra && 
+        {Extra &&
         <div className="extra" >
               <InfoButton
-              Data = {allergens}
+              id = {id}
+              Data = {allergens ? allergens : (items ? items : inHowManyReceipts)}
               active={dataToShow.length > 0 ? true : false}
               width={40} height={40} 
               mode={mode}

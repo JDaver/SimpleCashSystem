@@ -1,9 +1,8 @@
 import { QueueListIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline';
-import Table from '@themes/Minimal/Table';
-import TableGroup from '@themes/Minimal/TableGroup';
-import TableSection from '@themes/Minimal/TableSection';
-import TableControls from '@themes/Minimal/TableControls';
+import { useTheme } from '@contexts/useTheme';
+import { useMemo } from 'react';
 import InsertItem from '@themes/Minimal/InsertItem';
+import { loadThemedComponent} from '@utils/LoadThemedComponent';
 
 const tables = [
   { id: 'box1', title: 'Articoli', icon: <QueueListIcon width={30} height={20} /> },
@@ -11,6 +10,13 @@ const tables = [
 ];
 
 function Collection() {
+
+  const { theme } = useTheme();
+  const TableGroup = useMemo(() => loadThemedComponent(theme, 'TableGroup'), [theme]);
+  const Table = useMemo(() => loadThemedComponent(theme, 'Table'), [theme]);
+  const TableSection = useMemo(() => loadThemedComponent(theme, 'TableSection'), [theme]);
+  const TableControls = useMemo(() => loadThemedComponent(theme, 'TableControls'), [theme]);
+
   return (
     <TableGroup defaultActive={'box1'}>
       {tables.map(table => {

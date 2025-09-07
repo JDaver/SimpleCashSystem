@@ -1,11 +1,15 @@
 import { ExclamationTriangleIcon, TrashIcon} from '@heroicons/react/24/outline';
 import { useState,useRef } from 'react';
 import { useClickOutside } from '@hooks/useClickOutside';
+import { deleteItem } from '@utils/productService';
 
 export default function InfoButton({
   Data = null, 
   mode = "display",
-   ...props }) {
+  id = null,
+   ...props 
+  }){
+
   
   let Icon = ExclamationTriangleIcon;  
   if(mode === "delete") Icon = TrashIcon;
@@ -15,11 +19,12 @@ export default function InfoButton({
   const popOverRef = useRef(null);
   useClickOutside(popOverRef, () => setShow(false));
 
-  const handleClick = () => {
+  const handleClick = (id) => {
     if(mode === "display"){
       setShow(prev => !prev);
     }else if(mode === "delete"){
-      console.log('deleted');
+      deleteItem(id);
+      // console.log(id);
     }
   }
 
@@ -27,7 +32,7 @@ export default function InfoButton({
     <>
       <button 
       {...props } 
-      onClick={handleClick} 
+      onClick={() =>handleClick(id)} 
       ref={popOverRef}
       className={(show ? 'info-button-active' : 'info-button')}>
         <Icon  style={{ width: props.width || 24, height: props.height || 24 }} />

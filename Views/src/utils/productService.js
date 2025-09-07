@@ -1,7 +1,16 @@
 export async function fetchAllProducts() {
-    const result = await fetch('http://localhost:4444/api/items');
-    if(!result.ok) throw new Error (`errore, stato: ${result.status}`);
-    return await result.json();
+    try {
+    const res = await fetch('http://localhost:4444/api/items');
+
+    if (!res.ok) {
+      throw new Error(`Errore nella fetch, status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data; 
+  } catch (err) {
+    throw new Error(`Errore nel recuperare i dati: ${err.message}`);
+  }
 }
 
 export async function insertItem(event) {
@@ -19,10 +28,39 @@ export async function insertItem(event) {
     body: JSON.stringify(data)
   })
   .then(res => res.json())
-  .then(data => {
-    console.log('Success:', data);
+    .then(data => {
+      console.log('Success:', data);
   })
   .catch(err => {
     console.error('Error:', err);
   });
+}
+
+export async function deleteItem(id){
+
+  fetch(`http://localhost:4444/api/delete_item/${id}`, {method:'DELETE'})
+    .then(res => res.json())
+      .then(data => {console.log("eliminato: "+data)})
+  .catch (err => {
+    console.error("Impossibile elimanare articolo: " + err);
+  });
+}
+
+export async function modifyItem(){
+  //TO DO
+}
+
+export async function queryItems(name = null, price = null, date = null) {
+  try {
+    const res = await fetch('http://localhost:4444/api/collection_fetch');
+
+    if (!res.ok) {
+      throw new Error(`Errore nella fetch, status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data; 
+  } catch (err) {
+    throw new Error(`Errore nel recuperare i dati: ${err.message}`);
+  }
 }

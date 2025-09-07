@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { fetchAllProducts } from "@utils/productService";
 import { useEffect } from "react";
+import { queryItems } from "@utils/productService";
 
 export function useFetchAll(){
     const [products, setProducts] = useState([]);
@@ -19,4 +20,19 @@ export function useFetchAll(){
     }, []);
 
     return { products, loading, error};
+}
+
+export function useFetchItems(){
+      const [records, setRecords] = useState([]);
+
+    useEffect(() => {
+        queryItems().then(data => {
+            console.log("Risposta dal server:", data);
+            setRecords(data);
+        }).catch(err => {
+            console.log("error in hooks -> ",err);
+        });
+    }, []);
+
+    return { records};
 }

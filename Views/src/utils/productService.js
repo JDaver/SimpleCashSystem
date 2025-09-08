@@ -52,7 +52,7 @@ export async function modifyItem(){
 
 export async function queryItems(name = null, price = null, date = null) {
   try {
-    const res = await fetch('http://localhost:4444/api/collection_fetch');
+    const res = await fetch('http://localhost:4444/api/collection_fetch_items');
 
     if (!res.ok) {
       throw new Error(`Errore nella fetch, status: ${res.status}`);

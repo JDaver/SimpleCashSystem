@@ -4,6 +4,7 @@ import { useLongPress } from "@hooks/useLongPress";
 import SingleItem from "../Components/SingleItem";
 import './DisplayElements.css';
 import SlideButton from "./SlideButton";
+import { useFetchReceipts } from "../../../Hooks/productsHook";
 
 const labelManage = ["Allergeni","Nome Prodoto","Prezzo","Modifica" ];
 const labelDeleteMode = ["Elimina","Nome Prodoto","Prezzo","Seleziona" ];
@@ -14,6 +15,8 @@ const labelItemColection = ["In quanti scontrini","Nome Prodotto","Venduti"];
 function DisplayElements({topic = "manage"}){
 const {products, loading, error} = useFetchAll();
 const {records: items} = useFetchItems();
+const { receipts: receipts } = useFetchReceipts();
+
 const [active,setActive] = useState(false);
 const longPress = useLongPress(() => setActive(prev => !prev),2000);
 
@@ -34,7 +37,7 @@ switch(topic) {
     
     case "receipt":
         labels = labelReeiptColection;
-        records = []; //funtion for receipts
+        records = receipts || []; //funtion for receipts
         break;
     default:
         labels = [];

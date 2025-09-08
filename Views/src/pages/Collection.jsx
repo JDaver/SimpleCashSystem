@@ -7,7 +7,7 @@ import DisplayElements from '../themes/Vibrant/DisplayElements';
 
 const tables = [
   { id: 'box1', title: 'Articoli', content : <DisplayElements topic='item'/>, icon: <QueueListIcon width={30} height={20} /> },
-  { id: 'box2', title: 'Scontrini', icon: <ReceiptPercentIcon width={30} height={20} /> },
+  { id: 'box2', title: 'Scontrini', content : <DisplayElements topic='receipt'/>, icon: <ReceiptPercentIcon width={30} height={20} /> },
 ];
 
 function Collection() {

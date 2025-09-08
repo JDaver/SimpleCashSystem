@@ -32,7 +32,7 @@ export default function SingleItem({
 
         {Record &&
         <>
-          <span className="first-record">{name ? name : id + "~" + date}</span> 
+          <span className="first-record">{name ? name : date ? id +  " ~ " + date : ""}</span> 
           <span className="second-record">{price ? price + " €" : total ? total + " €" : quantity } </span>
         </>
       }

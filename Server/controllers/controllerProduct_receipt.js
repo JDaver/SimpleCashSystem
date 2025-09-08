@@ -29,3 +29,27 @@ exports.fetchItems = async (req,res) => {
         res.status(500).json({error: "Impossibile scaricare informazioni sui prodotti venduti."});
     }
 }
+
+exports.fetchReceipts = async(req,res) => {
+    
+        const formatDate = (date) => {
+            const d = new Date(date);
+            return d.toISOString().split('T')[0];
+        };
+
+    try{
+        const results = await Product_receipt.selectReceipt();
+
+        const formattedData = results.map(row => ({
+            id: row.receipt_id,
+            date: formatDate(row.receipt_date),
+            total: row.receipt_total,
+            items: row.items_in_receipt.split(',').map(item => item.trim())
+        }));
+        
+        res.status(200).json(formattedData);
+    }catch(err) {
+        console.error(`controller cathced an error -> ${err}`);
+        res.status(500).json({error: "Impossibile scaricare informazioni sugli scontrini."});
+    }
+}

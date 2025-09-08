@@ -30,3 +30,18 @@ export async function createReceipt(event){
             console.log('scontrino emesso correttamente! ',data);
         });
 }
+
+export async function queryReceipts(date = null, party = null, order = null){
+    try {
+    const res = await fetch('http://localhost:4444/api/collection_fetch_receipts');
+
+    if (!res.ok) {
+      throw new Error(`Errore nella fetch, status: ${res.status}`);
+    }
+    const data = await res.json();
+    console.log("api: ",data);
+    return data; 
+  } catch (err) {
+    throw new Error(`Errore nel recuperare i dati: ${err.message}`);
+  }
+}

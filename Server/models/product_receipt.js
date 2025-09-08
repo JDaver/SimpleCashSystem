@@ -23,23 +23,19 @@ module.exports = class Product_receipt{
         }catch(err){
             console.log("error: ",err);
             throw new Error(`Error from DB in CreateProduct_rreceipt(): ${err.message}`);
-        }
-
-        
-    }
+        }}
 
     static async selectItems(){
         try{
             const result = await pool.query(`SELECT 
-                            p.id,
-                            p.name,
-                            COUNT(rp.product_id) AS times_in_receipts,
-                            SUM(rp.quantity) AS total_sell
-                        FROM product p
-                        INNER JOIN product_receipt rp 
-                            ON p.id = rp.product_id
-                        GROUP BY p.id, p.name
-                        ORDER BY total_sell DESC`);
+                                p.id,
+                                p.name,
+                                COUNT(rp.product_id) AS times_in_receipts,
+                                SUM(rp.quantity) AS total_sell
+                            FROM product p
+                            INNER JOIN product_receipt rp ON p.id = rp.product_id
+                            GROUP BY p.id, p.name
+                            ORDER BY total_sell DESC`);
             return result.rows;
             
         }catch (err) {
@@ -47,4 +43,29 @@ module.exports = class Product_receipt{
             throw new Error(`Error from DB in selectItems(): ${err.message}`);
         }
     }
+
+
+   static async selectReceipt(){
+
+    try{
+        const query = `SELECT 
+                        r.id AS receipt_id,
+                        r.date AS receipt_date,
+                        r.tot_price AS receipt_total,
+                        STRING_AGG(
+                            p.name || ' x' || pr.quantity,
+                            ', ' ORDER BY p.name
+                        ) AS items_in_receipt
+                    FROM receipt r
+                    INNER JOIN product_receipt pr ON r.id = pr.receipt_id
+                    INNER JOIN product p ON p.id = pr.product_id
+                    GROUP BY r.id, r.date, r.tot_price
+                    ORDER BY r.id;`;
+
+        const result = await pool.query(query);
+        return result.rows;
+    }catch(err) {
+        console.log("error: ", err);
+        throw new Error(`Error from DB in selectReceipt(): ${err.message}`);
+    }}
 }

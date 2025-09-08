@@ -11,7 +11,9 @@ export default function SingleItem({
 
   const {allergens, items, inHowManyReceipts, name, price, id, total, date, quantity} = Record || {};
   
-  const dataToShow = allergens?.length > 0 ? allergens : items?.length > 0 ? items : [];
+  const thereIsDataToShow = allergens?.length > 0 ? 
+    allergens : items?.length > 0 ? 
+      items : inHowManyReceipts?.length > 0 ? inHowManyReceipts : [];
  
     
   return(
@@ -22,7 +24,7 @@ export default function SingleItem({
               <InfoButton
               id = {id}
               Data = {allergens ? allergens : (items ? items : inHowManyReceipts)}
-              active={dataToShow.length > 0 ? true : false}
+              active={thereIsDataToShow.length > 0 ? true : false}
               width={40} height={40} 
               mode={mode}
               /> 
@@ -31,8 +33,7 @@ export default function SingleItem({
         {Record &&
         <>
           <span className="first-record">{name ? name : id + "~" + date}</span> 
-          <span className="second-record">{price ? price : total }€</span>
-          {quantity && <span>{quantity} </span>}
+          <span className="second-record">{price ? price + " €" : total ? total + " €" : quantity } </span>
         </>
       }
         

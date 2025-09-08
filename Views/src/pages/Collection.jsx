@@ -3,9 +3,10 @@ import { useTheme } from '@contexts/useTheme';
 import { useMemo } from 'react';
 import InsertItem from '@themes/Minimal/InsertItem';
 import { loadThemedComponent} from '@utils/LoadThemedComponent';
+import DisplayElements from '../themes/Vibrant/DisplayElements';
 
 const tables = [
-  { id: 'box1', title: 'Articoli', icon: <QueueListIcon width={30} height={20} /> },
+  { id: 'box1', title: 'Articoli', content : <DisplayElements topic='item'/>, icon: <QueueListIcon width={30} height={20} /> },
   { id: 'box2', title: 'Scontrini', icon: <ReceiptPercentIcon width={30} height={20} /> },
 ];
 
@@ -20,6 +21,7 @@ function Collection() {
   return (
     <TableGroup defaultActive={'box1'}>
       {tables.map(table => {
+        const DynamicComponent = table.content;
         return (
           <Table key={table.id} id={table.id} title={table.title} icon={table.icon}>
             <TableSection>
@@ -30,9 +32,8 @@ function Collection() {
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                }}
-              >
-                <InsertItem />
+                }}>
+                {DynamicComponent}
               </div>
             </TableSection>
           </Table>

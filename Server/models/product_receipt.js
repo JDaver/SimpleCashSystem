@@ -21,10 +21,30 @@ module.exports = class Product_receipt{
             console.log("reslt+ "+result)
             return result;
         }catch(err){
-            console.log("errore: ",err);
-            throw new Error("Errore nell'inserimento della tabella di relazione 'product_receipt'.");
+            console.log("error: ",err);
+            throw new Error(`Error from DB in CreateProduct_rreceipt(): ${err.message}`);
         }
 
         
+    }
+
+    static async selectItems(){
+        try{
+            const result = await pool.query(`SELECT 
+                            p.id,
+                            p.name,
+                            COUNT(rp.product_id) AS times_in_receipts,
+                            SUM(rp.quantity) AS total_sell
+                        FROM product p
+                        INNER JOIN product_receipt rp 
+                            ON p.id = rp.product_id
+                        GROUP BY p.id, p.name
+                        ORDER BY total_sell DESC`);
+            return result.rows;
+            
+        }catch (err) {
+            console.log("error: ",err);
+            throw new Error(`Error from DB in selectItems(): ${err.message}`);
+        }
     }
 }

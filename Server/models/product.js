@@ -34,7 +34,8 @@ module.exports = class Product {
 
     static async deleteProd(id){
         try{
-            const result = await pool.query('DELETE FROM product WHERE id = $1 RETURNING *', id);
+            const result = await pool.query(
+            'DELETE FROM product WHERE id = $1 RETURNING *', [id]);
             return result.rows[0];
         }catch(err){
             throw new Error(`Error from DB in deleteProd(): ${err.message}`);

@@ -16,7 +16,7 @@ const { theme } = useTheme();
   const InsertItem = useMemo(() => loadThemedComponent(theme, 'InsertItem'), [theme]);
 
   const tables = [
-  { id: 'box1', title: 'Elenco Articoli', content: <DisplayElements topic='item'/>, icon: <PencilIcon width={30} height={20} /> },
+  { id: 'box1', title: 'Elenco Articoli', content: <DisplayElements topic='manage'/>, icon: <PencilIcon width={30} height={20} /> },
   { id: 'box2', title: 'Inserisci un nuovo articolo', content:<InsertItem/>, icon: <PlusIcon width={30} height={20} /> },
 ];
 
@@ -30,14 +30,13 @@ const { theme } = useTheme();
               <TableControls />
               <div
                 style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column'
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}>
                 {DynamicComponent}
                 </div>
-              
             </TableSection>
           </Table>
         );

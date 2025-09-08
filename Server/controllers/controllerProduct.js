@@ -27,8 +27,8 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req,res) => {
         try {
-                const id = req.body;
-                const result = await deleteProd(id);
+                const {id} = req.params;
+                const result = await Product.deleteProd(id);
                 res.status(200).json(result);
         }catch (err) {
                 console.error(`controller catched an error -> ${err}`)
@@ -36,7 +36,7 @@ exports.deleteProduct = async (req,res) => {
         }
 }
 
-exports.displayProducts = async (req, res) => {
+exports.fetchProducts = async (req, res) => {
         try{
                 const products = await Product.selectAllProd();
                 res.status(200).json(products);

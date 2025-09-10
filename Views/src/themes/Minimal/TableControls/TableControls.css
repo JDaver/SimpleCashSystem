@@ -1,8 +1,8 @@
 .table__controls {
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 3rem;
   justify-content: end;
-  height: 4rem;
   position: relative;
   width: 100%;
   z-index: 1;
@@ -10,8 +10,8 @@
 
 .table__controls-inner {
   display: flex;
-  width: 100%;
   justify-content: space-between;
+  width: 100%;
 }
 
 .table__controls-inner-wrapper {
@@ -19,10 +19,10 @@
 }
 
 .check-icon-wrapper {
-  width: 30px;
-  height: 20px;
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  display: inline-flex;
   flex-shrink: 0;
+  height: 20px;
+  justify-content: center;
+  width: 30px;
 }

@@ -3,14 +3,14 @@ import { useTableGroupContext } from '@themes/Minimal/TableGroup';
 import './Table.css';
 
 function Table({ id, icon, title, children, ...props }) {
-  const { activeId, setActiveId } = useTableGroupContext();
-  const active = activeId === id;
+  const { actualActiveId, handleId } = useTableGroupContext();
+  const active = actualActiveId === id;
   const contentRef = useRef(null);
   const [height, setHeight] = useState(0);
 
   const handleClick = useCallback(() => {
-    setActiveId(id);
-  }, [id]);
+    handleId(id);
+  }, [handleId, id]);
 
   // Measure height to enable smooth animation on the content div
   useEffect(() => {

@@ -3,6 +3,7 @@
   padding-inline: var(--space-6);
   position: fixed;
   top: 0;
+  transition: background-color 0.4s ease-out;
   width: 100%;
   z-index: 1000;
 }
@@ -15,28 +16,52 @@
   width: 100%;
 }
 
-.header.minimal{
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background: var(--dynamic-bg);
+  background-size: 200% 200%;
+  animation: gradientFlow 10s ease infinite;
+
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  pointer-events: none;
+}
+
+.header.vibrant::before {
+  opacity: 1;
+}
+
+.header > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.header.minimal {
   background-color: var(--neutral-700);
+  background-size: 1000%;
 }
 
 .header.vibrant {
   background: var(--dynamic-bg);
   background-size: 200% 200%;
-  animation: gradient-translation 8s ease infinite;
 }
 
 #header-transition {
   view-transition-name: header;
-}
-
-@keyframes gradient-translation {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 75% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
 }

@@ -5,6 +5,7 @@ export function useSwipe({
   onSwipeDown,
   onSwipeLeft,
   onSwipeRight,
+  onSwipeProgress,
   threshold = 50,
 } = {}) {
   const touch = useRef({
@@ -33,6 +34,15 @@ export function useSwipe({
     const { clientX, clientY } = e.changedTouches[0];
     touch.current.endX = clientX;
     touch.current.endY = clientY;
+
+    const { startX, startY } = touch.current;
+
+    if (startX != null && startY != null && onSwipeProgress) {
+      const deltaX = clientX - startX;
+      const deltaY = clientY - startY;
+
+      onSwipeProgress({ deltaX, deltaY });
+    }
   };
 
   const onTouchEnd = () => {

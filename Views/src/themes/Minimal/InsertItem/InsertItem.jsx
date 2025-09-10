@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Keypad from '@themes/Minimal/Keypad';
 import Dropdown from '@components/Dropdown';
 import { insertItem } from '../../../utils/productService';
@@ -22,30 +22,40 @@ const allergensArr = [
   'Molluschi',
 ];
 
-function InsertItem() {
+function InsertItem({ itemToEdit, resetForm = false }) {
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
   const [allergens, setAllergens] = useState([]);
 
-  const handlePriceInput = key => {
-    if (key === ',' && price.includes(',')) return;
-    setPrice(prev => prev + key);
+  useEffect(() => {
+    if (resetForm) {
+      setName('');
+      setPrice('');
+      setAllergens([]);
+    } else if (!resetForm && itemToEdit) {
+      setName(itemToEdit.name || '');
+      setPrice(itemToEdit.price?.toString() || '');
+      setAllergens(itemToEdit.allergens || []);
+    }
+  }, [resetForm, itemToEdit]);
+
+  const fieldSetters = {
+    name: setName,
+    price: setPrice,
   };
 
-  const handlePriceDelete = () => {
-    setPrice(prev => prev.slice(0, -1));
+  const handleInput = (key, field) => {
+    if (field === 'price' && key === ',' && price.includes(',')) return;
+
+    fieldSetters[field](prev => prev + key);
   };
 
-  const handleNameInput = key => {
-    setName(prev => prev + key);
-  };
-
-  const handleNameDelete = () => {
-    setName(prev => prev.slice(0, -1));
+  const handleDelete = field => {
+    fieldSetters[field](prev => prev.slice(0, -1));
   };
 
   return (
-    <form className="form insert-item" onSubmit={insertItem} method='POST' >
+    <form className="form insert-item" onSubmit={insertItem} method="POST">
       <div className="form__columns">
         <div className="form__column">
           <div className="form__field">
@@ -61,7 +71,11 @@ function InsertItem() {
               readOnly
               autoComplete="off"
             />
-            <Keypad preset={'alphabet'} onInput={handleNameInput} onDelete={handleNameDelete} />
+            <Keypad
+              preset={'alphabet'}
+              onInput={key => handleInput(key, 'name')}
+              onDelete={() => handleDelete('name')}
+            />
           </div>
         </div>
         <div className="form__column">
@@ -73,12 +87,18 @@ function InsertItem() {
               id="price"
               name="price"
               className="form__input"
-              type="number"
+              type="text"
+              inputMode="decimal"
+              pattern="[0-9]*"
               value={price}
               readOnly
               autoComplete="off"
             />
-            <Keypad preset={'numeric'} onInput={handlePriceInput} onDelete={handlePriceDelete} />
+            <Keypad
+              preset={'numeric'}
+              onInput={key => handleInput(key, 'price')}
+              onDelete={() => handleDelete('price')}
+            />
           </div>
         </div>
         <div className="form__column">
@@ -101,15 +121,13 @@ function InsertItem() {
                 })}
               </Dropdown.Content>
             </Dropdown>
-            {allergens.map((allergen) => {
-              return <input key={allergen} type="hidden" name="allergens" value={allergen} />
-            })}
-            
           </div>
         </div>
       </div>
       <div className="form__button-wrapper">
-        <button className="form__button" >Inserisci Prodotto</button>
+        <button className="form__button" disabled={!name || !price}>
+          Inserisci Prodotto
+        </button>
       </div>
     </form>
   );

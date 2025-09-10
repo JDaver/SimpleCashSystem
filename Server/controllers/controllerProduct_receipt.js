@@ -1,5 +1,5 @@
 const Product_receipt = require('../models/product_receipt');
-
+const { formatDate } = require('../utils/utilsFunctions');
 exports.createProduct_receipt = async (receiptOBJ, receipt_id) => {
     try{
         const products = receiptOBJ.map(p => ({...p, receipt_id: receipt_id}));
@@ -13,8 +13,17 @@ exports.createProduct_receipt = async (receiptOBJ, receipt_id) => {
 }   
 
 exports.fetchItems = async (req,res) => {
+
+    const { date, column, order, id_party} = req.body || {};
+    const filters = {};
+
+    if(date) filters.date = date;
+    if(column) filters.column = column;   
+    if(order) filters.order = order;
+    if(id_party) filters.id_party = id_party;
+
     try{
-        const results = await Product_receipt.selectItems();
+        const results = await Product_receipt.selectItems(filters);
 
         const formattedData = results.map(row => ({
             id: row.id,
@@ -31,19 +40,27 @@ exports.fetchItems = async (req,res) => {
 }
 
 exports.fetchReceipts = async(req,res) => {
-    
-        const formatDate = (date) => {
-            const d = new Date(date);
-            return d.toISOString().split('T')[0];
-        };
+
+    const {date, column, order, id_party, page, limit} = req.query || {};
+    const filters = {};
+
+    if(date) filters.date = date;
+    if(column) filters.column = column;
+    if(order) filters.order = order;
+    if(id_party) filters.id_party =id_party;
+    limit ? filters.limit = limit : 10;
+    const startingIndex = page ? (parseInt(page) * limit) - limit : 0;
+    filters.startingIndex = startingIndex;
+
+    console.log("** ", startingIndex," *** ",page);
+
 
     try{
-        const results = await Product_receipt.selectReceipt();
-
+        const results = await Product_receipt.selectReceipt(filters);
         const formattedData = results.map(row => ({
             id: row.receipt_id,
             date: formatDate(row.receipt_date),
-            total: row.receipt_total,
+            total: row.total_receipt,
             items: row.items_in_receipt.split(',').map(item => item.trim())
         }));
         

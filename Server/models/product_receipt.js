@@ -1,9 +1,12 @@
+const format = require('pg-format');
 const pool = require('../db/db')
 
 module.exports = class Product_receipt{
     constructor(products = []){
         this.products = products;
     }
+
+
 
     async createProduct_receipt(){
         const values = [];
@@ -25,18 +28,55 @@ module.exports = class Product_receipt{
             throw new Error(`Error from DB in CreateProduct_rreceipt(): ${err.message}`);
         }}
 
-    static async selectItems(){
+
+
+
+    static async selectItems(filters = {}){
+
+        const defaults = {
+            date: null, 
+            column: 'total_sell', 
+            order: 'DESC', 
+            id_party: 1
+        }
+        const { date, column, order, id_party} = {...defaults, ...filters};
+
+        const conditions = [];
+
+        if(date){
+            const [dateStart, dateEnd] = [`${date}-01-01`, `${date}-12-31`];
+            conditions.push(format("r.date BETWEEN %L AND %L",dateStart,dateEnd));
+        }
+
+        if(id_party){
+            conditions.push(format("r.id_party = %L",id_party));
+        }
+       
+        const validColumns = ["name", "total_sell"];
+        const validOrders = ["ASC", "DESC"];
+
         try{
-            const result = await pool.query(`SELECT 
-                                p.id,
-                                p.name,
-                                COUNT(rp.product_id) AS times_in_receipts,
-                                SUM(rp.quantity) AS total_sell
-                            FROM product p
-                            INNER JOIN product_receipt rp ON p.id = rp.product_id
-                            GROUP BY p.id, p.name
-                            ORDER BY total_sell DESC`);
-            return result.rows;
+
+        if (!validColumns.includes(column)) throw new Error("Invalid sort column");
+        if (!validOrders.includes(order.toUpperCase())) throw new Error("Invalid sort order");
+
+
+        let queryConstructed = `
+            SELECT 
+                p.id,
+                p.name AS name,
+                COUNT(rp.product_id) AS times_in_receipts,
+                SUM(rp.quantity) AS total_sell
+            FROM product p
+            INNER JOIN product_receipt rp ON p.id = rp.product_id
+            INNER JOIN receipt r ON r.id = rp.receipt_id`;
+
+        if(conditions.length > 0) queryConstructed += " WHERE " + conditions.join(" AND ");
+
+        queryConstructed += format(" GROUP BY p.id, p.name ORDER BY %I %s",column,order);
+        
+        const result = await pool.query(queryConstructed);
+        return result.rows;
             
         }catch (err) {
             console.log("error: ",err);
@@ -45,24 +85,57 @@ module.exports = class Product_receipt{
     }
 
 
-   static async selectReceipt(){
 
+
+
+   static async selectReceipt(filters = {} ){
+
+    const filteredParams = Object.fromEntries(
+        Object.entries(filters).filter(([_, v]) => v != null));
+
+    const defaults = {
+        date: null,
+        column: "receipt_date", 
+        order: "DESC", 
+        id_party: 1,
+        startingIndex: 0
+    }
+
+    const { date, column, order, id_party, startingIndex, limit} = {...defaults, ...filters};
+    const conditions = [];
+
+    
+       if(date>2000){
+           const [dateStart, dateEnd] = [`${date}-01-01`, `${date}-12-31`];
+           conditions.push(format("r.date BETWEEN %L AND %L",dateStart,dateEnd));
+       }
+
+       if(id_party){
+           conditions.push(format("r.id_party = %L",id_party));
+       }
+       const validColumns = ["total_receipt","receipt_date"]
+       const validOrders = ["ASC", "DESC"];
     try{
-        const query = `SELECT 
+        if (!validColumns.includes(column)) throw new Error("Invalid sort column");
+        if (!validOrders.includes(order.toUpperCase())) throw new Error("Invalid sort order");
+
+        let queryConstructed = `SELECT 
                         r.id AS receipt_id,
                         r.date AS receipt_date,
-                        r.tot_price AS receipt_total,
+                        r.tot_price AS total_receipt,
                         STRING_AGG(
                             p.name || ' x' || pr.quantity,
                             ', ' ORDER BY p.name
                         ) AS items_in_receipt
                     FROM receipt r
                     INNER JOIN product_receipt pr ON r.id = pr.receipt_id
-                    INNER JOIN product p ON p.id = pr.product_id
-                    GROUP BY r.id, r.date, r.tot_price
-                    ORDER BY r.id;`;
+                    INNER JOIN product p ON p.id = pr.product_id`;
 
-        const result = await pool.query(query);
+        if(conditions.length>0) queryConstructed += " WHERE " + conditions.join(" AND ");
+        
+        queryConstructed += format(" GROUP BY r.id, r.date, r.tot_price ORDER BY %I, r.id %s LIMIT %s OFFSET %s",column,order, limit, startingIndex);
+        console.log(queryConstructed);
+        const result = await pool.query(queryConstructed);
         return result.rows;
     }catch(err) {
         console.log("error: ", err);

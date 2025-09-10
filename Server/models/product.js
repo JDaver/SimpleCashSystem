@@ -1,6 +1,9 @@
 const pool = require ('../db/db');
+const format = require("pg-format");
+
 
 module.exports = class Product {
+    
     constructor(name,price,allergens){
         this.name = name;
         this.price = price;
@@ -42,9 +45,18 @@ module.exports = class Product {
         }
     }
 
-    static async selectAllProd(){
+    static async selectAllProd(filters = {} ){
+
+        const defaults = {
+            column: "name",
+            order: "DESC"
+        }
+        const {column, order} = {...defaults, ...filters};
+
+        const query = format("SELECT * FROM product ORDER BY %I %s", column, order);
+    
         try{
-            const result = await pool.query("SELECT * FROM product");
+            const result = await pool.query(query);
             return result.rows;
         }catch(err){
             console.log("errore: ",err)

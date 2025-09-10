@@ -38,7 +38,14 @@ exports.deleteProduct = async (req,res) => {
 
 exports.fetchProducts = async (req, res) => {
         try{
-                const products = await Product.selectAllProd();
+        const {column, order} = req.body || {};
+        const filters = {};
+
+        if(column) filters.column = column;
+        if(order) filters.order = order;
+
+        
+                const products = await Product.selectAllProd(filters);
                 res.status(200).json(products);
         }catch (err) {
                 console.error(`controller catched an error -> ${err}`)

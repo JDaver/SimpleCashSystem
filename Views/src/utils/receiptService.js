@@ -31,15 +31,31 @@ export async function createReceipt(event){
         });
 }
 
-export async function queryReceipts(date = null, party = null, order = null){
+export async function queryReceipts({
+  date = null, 
+  id_party = null, 
+  order = null, 
+  page = 1, 
+  column = null,
+  limit = 10
+  }){
+
+  const params = new URLSearchParams();
+  params.append("page",page)
+  params.append("limit",limit);
+  
+  if(date != null) params.append("date",date);
+  if(id_party != null) params.append("id_party",id_party);
+  if(order != null) params.append("order",order);
+  if(column != null) params.append("column",column);
+  
     try {
-    const res = await fetch('http://localhost:4444/api/collection_fetch_receipts');
+    const res = await fetch(`http://localhost:4444/api/collection_fetch_receipts?${params.toString()}`);
 
     if (!res.ok) {
       throw new Error(`Errore nella fetch, status: ${res.status}`);
     }
     const data = await res.json();
-    console.log("api: ",data);
     return data; 
   } catch (err) {
     throw new Error(`Errore nel recuperare i dati: ${err.message}`);

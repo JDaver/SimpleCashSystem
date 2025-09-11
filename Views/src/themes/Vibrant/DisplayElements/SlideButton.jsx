@@ -3,8 +3,12 @@ import DelArrow from '@assets/redCross.png';
 
 export default function SlideButton({extraMode = false}){
     return(
+        <>
+        
+        {extraMode && (
         <button className="slide-button">
-            <img src={extraMode ? DelArrow : ModArrow} alt="" />
-        </button>
+            <img src={DelArrow} alt="" />
+        </button>)}
+        </>
     )
 }

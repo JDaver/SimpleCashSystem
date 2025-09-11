@@ -96,7 +96,7 @@ function DisplayElements({ swipeLeft }) {
   const handleTouchMove = useCallback(
     e => {
       if (selectionMode || isGestureIgnored(e)) return;
-
+      console.log(swipingItem);
       swipeHandlers.onTouchMove(e);
       longPressHandlers.cancel?.();
     },

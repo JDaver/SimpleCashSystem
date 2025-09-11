@@ -3,14 +3,14 @@ import { useTableGroupContext } from '@themes/Vibrant/tableComponents/TableGroup
 import './Table.css';
 
 function Table({ id, icon, title, children, ...props }) {
-  const { activeId, setActiveId } = useTableGroupContext();
-  const active = activeId === id;
+  const { actualActiveId, handleId } = useTableGroupContext();
+  const active = actualActiveId === id;
   const contentRef = useRef(null);
   const [height, setHeight] = useState(0);
 
   const handleClick = useCallback(() => {
-    setActiveId(id);
-  }, [id]);
+    handleId(id);
+  }, [handleId, id]);
 
   // Measure height to enable smooth animation on the content div
   useEffect(() => {
@@ -52,7 +52,7 @@ function Table({ id, icon, title, children, ...props }) {
         style={{
           maxHeight: `${height}px`,
           transition: 'max-height 0.4s ease, opacity 0.3s ease',
-          opacity: active ? 1 : 0
+          opacity: active ? 1 : 0,
         }}
       >
         {children}

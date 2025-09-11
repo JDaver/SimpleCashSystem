@@ -1,5 +1,5 @@
 import { useCallback, useReducer } from 'react';
-import { selectedItemsReducer } from '../reducers/SelectedItemsReducer';
+import { selectedItemsReducer } from '../reducers/selectedItemsReducer';
 
 export function useSelectedItemsReducer() {
   const [selectedItems, dispatch] = useReducer(selectedItemsReducer, []);

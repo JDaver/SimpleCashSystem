@@ -27,7 +27,6 @@ export function useFetchItems(){
 
     useEffect(() => {
         queryItems().then(data => {
-            console.log("Risposta dal server:", data);
             setRecords(data);
         }).catch(err => {
             console.log("error in hooks -> ",err);

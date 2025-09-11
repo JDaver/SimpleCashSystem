@@ -119,17 +119,22 @@ module.exports = class Product_receipt{
         if (!validColumns.includes(column)) throw new Error("Invalid sort column");
         if (!validOrders.includes(order.toUpperCase())) throw new Error("Invalid sort order");
 
+
+        //to improve edgecases: cases when one product of the list reeipt_product is removed it will display only p.name that exists
         let queryConstructed = `SELECT 
                         r.id AS receipt_id,
                         r.date AS receipt_date,
                         r.tot_price AS total_receipt,
-                        STRING_AGG(
-                            p.name || ' x' || pr.quantity,
-                            ', ' ORDER BY p.name
+                          COALESCE(
+                                STRING_AGG( 
+                                    p.name || ' x' || pr.quantity,
+                                    ', ' ORDER BY p.name
+                                    ),
+                                '[PRODOTTI ELIMINATI DAL DATABASE]'
                         ) AS items_in_receipt
                     FROM receipt r
-                    INNER JOIN product_receipt pr ON r.id = pr.receipt_id
-                    INNER JOIN product p ON p.id = pr.product_id`;
+                    LEFT JOIN product_receipt pr ON r.id = pr.receipt_id
+                    LEFT JOIN product p ON p.id = pr.product_id`;
 
         if(conditions.length>0) queryConstructed += " WHERE " + conditions.join(" AND ");
         

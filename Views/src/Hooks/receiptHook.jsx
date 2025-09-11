@@ -4,7 +4,7 @@ export function useFetchReceipts() {
   const [receipts, setReceipts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMoreNext, setHasMoreNext] = useState(true);
-  const maxItems = 10;
+  const maxItems = 20; //ideally to set at 50/100
   const isFetchingNext = useRef(false);
   const didFetch = useRef(false);
 
@@ -13,16 +13,11 @@ export function useFetchReceipts() {
     isFetchingNext.current = true;
 
     try {
-      const data = await queryReceipts({page});
-
-      console.log(page," **** ", data);
-
+      const data = await queryReceipts({page, limit:maxItems});
       if (!data || data.length < maxItems) {
         setHasMoreNext(false);
       }
-
       setReceipts(prev => prev = [...prev, ...data]);
-
       setPage(prev => prev + 1);
     } catch (err) {
       console.error("Error fetching next receipts:", err);

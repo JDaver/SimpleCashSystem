@@ -47,9 +47,6 @@ switch(topic) {
         labels = [];
         records = [];
 }
-
-console.log( records);
-    
 return(
     
    <div className="elements-container">
@@ -78,8 +75,9 @@ return(
                                 ButtonsComponent={topic === 'manage' ? (props) => <SlideButton {...props} extraMode= {active} /> : null }
                         />
                     )}))}
-                    {isLoading && <p>Caricamento...</p>}
-                 {topic === 'receipt' && <div ref={bottomLoaderRef} style={{ height: 40, backgroundColor: 'grey' } } />}
+                 {(topic === 'receipt' && hasMoreNext) && (
+                    <div ref={bottomLoaderRef} /*to change style*/ style={{ height: 40, backgroundColor: 'grey' } } />
+                 )}
             </ul>    
     </div>
    </div>

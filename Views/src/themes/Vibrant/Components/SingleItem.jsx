@@ -24,7 +24,7 @@ export default function SingleItem({
               <InfoButton
               id = {id}
               Data = {allergens ? allergens : (items ? items : inHowManyReceipts)}
-              active={thereIsDataToShow.length > 0 ? true : false}
+              active={thereIsDataToShow.length > 0 || mode === "delete" ? true : false}
               width={40} height={40} 
               mode={mode}
               /> 

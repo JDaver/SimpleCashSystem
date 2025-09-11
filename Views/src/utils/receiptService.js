@@ -15,7 +15,7 @@ export async function createReceipt(event){
 
     if (data.receiptOBJ.length === 0) throw new Error('Impossibile emettere scontrino, devi selezionare almeno un ogggetto.')
     
-    console.log(data.receipt);
+    
 
     return fetch('http://localhost:4444/api/create_receipt', {
         method: 'POST',
@@ -29,4 +29,35 @@ export async function createReceipt(event){
         .then(data => {
             console.log('scontrino emesso correttamente! ',data);
         });
+}
+
+export async function queryReceipts({
+  date = null, 
+  id_party = null, 
+  order = null, 
+  page = 1, 
+  column = null,
+  limit = 10
+  }){
+
+  const params = new URLSearchParams();
+  params.append("page",page)
+  params.append("limit",limit);
+  
+  if(date != null) params.append("date",date);
+  if(id_party != null) params.append("id_party",id_party);
+  if(order != null) params.append("order",order);
+  if(column != null) params.append("column",column);
+  
+    try {
+    const res = await fetch(`http://localhost:4444/api/collection_fetch_receipts?${params.toString()}`);
+
+    if (!res.ok) {
+      throw new Error(`Errore nella fetch, status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data; 
+  } catch (err) {
+    throw new Error(`Errore nel recuperare i dati: ${err.message}`);
+  }
 }

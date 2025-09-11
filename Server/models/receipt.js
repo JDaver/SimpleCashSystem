@@ -15,8 +15,7 @@ module.exports = class Receipt{
             );
             return result.rows[0].id;
         }catch(err){
-            console.log("errore: ", err);
-            throw new Error("Impossibile inserire il prodotto, riprovare.");
+            throw new Error(`Error from DB in CreateReceipt(): ${err.message}`);
         }
         
     }

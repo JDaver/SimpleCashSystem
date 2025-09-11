@@ -1,32 +1,49 @@
-import { useClickOutside } from '@hooks/useClickOutside';
-import { useState,useRef } from "react";
-import { ExclamationTriangleIcon} from '@heroicons/react/24/outline';
+import InfoButton from './InfoButton';
+import './singleItem.css';
 
+export default function SingleItem({
+   mode = 'display',
+   Extra = null,
+   Record = null, 
+   ButtonsComponent = null, 
+   PlaceHolders = null 
+}) {
 
-export default function SingleItem({product, ShowButtons = false, Buttons = null, ShowPlaceHolder = false, PlaceHolder = null}){
-    
-    const [show,setShow] = useState(false);
-    const popOverRef = useRef(null);
-    const allergens = product.allergens
-
-    useClickOutside(popOverRef, () => setShow(false));
+  const {allergens, items, inHowManyReceipts, name, price, id, total, date, quantity} = Record || {};
+  
+  const thereIsDataToShow = allergens?.length > 0 ? 
+    allergens : items?.length > 0 ? 
+      items : inHowManyReceipts?.length > 0 ? inHowManyReceipts : [];
+ 
     
   return(
       <li className="sngl-item">
-        <div className="exclamation-triangle">
-        {allergens ? <ExclamationTriangleIcon onClick={() => setShow(prev => !prev)} width={30} height={30} className={(show ? 'allergens-btn-active' : 'allergens-btn')} />: ""}
-        {show && (<div ref ={popOverRef} className="allergensPopOver">
-            <ul>
-                {(Array.isArray(allergens) ? allergens : [allergens]).map((item, index) =>(
-                    <li key={index}>{item}</li>
-                ))}
-            </ul>
-            </div>)}
-        </div>
-        <p className="product-name">{product.name}</p>
-        <p className="product-price">{product.price}</p>
-        {ShowButtons && <Buttons product={product}/> }
-        {ShowPlaceHolder && <p>{PlaceHolder}</p>}
+
+        {Extra &&
+        <div className="extra" >
+              <InfoButton
+              id = {id}
+              Data = {allergens ? allergens : (items ? items : inHowManyReceipts)}
+              active={thereIsDataToShow.length > 0 || mode === "delete" ? true : false}
+              width={40} height={40} 
+              mode={mode}
+              /> 
+          </div> }
+
+        {Record &&
+        <>
+          <span className="first-record">{name ? name : date ? id +  " ~ " + date : ""}</span> 
+          <span className="second-record">{price ? price + " €" : total ? total + " €" : quantity } </span>
+        </>
+      }
+        
+      {ButtonsComponent && <ButtonsComponent product={Record}/> }
+      {PlaceHolders && PlaceHolders.map((label,i) =>{
+        return(
+          <span key={i} className={`label-${i+1}`}>{label}</span>
+          )
+        }
+      )}
       </li>
   )
 }

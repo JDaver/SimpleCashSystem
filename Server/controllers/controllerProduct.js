@@ -1,29 +1,57 @@
 const Product = require("../models/product");
 exports.createProduct = async(req,res) => {
-        const { product_name, price, allergens } = req.body;
-        if(product_name=== "") return;//prevent empty object (behaviour to fix)
-        const currentProd = new Product(product_name, price, allergens);
-        await currentProd.createProd();
-        res.status(201).json(currentProd);
+        try {
+                const { product_name, price, allergens } = req.body;
+                const prodToCreate = new Product(product_name, price, allergens);
+                result = await prodToCreate.createProd();
+                console.log(result);
+                res.status(201).json(result);
+        }catch (err) {
+                console.error(`controller catched an error -> ${err}`)
+                res.status(500).json({error: "Impossibile completare operazione di creazione del prodotto!"});
+        }
 }
 
 exports.updateProduct = async (req, res) => {
-        const { product_name, price, allergens,id } = req.body;
-        const currentProd = new Product(product_name, price, allergens);
-        await currentProd.modifyProd(id);
-        res.status(200).json(currentProd);
+        try {
+                const { product_name, price, allergens,id } = req.body;
+                const prodToModify = new Product(product_name, price, allergens);
+                const result = await prodToModify.modifyProd(id);
+                console.log(result);
+                res.status(201).json(result);
+        }catch (err) {
+                console.error(`controller catched an error -> ${err}`)
+                res.status(500).json({error: "Impossibile completare operazione di modifica del prodotto!"});
+        }
 }
 
 exports.deleteProduct = async (req,res) => {
-        const {product_name, id} = req.body;
-        const currentProd= new Product (product_name);
-        await currentProd.deleteProd(id);
-        res.status(200).json(currentProd);
+        try {
+                const {id} = req.params;
+                const result = await Product.deleteProd(id);
+                res.status(200).json(result);
+        }catch (err) {
+                console.error(`controller catched an error -> ${err}`)
+                res.status(500).json({error: "Impossibile completare operazione di eliminazione del prodotto!"});
+        }
 }
 
-exports.displayProducts = async (req, res) => {
-        const products = await Product.selectAllProd();
-        res.status(200).json(products);
+exports.fetchProducts = async (req, res) => {
+        try{
+        const {column, order} = req.body || {};
+        const filters = {};
+
+        if(column) filters.column = column;
+        if(order) filters.order = order;
+
+        
+                const products = await Product.selectAllProd(filters);
+                res.status(200).json(products);
+        }catch (err) {
+                console.error(`controller catched an error -> ${err}`)
+                res.status(500).json({error: "Impossibile scaricare i prodotti!"});
+        }
+        
 }
 
 

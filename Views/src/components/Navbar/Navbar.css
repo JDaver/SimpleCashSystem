@@ -58,5 +58,13 @@
 }
 
 .vibrant .active {
+  background-color:var(--neutral-300);
+  color: var(--neutral-900);
+}
+
+.vibrant .navbar__link:active {
+  
+  filter: drop-shadow(20px 20px 20px var(--neutral-200));
+
   border: 1px solid white;
 }

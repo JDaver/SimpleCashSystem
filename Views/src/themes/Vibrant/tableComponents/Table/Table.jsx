@@ -52,7 +52,7 @@ function Table({ id, icon, title, children, ...props }) {
         style={{
           maxHeight: `${height}px`,
           transition: 'max-height 0.4s ease, opacity 0.3s ease',
-          opacity: active ? 1 : 0,
+          opacity: active ? 1 : 0
         }}
       >
         {children}

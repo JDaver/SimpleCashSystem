@@ -8,6 +8,12 @@ import CashierButtons from "./CashierButtons";
 export default function CashierScreen(){
   const {products, loading, error} = useFetchAll();
   const {receipt , clearReceipt} = useReceipt();
+  const label = [
+    "Allergeni", 
+    "Articolo", 
+    "prezzo", 
+    "Aggiungi e Rimuovi"
+  ];
 
   
   const isLoading= (loading ? "Caricamento..." : "");
@@ -18,14 +24,21 @@ export default function CashierScreen(){
          <div className="cashier-screen">
           <div className="cashier-screen__wrapper">
             <h1 className="cashier-screen__header">Cucina</h1>
+            <div className="label"> <SingleItem
+                  PlaceHolders={label}/></div>
             <ul className="cashier-screen__content">
+
+            {error}
+            {loading}
                 {products.map((product)=>{
                   return (
                     <SingleItem key={product.id}
-                    product={product}
+                    Extra={product.allergens}
+                    Record={product}
                     ShowButtons={true}
-                    Buttons={CashierButtons}
-                    >{product.name}</SingleItem>
+                    ButtonsComponent={CashierButtons}
+                    />
+                    
                   )
                 })}
           </ul>

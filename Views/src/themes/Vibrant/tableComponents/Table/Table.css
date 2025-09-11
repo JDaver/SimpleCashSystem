@@ -2,6 +2,7 @@
   min-width: 120px;
   transition: width 0.4s ease;
   width: 5%;
+  height: 100%;
 }
 
 .table.active {
@@ -43,6 +44,7 @@
 }
 
 .table__body {
+  height: 100%;
   opacity: 0;
   transition: opacity 0.3s ease;
 }

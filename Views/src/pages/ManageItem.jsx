@@ -53,7 +53,7 @@ function ManageItem() {
       {tables.map(table => {
         return (
           <Table key={table.id} id={table.id} title={table.title} icon={table.icon}>
-            <TableSection>
+            <TableSection >
               <TableControls />
               <TableContent>{table.content}</TableContent>
             </TableSection>

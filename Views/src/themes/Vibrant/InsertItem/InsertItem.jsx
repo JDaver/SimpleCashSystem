@@ -28,7 +28,7 @@ function InsertItem() {
   const [allergens, setAllergens] = useState([]);
 
   const handlePriceInput = key => {
-    if (key === ',' && price.includes(',')) return;
+    if (key === '.' && price.includes('.')) return;
     setPrice(prev => prev + key);
   };
 
@@ -44,8 +44,12 @@ function InsertItem() {
     setName(prev => prev.slice(0, -1));
   };
 
-  const handleEraseNumber = () => {
+  const handleEraseName = () => {
     setName(prev => prev.slice(0, 0));
+  };
+
+    const handleEraseNumber = () => {
+    setPrice(prev => prev.slice(0, 0));
   };
 
   return (
@@ -65,7 +69,7 @@ function InsertItem() {
               readOnly
               autoComplete="off"
             />
-            <Keypad preset={'alphabet'} onInput={handleNameInput} onDelete={handleNameDelete} onErase = {handleEraseNumber} />
+            <Keypad preset={'alphabet'} onInput={handleNameInput} onDelete={handleNameDelete} onErase = {handleEraseName} />
           </div>
         </div>
         <div className="form__column">
@@ -82,11 +86,11 @@ function InsertItem() {
               readOnly
               autoComplete="off"
             />
-            <Keypad preset={'numeric'} onInput={handlePriceInput} onDelete={handlePriceDelete} />
+            <Keypad preset={'numeric'} onInput={handlePriceInput} onDelete={handlePriceDelete} onErase = {handleEraseNumber} />
           </div>
         </div>
         <div className="form__column">
-          <div className="form__field">
+          <div className="form__field dropdown">
             <Dropdown side={'left'} selected={allergens} onChange={setAllergens} multiple>
               <Dropdown.Trigger aria-label="Seleziona allergeni">
                 <p>Allergeni</p>

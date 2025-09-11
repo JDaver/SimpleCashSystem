@@ -8,7 +8,8 @@ const componentMap = {
     Table: () => import('@themes/Minimal/Table'),
     TableSection: () => import('@themes/Minimal/TableSection'),
     TableControls: () => import('@themes/Minimal/TableControls'),
-    InsertItem: () => import('@themes/Minimal/InsertItem')
+    InsertItem: () => import('@themes/Minimal/InsertItem'),
+    DisplayElements: () => import('@themes/Minimal/DisplayElements'),
   },
   vibrant: {
     CashierScreen: () => import('@themes/Vibrant/CashierScreen'),
@@ -17,7 +18,8 @@ const componentMap = {
     Table: () => import('@themes/Vibrant/tableComponents/Table'),
     TableSection: () => import('@themes/Vibrant/tableComponents/TableSection'),
     TableControls: () => import('@themes/Vibrant/tableComponents/TableControls'),
-    InsertItem: () => import('@themes/Vibrant/InsertItem')
+    InsertItem: () => import('@themes/Vibrant/InsertItem'),
+    DisplayElements: () => import('@themes/Vibrant/DisplayElements'),
   },
 };
 

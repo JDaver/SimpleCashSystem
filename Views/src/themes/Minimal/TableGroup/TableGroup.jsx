@@ -3,11 +3,20 @@ import './TableGroup.css';
 
 const TableGroupContext = createContext(null);
 
-const TableGroup = ({ defaultActive = null, children, ...props }) => {
-  const [activeId, setActiveId] = useState(defaultActive);
+const TableGroup = ({ defaultActive = null, activeId, children, onChange, ...props }) => {
+  const [internalActiveId, setInternalActiveId] = useState(defaultActive);
+  const isControlled = activeId !== undefined && activeId !== null;
+  const actualActiveId = isControlled ? activeId : internalActiveId;
+
+  const handleId = id => {
+    if (!isControlled) {
+      setInternalActiveId(id);
+    }
+    onChange?.(id);
+  };
   const contextValue = {
-    activeId,
-    setActiveId,
+    actualActiveId,
+    handleId,
   };
   return (
     <TableGroupContext.Provider value={contextValue}>

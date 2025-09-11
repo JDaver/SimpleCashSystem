@@ -13,14 +13,19 @@
   text-align: center;
   text-decoration: none;
   transition:
-    background-color 0.2s,
-    transform 0.1s;
+    background-color 0.4s,
+    transform 0.4s,
+    ease-out;
   width: fit-content;
   white-space: nowrap;
 }
 
 .navbar__link:active {
-  transform: scale(0.97);
+  transition:
+    background-color 0.4s,
+    border 0.4s,
+    transform 0.4s,
+    ease-out;
 }
 
 .navbar__link:focus-visible {
@@ -46,7 +51,6 @@
   color: var(--neutral-900);
 }
 
-
 /*Vibrant Theme*/
 .vibrant .navbar__link {
   background-color: transparent;
@@ -54,13 +58,13 @@
 }
 
 .vibrant .active {
-  background-color: oklch(86.378% 0.0001 271.152 / 0.576);
-  
+  background-color:var(--neutral-300);
   color: var(--neutral-900);
 }
 
 .vibrant .navbar__link:active {
-  background-color: transparent;
+  
   filter: drop-shadow(20px 20px 20px var(--neutral-200));
-}
 
+  border: 1px solid white;
+}

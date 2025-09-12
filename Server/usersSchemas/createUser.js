@@ -1,10 +1,7 @@
 const pool = require('../db/db');
 const format = require('pg-format');
 
-
-createUser({username: "iccio"});
-
- async function createUser(user){
+async function createUser(user){
     const {username, email} = user || {};
 
     if(!username || !email){

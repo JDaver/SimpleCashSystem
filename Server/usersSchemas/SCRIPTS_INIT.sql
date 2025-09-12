@@ -66,3 +66,68 @@ CREATE OR REPLACE FUNCTION add_user(
     RETURN 'Utente creato correttamente'
     END;
 $$  LANGUAGE plpgsql;
+
+
+--DELETE USERS FUNCTION--   
+CREATE OR REPLACE FUNCTION remove_user(target_username TEXT)
+RETURNS TEXT AS $$
+DECLARE
+    target_schema TEXT;
+BEGIN
+    
+    SELECT schemaname INTO target_schema
+    FROM app_users
+    WHERE username = target_username;
+
+    IF target_schema IS NULL THEN
+        RAISE EXCEPTION 'Utente % non trovato in app_users.', target_username;
+    END IF;
+
+   
+    EXECUTE FORMAT('DROP SCHEMA IF EXISTS %I CASCADE', target_schema);
+
+    
+    DELETE FROM app_users WHERE username = target_username;
+
+    RETURN FORMAT('Utente % eliminato insieme allo schema %.', target_username, target_schema);
+END;
+$$ LANGUAGE plpgsql;
+
+
+--UPDATE USER--
+CREATE OR REPLACE FUNCTION update_user(
+    old_username TEXT,
+    new_username TEXT,
+    new_schema_name TEXT,
+    new_email TEXT
+
+) RETURNS TEXT AS $$
+DECLARE
+    old_schema_name TEXT; 
+BEGIN
+    
+    SELECT schema_name INTO old_schema_name
+    FROM app_users
+    WHERE username = old_username;
+
+    IF old_schema_name IS NULL THEN
+        RAISE EXCEPTION 'Utente % non trovato.', old_username;
+    END IF;
+
+
+    IF old_schema_name <> new_schema_name THEN
+        EXECUTE FORMAT('ALTER SCHEMA %I RENAME TO %I', old_schema_name, new_schema_name);
+    END IF;
+
+    UPDATE app_users
+    SET username = new_username,
+        schema_name = new_schema_name,
+        email = new_email
+    WHERE username = old_username;
+
+    RETURN FORMAT(
+        'Utente % rinominato in %',
+        old_username, new_username
+    );
+END;
+$$ LANGUAGE plpgsql;

@@ -9,9 +9,9 @@ async function createUser(user){
     }
     try{
         const schema_name = username + "_schema";
-        const query = format('SELECT add_user(%L,%L,%L)',username,schema_name,email);
+        const query = format('SELECT add_user(%L,%L,%L) as resultQuery',username,schema_name,email);
         const result = await pool.query(query);
-        return {ok:result.rows[0].add_user} ;
+        return {ok:result.rows[0].resultQuery} ;
     }catch(err){
         return {error: err.message};
     }

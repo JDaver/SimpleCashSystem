@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
+const productService = require('../api/apiServices/productApi');
 const item = require('../controllers/controllerProduct');
 const receiptService = require('./apiServices/receiptApi');
 const item_receipt = require('../controllers/controllerProduct_receipt');
 const party = require('../controllers/controllerParty');
 
 //Products related Operations:
-router.post('/insert_item', item.createProduct);
+router.post('/insert_item', productService.createProduct);
 router.delete('/delete_item/:id', item.deleteProduct);
 router.put('/update_item',item.updateProduct);
 router.get('/items',item.fetchProducts);
@@ -25,3 +26,6 @@ router.get('/fetch_partyNames',party.fetchPartyNames);
 
 //Other stuff 
 module.exports = router;
+
+
+/**TODO REWIRING OF BACKEND */

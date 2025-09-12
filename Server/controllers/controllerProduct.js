@@ -1,14 +1,13 @@
 const Product = require("../models/product");
-exports.createProduct = async(req,res) => {
+exports.createProduct = async(product) => {
         try {
-                const { product_name, price, allergens } = req.body;
-                const prodToCreate = new Product(product_name, price, allergens);
-                result = await prodToCreate.createProd();
+                const { product_name, price, allergens, isBeverage, isGlobal } = product;
+                const prodToCreate = new Product(product_name, price, allergens, isBeverage, isGlobal);
+                const result = await prodToCreate.createProd();
                 console.log(result);
                 res.status(201).json(result);
         }catch (err) {
-                console.error(`controller catched an error -> ${err}`)
-                res.status(500).json({error: "Impossibile completare operazione di creazione del prodotto!"});
+                throw new Error(`product controller cathed an error -> ${err}`);
         }
 }
 

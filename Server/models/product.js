@@ -4,17 +4,19 @@ const format = require("pg-format");
 
 module.exports = class Product {
     
-    constructor(name,price,allergens){
+    constructor(name,price,allergens,isBeverage,isGloabal){
         this.name = name;
         this.price = price;
+        this.isBeverage = isBeverage;
+        this.isGlobal = isGloabal;
         this.allergens = JSON.stringify(allergens);
     }
 
     async createProd(){
         try{
             const result = await pool.query(
-                'INSERT INTO product (name, price, allergens) VALUES ($1, $2, $3) RETURNING *',
-                [this.name, this.price, this.allergens]
+                'INSERT INTO product (name, price, allergens,isBeverage,isGlobal) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+                [this.name, this.price, this.allergens,this.isBeverage,this.isGloabal]
             );
             return result.rows[0];
 
@@ -26,8 +28,14 @@ module.exports = class Product {
     async modifyProd(id){
         try{
             const result = await pool.query(
-                "UPDATE product SET name = $1, price = $2, allergens = $3 where id = $4 RETURNING *",
-                [this.name, this.price, this.allergens, id]
+                `UPDATE product SET 
+                name = $1,
+                price = $2, 
+                allergens = $3,
+                isBeverage = $4,
+                isGlobal = $5
+                where id = $6 RETURNING *`,
+                [this.name, this.price, this.allergens, this.isBeverage, this.isGlobal, id]
             )
             return result.rows[0];
         }catch(err){
@@ -49,11 +57,15 @@ module.exports = class Product {
 
         const defaults = {
             column: "name",
-            order: "DESC"
+            order: "DESC",
+            filteredParams: "isBeverage",
+            valueParams:false
         }
-        const {column, order} = {...defaults, ...filters};
+        const {column, order, filteredParams, valueParams} = {...defaults, ...filters};
+        safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DES";
 
-        const query = format("SELECT * FROM product ORDER BY %I %s", column, order);
+        const query = format("SELECT * FROM product WHERE %I = %L ORDER BY %I %s",
+            filteredParams, valueParams, column, safeOrder);
     
         try{
             const result = await pool.query(query);

@@ -24,6 +24,8 @@ CREATE OR REPLACE FUNCTION add_user(
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         price NUMERIC(10,2) NOT NULL,
+        isBeverage BOOLEAN DEFAULT FALSE,
+        isGlobal BOOLEAN DEFAULT TRUE,
         allergens JSON
     )
     ', new_schema);
@@ -56,7 +58,8 @@ CREATE OR REPLACE FUNCTION add_user(
     EXECUTE FORMAT('
         CREATE TABLE IF NOT EXISTS %I.product_party (
             product_id INT REFERENCES %I.product(id),
-            party_id INT REFERENCES %I.party(id)
+            party_id INT REFERENCES %I.party(id),
+            CONSTRAINT unique_product_party UNIQUE (product_id, party_id)
         )
     ', new_schema, new_schema, new_schema);
 

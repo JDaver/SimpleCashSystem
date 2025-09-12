@@ -2,7 +2,7 @@ const pool = require('../db/db');
 const format = require('pg-format');
 
 export async function changePath(user){
-    const {id, username,schema_name} = user || {id:null};
+    const {id,schema_name} = user || {id:null};
     try{
         const resultCheckQuery = format(
         'SELECT EXISTS(SELECT 1 FROM app_users WHERE id = %L) AS user_exists',id);

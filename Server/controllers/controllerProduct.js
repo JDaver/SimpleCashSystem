@@ -1,54 +1,54 @@
 const Product = require("../models/product");
 exports.createProduct = async(product) => {
         try {
-                const { product_name, price, allergens, isBeverage, isGlobal } = product;
+                const { product_name, price, allergens } = product;
+                const isBeverage = product.isBeverage ?? false;
+                const isGlobal = product.isGlobal ?? true;
                 const prodToCreate = new Product(product_name, price, allergens, isBeverage, isGlobal);
                 const result = await prodToCreate.createProd();
                 console.log(result);
-                res.status(201).json(result);
+                return result;
         }catch (err) {
                 throw new Error(`product controller cathed an error -> ${err}`);
         }
 }
 
-exports.updateProduct = async (req, res) => {
+exports.updateProduct = async (product) => {
         try {
-                const { product_name, price, allergens,id } = req.body;
+                const { product_name, price, allergens,id } = product || {};
                 const prodToModify = new Product(product_name, price, allergens);
                 const result = await prodToModify.modifyProd(id);
                 console.log(result);
-                res.status(201).json(result);
+                return result;
         }catch (err) {
-                console.error(`controller catched an error -> ${err}`)
-                res.status(500).json({error: "Impossibile completare operazione di modifica del prodotto!"});
+                throw new Error(`product controller cathed an error -> ${err}`);
         }
 }
 
-exports.deleteProduct = async (req,res) => {
+exports.deleteProduct = async (id) => {
         try {
-                const {id} = req.params;
                 const result = await Product.deleteProd(id);
-                res.status(200).json(result);
+                return result;
         }catch (err) {
-                console.error(`controller catched an error -> ${err}`)
-                res.status(500).json({error: "Impossibile completare operazione di eliminazione del prodotto!"});
+                throw new Error(`product controller cathed an error -> ${err}`);
         }
 }
 
-exports.fetchProducts = async (req, res) => {
-        try{
-        const {column, order} = req.body || {};
+exports.fetchAllProducts = async (params) => {
+        const {column, order, filterParams, valueParams} = params || {};
         const filters = {};
 
-        if(column) filters.column = column;
-        if(order) filters.order = order;
-
+        try{
+                if(column) filters.column = column;
+                if(order) filters.order = order;
+                if(filterParams) filters.filterParams = filterParams;
+                if(valueParams) filters.valueParams = valueParams
         
                 const products = await Product.selectAllProd(filters);
-                res.status(200).json(products);
+                return products;
         }catch (err) {
                 console.error(`controller catched an error -> ${err}`)
-                res.status(500).json({error: "Impossibile scaricare i prodotti!"});
+                throw new Error(`product controller catched and erro -> ${err}`);
         }
         
 }

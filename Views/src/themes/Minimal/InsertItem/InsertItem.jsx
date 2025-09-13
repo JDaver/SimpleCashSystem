@@ -121,6 +121,9 @@ function InsertItem({ itemToEdit, resetForm = false }) {
                 })}
               </Dropdown.Content>
             </Dropdown>
+            {allergens.map((allergen) => {
+              return <input key={allergen} type="hidden" name="allergens" value={allergen} />
+            })}
           </div>
         </div>
       </div>

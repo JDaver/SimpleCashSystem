@@ -65,4 +65,42 @@ module.exports = class Product_party{
         }
     }
 
+    static async fetchProductsForParty(params,relatedIDs){
+        const defaults = {
+            column: "name",
+            order: "DESC",
+            isBeverage: false,
+            isGlobal: true
+        }
+
+        const {column, order, isBeverage, isGlobal} = {...defaults, ...params};
+        safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
+        const conditions = [
+            format("pp.party_id in (%L)",relatedIDs),
+            format("p.isBeverage = %L",isBeverage),
+            format("p.isGlobal = %L",isGlobal) 
+        ]
+
+        try{
+            let queryConstructed = format(`
+                    SELECT 
+                        p.id as product_id, 
+                        p.name AS product_name, 
+                        p.price AS price, 
+                        p.allergens AS allergens
+                    FROM product p
+                    INNER JOIN product_party pp ON p.id = pp.product_id
+                    WHERE %s`,conditions.join(` AND `));
+
+                    queryConstructed += format("ORDER BY %I %s",column,safeOrder);
+            
+                    const result = await pool.query(queryConstructed);
+                    return result.rows;
+        }catch(err){
+            console.log("error: ", err);
+            throw new Error(`Error from DB in fetchProductsForParty(): ${err.message}`);
+        }
+    }
 }
+        

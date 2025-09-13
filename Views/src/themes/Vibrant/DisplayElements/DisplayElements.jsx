@@ -126,7 +126,7 @@ return(
                         //         onTouchEnd={e => handleTouchEnd(e)}
                         //         style={{ touchAction: 'pan-y', display: 'block', width: '100%' }}>
                             <SingleItem 
-                                
+                                key={record.id}
                                 mode="display"
                                 Extra={true}
                                 Record={record} 

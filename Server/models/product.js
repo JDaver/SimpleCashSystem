@@ -15,8 +15,8 @@ module.exports = class Product {
     async createProd(){
         try{
             const result = await pool.query(
-                'INSERT INTO product (name, price, allergens,isBeverage,isGlobal) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-                [this.name, this.price, this.allergens,this.isBeverage,this.isGloabal]
+                'INSERT INTO product (name, price, allergens,isbeverage,isglobal) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+                [this.name, this.price, this.allergens,this.isBeverage,this.isGlobal]
             );
             return result.rows[0];
 
@@ -32,9 +32,10 @@ module.exports = class Product {
                 name = $1,
                 price = $2, 
                 allergens = $3,
-                isBeverage = $4,
-                isGlobal = $5
-                where id = $6 RETURNING *`,
+                isbeverage = $4,
+                isglobal = $5
+                where id = $6 
+                RETURNING *`,
                 [this.name, this.price, this.allergens, this.isBeverage, this.isGlobal, id]
             )
             return result.rows[0];
@@ -58,14 +59,19 @@ module.exports = class Product {
         const defaults = {
             column: "name",
             order: "DESC",
-            filteredParams: "isBeverage",
+            filterParams: "isBeverage",
             valueParams:false
         }
-        const {column, order, filteredParams, valueParams} = {...defaults, ...filters};
-        safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DES";
+        const {column, order, filterParams, valueParams} = {...defaults, ...filters};
+        safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";
 
-        const query = format("SELECT * FROM product WHERE %I = %L ORDER BY %I %s",
-            filteredParams, valueParams, column, safeOrder);
+        const query = format(`SELECT 
+                id AS product_id,
+                name AS product_name,
+                price AS price,
+                allergens AS allergens
+            FROM product WHERE %I = %L ORDER BY %I %s`,
+            filterParams, valueParams, column, safeOrder);
     
         try{
             const result = await pool.query(query);

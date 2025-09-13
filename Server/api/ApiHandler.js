@@ -7,11 +7,11 @@ const receiptService = require('./apiServices/receiptApi');
 const item_receipt = require('../controllers/controllerProduct_receipt');
 const party = require('../controllers/controllerParty');
 
-//Products related Operations:
+//Products related Operations: DONE
 router.post('/insert_item', productService.createProduct);
-router.delete('/delete_item/:id', item.deleteProduct);
-router.put('/update_item',item.updateProduct);
-router.get('/items',item.fetchProducts);
+router.delete('/delete_item/:id', productService.deleteProduct);
+router.put('/update_item',productService.updateProduct);
+router.get('/items',productService.fetchRelatedProducts);
 
 //Receipts related op:
 router.post('/create_receipt', receiptService.insertReceipt);

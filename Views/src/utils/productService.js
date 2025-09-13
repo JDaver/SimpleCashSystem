@@ -1,3 +1,11 @@
+async function productConstructor(formData) {
+  const data = {}; 
+   for (const key of formData.keys()) {
+    const values = formData.getAll(key);
+    data[key] = values.length > 1 ? values : values[0];
+  }
+  return data;
+}
 export async function fetchAllProducts() {
     try {
     const res = await fetch('http://localhost:4444/api/items');
@@ -15,17 +23,14 @@ export async function fetchAllProducts() {
 
 export async function insertItem(event) {
   event.preventDefault();
-  console.log(event);
   const formData = new FormData(event.target);
-  const data = {};
- for (const key of formData.keys()) {
-    const values = formData.getAll(key);
-    data[key] = values.length > 1 ? values : values[0];
-  }
+  console.log(formData);
+  const data = await productConstructor(formData);
+
   fetch('http://localhost:4444/api/insert_item', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify({ product: data})
   })
   .then(res => res.json())
     .then(data => {

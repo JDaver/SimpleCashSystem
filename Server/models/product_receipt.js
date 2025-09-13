@@ -105,7 +105,7 @@ module.exports = class Product_receipt{
     const conditions = [];
 
     
-       if(date>2000){
+       if(date>2000){ //manually checking for truthness of date (to change)
            const [dateStart, dateEnd] = [`${date}-01-01`, `${date}-12-31`];
            conditions.push(format("r.date BETWEEN %L AND %L",dateStart,dateEnd));
        }

@@ -59,11 +59,11 @@ module.exports = class Product {
         const defaults = {
             column: "name",
             order: "DESC",
-            filterParams: "isBeverage",
+            filterParams: "isbeverage",
             valueParams:false
         }
         const {column, order, filterParams, valueParams} = {...defaults, ...filters};
-        safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";
+        const safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";
 
         const query = format(`SELECT 
                 id AS product_id,

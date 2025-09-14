@@ -17,7 +17,7 @@ export function useInfiniteScroll(fetchNext, hasMoreNext) {
           isLoadingRef.current = false;
         }
       },
-      { threshold: 1 }
+      { threshold: 0.3 }
     );
 
     bottomObserver.observe(bottomLoaderRef.current);

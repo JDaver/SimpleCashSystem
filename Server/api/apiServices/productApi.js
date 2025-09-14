@@ -73,7 +73,7 @@ exports.fetchRelatedProducts = async (req,res) => {
             id: row.product_id,
             name: row.product_name,
             price: row.price,
-            allergens: row.allergens.split(',').map(allergen => allergen.trim())
+            allergens: row.allergens 
         }));
 
         res.status(200).json(formattedData);

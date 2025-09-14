@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const productService = require('../api/apiServices/productApi');
-const item = require('../controllers/controllerProduct');
+const utils = require('../api/apiServices/utilsApi');
 const receiptService = require('./apiServices/receiptApi');
 const item_receipt = require('../controllers/controllerProduct_receipt');
 const party = require('../controllers/controllerParty');
@@ -25,6 +25,7 @@ router.delete('/delete_party',party.deleteParty);
 router.get('/fetch_partyNames',party.fetchPartyNames);
 
 //Other stuff 
+router.get('/getYears',utils.getYear);
 module.exports = router;
 
 

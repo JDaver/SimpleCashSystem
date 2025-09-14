@@ -4,6 +4,7 @@
   grid-template-columns: auto auto 1fr;
   grid-template-rows: auto 1fr;
   height: 100%;
+  padding-block: 4rem;
 }
 
 .form__columns {

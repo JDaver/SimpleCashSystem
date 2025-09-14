@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Keypad from '@themes/Minimal/Keypad';
 import Dropdown from '@components/Dropdown';
 import { insertItem } from '../../../utils/productService';
+import { useManageItem } from '@contexts/useManageItem';
 import './InsertItem.css';
 import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
@@ -22,22 +23,25 @@ const allergensArr = [
   'Molluschi',
 ];
 
-function InsertItem({ itemToEdit, resetForm = false }) {
+function InsertItem() {
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
   const [allergens, setAllergens] = useState([]);
+  const { selectedItemRef, shouldResetForm } = useManageItem();
+
+  const itemToEdit = selectedItemRef.current;
 
   useEffect(() => {
-    if (resetForm) {
+    if (shouldResetForm) {
       setName('');
       setPrice('');
       setAllergens([]);
-    } else if (!resetForm && itemToEdit) {
+    } else if (!shouldResetForm && itemToEdit) {
       setName(itemToEdit.name || '');
       setPrice(itemToEdit.price?.toString() || '');
       setAllergens(itemToEdit.allergens || []);
     }
-  }, [resetForm, itemToEdit]);
+  }, [shouldResetForm, itemToEdit]);
 
   const fieldSetters = {
     name: setName,

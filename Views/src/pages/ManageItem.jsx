@@ -1,12 +1,12 @@
 import { FunnelIcon, PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
-import { useTheme } from '@contexts/useTheme';
-import { useManageItem } from '@contexts/useManageItem';
+import { useTheme } from '@contexts/Theme';
 import { loadThemedComponent } from '@utils/LoadThemedComponent';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Table from '@components/Table';
 import Toolbar from '@components/Toolbar';
 import Dropdown from '@components/Dropdown';
 import Modal from '@components/Modal';
+import { useManageItemActions, useManageItemState } from '@contexts/ManageItem';
 
 const orderByArr = ['Nome', 'Prezzo', 'Più venduto'];
 
@@ -18,31 +18,38 @@ function ManageItem() {
     selectedItems,
     memoizedProducts,
     pendingDelete,
-    setPendingDelete,
     isModalOpen,
+  } = useManageItemState();
+  const {
+    setPendingDelete,
     handleDeleteConfirmed,
     handleTableChange,
     handleSelectAll,
     handleClear,
-  } = useManageItem();
+  } = useManageItemActions();
   const [orderBy, setOrderBy] = useState('');
   const InsertItem = useMemo(() => loadThemedComponent(theme, 'InsertItem'), [theme]);
   const DisplayElements = useMemo(() => loadThemedComponent(theme, 'DisplayElements'), [theme]);
 
-  const tables = [
-    {
-      id: 'box1',
-      title: 'Modifica Articoli',
-      content: <DisplayElements isInteractive />,
-      icon: <PencilIcon width={30} height={20} />,
-    },
-    {
-      id: 'box2',
-      title: 'Inserisci un nuovo articolo',
-      content: <InsertItem />,
-      icon: <PlusIcon width={30} height={20} />,
-    },
-  ];
+  const hasMultipleSelections = selectedItems.length > 1;
+  const canSelectAll = selectedItems.length < memoizedProducts.length;
+
+  const tables = useMemo(() => {
+    return [
+      {
+        id: 'box1',
+        title: 'Modifica Articoli',
+        content: <DisplayElements isInteractive />,
+        icon: <PencilIcon width={30} height={20} />,
+      },
+      {
+        id: 'box2',
+        title: 'Inserisci un nuovo articolo',
+        content: <InsertItem />,
+        icon: <PlusIcon width={30} height={20} />,
+      },
+    ];
+  }, [DisplayElements, InsertItem]);
 
   return (
     <Table activeId={activeTable} defaultActive={'box1'} onChange={handleTableChange}>
@@ -55,14 +62,14 @@ function ManageItem() {
                   {selectionMode && (
                     <Toolbar.Section>
                       <Toolbar.Label>Selezionati ({selectedItems.length})</Toolbar.Label>
-                      {selectedItems.length < memoizedProducts.length && (
+                      {canSelectAll && (
                         <Toolbar.Button onClick={handleSelectAll}>Seleziona tutti</Toolbar.Button>
                       )}
-                      {selectedItems.length > 1 && (
+                      {hasMultipleSelections && (
                         <Toolbar.Button onClick={handleClear}>Deseleziona tutti</Toolbar.Button>
                       )}
                       <Toolbar.Button
-                        disabled={selectedItems.length < 2}
+                        disabled={!hasMultipleSelections}
                         onClick={() => setPendingDelete({ items: selectedItems })}
                       >
                         Elimina selezionati
@@ -71,7 +78,7 @@ function ManageItem() {
                   )}
                   <Toolbar.Section>
                     <p>Ordina per:</p>
-                    <Dropdown side={'right'} selected={orderBy} onChange={setOrderBy}>
+                    <Dropdown side="right" selected={orderBy} onChange={setOrderBy}>
                       <Dropdown.Trigger>
                         <FunnelIcon width={30} height={20} />
                       </Dropdown.Trigger>

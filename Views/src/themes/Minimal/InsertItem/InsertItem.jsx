@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Keypad from '@themes/Minimal/Keypad';
 import Dropdown from '@components/Dropdown';
 import { insertItem } from '../../../utils/productService';
-import { useManageItem } from '@contexts/useManageItem';
+import { useManageItemState } from '@contexts/ManageItem';
 import './InsertItem.css';
 import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
@@ -27,7 +27,7 @@ function InsertItem() {
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
   const [allergens, setAllergens] = useState([]);
-  const { selectedItemRef, shouldResetForm } = useManageItem();
+  const { selectedItemRef, shouldResetForm } = useManageItemState();
 
   const itemToEdit = selectedItemRef.current;
 

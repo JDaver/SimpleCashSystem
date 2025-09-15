@@ -1,6 +1,6 @@
 import { memo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useTheme } from '../../contexts/useTheme';
+import { useTheme } from '@contexts/Theme';
 import './Navbar.css';
 import { Cog6ToothIcon } from '@heroicons/react/24/outline';
 import Dropdown from '@components/Dropdown';

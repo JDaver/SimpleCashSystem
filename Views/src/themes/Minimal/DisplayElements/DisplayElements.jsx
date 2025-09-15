@@ -1,19 +1,13 @@
 import { useSwipe } from '@hooks/useSwipe';
-import { useManageItem } from '@contexts/useManageItem';
+import { useManageItemState, useManageItemActions } from '@contexts/ManageItem';
 import { useCallback, useRef, useState } from 'react';
 import { useLongPress } from '@hooks/useLongPress';
 import { ChevronLeftIcon, ExclamationCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
 import './DisplayElements.css';
 
 function DisplayElements({ isInteractive = false }) {
-  const {
-    memoizedProducts,
-    selectedItems,
-    selectionMode,
-    toggleItem,
-    setPendingDelete,
-    handleSwipeLeft,
-  } = useManageItem();
+  const { memoizedProducts, selectedItems, selectionMode } = useManageItemState();
+  const { toggleItem, setPendingDelete, handleSwipeLeft } = useManageItemActions();
   const [swipingItem, setSwipingItem] = useState({ id: null, deltaX: 0 });
   const productRef = useRef(null);
 

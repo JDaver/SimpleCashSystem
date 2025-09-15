@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import PageWrapper from '@components/PageWrapper';
 import Header from '@components/Header';
 import { useViewTransition } from '@hooks/useViewTransition';
-import { ManageItemProvider } from '../../contexts/ManageItemProvider';
+import { ManageItemProvider } from '@contexts/ManageItem';
 
 const Home = React.lazy(() => import('@pages/Home'));
 const ManageItem = React.lazy(() => import('@pages/ManageItem'));

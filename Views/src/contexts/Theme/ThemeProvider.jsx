@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import ThemeContext from './ThemeContext';
+import { ThemeContext } from './ThemeContext';
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
@@ -19,3 +19,5 @@ export const ThemeProvider = ({ children }) => {
 
   return <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>;
 };
+
+export default ThemeProvider;

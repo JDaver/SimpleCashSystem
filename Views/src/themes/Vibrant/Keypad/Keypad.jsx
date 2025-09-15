@@ -29,7 +29,7 @@ function Keypad({ keys = [], preset = null, onInput, onDelete, showDelete = true
               <button
                 key={key}
                 type="button"
-                className='key-alphabet'
+                className={`key-alphabet`}
                 onTouchEnd={() => onInput?.(key)} //verify best practice for touch behaviour
                 aria-label={`Key ${key}`}>
               {key}
@@ -44,7 +44,7 @@ function Keypad({ keys = [], preset = null, onInput, onDelete, showDelete = true
               aria-label={`Key ${key}`}
               type="button"
               className={`key-numeric`}
-              onClick={() => onInput?.(key)}
+              onTouchEnd={() => onInput?.(key)}
             >
               {key}
             </button>)))}

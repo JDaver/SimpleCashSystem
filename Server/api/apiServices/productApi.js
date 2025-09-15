@@ -1,6 +1,7 @@
 const productController = require('../../controllers/controllerProduct');
 const product_partyController  = require('../../controllers/controllerProduct_party');
 const Product_party = require('../../models/product_party');
+const partyController = require('../../controllers/controllerParty');
 
 
 exports.createProduct = async(req,res) => {

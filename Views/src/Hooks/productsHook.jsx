@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { fetchAllProducts } from "@utils/productService";
+import { fetchAllProducts, getPartys } from "@utils/productService";
 import { queryItems } from "@utils/productService";
 
 
@@ -81,3 +81,17 @@ export function useFetchReceipts() {
   };
 }
 
+export function usePartyNames(){
+  const [partyNames,setPartyNames] = useState([]);
+  const [error,setError] = useState(null);
+
+     useEffect(() => {
+        getPartys().then(data => {
+            setPartyNames(data);
+        }).catch(err => {
+            console.log("error in hooks -> ",err);
+        });
+    }, []);
+
+  return partyNames;
+}

@@ -24,7 +24,10 @@ export async function fetchAllProducts() {
 export async function insertItem(event) {
   event.preventDefault();
   const formData = new FormData(event.target);
-  console.log(formData);
+  const valuesForCheck = Object.fromEntries(formData.entries());
+  if(!valuesForCheck.product_name || !valuesForCheck.price){
+    throw new Error("Impossibile inserire prodotti vuoti.");
+  }
   const data = await productConstructor(formData);
 
   fetch('http://localhost:4444/api/insert_item', {
@@ -67,5 +70,18 @@ export async function queryItems(name = null, price = null, date = null) {
     return data; 
   } catch (err) {
     throw new Error(`Errore nel recuperare i dati: ${err.message}`);
+  }
+}
+
+export async function getPartys() {
+  try{
+    const res = await fetch('http://localhost:4444/api/getPartys');
+
+    if(!res.ok) throw new Error(`Errore nella fetch, status: ${res.status}`);
+
+    const data = await res.json();
+    return data;
+  }catch(err){
+    throw new Error(`errore nel recuperare dati sulle feste: ${err.message}`)
   }
 }

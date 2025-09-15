@@ -26,6 +26,7 @@ router.get('/fetch_partyNames',party.fetchPartyNames);
 
 //Other stuff 
 router.get('/getYears',utils.getYear);
+router.get('/getPartys',party.fetchPartyNames);
 module.exports = router;
 
 

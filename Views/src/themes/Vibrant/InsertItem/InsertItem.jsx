@@ -4,6 +4,7 @@ import Dropdown from '@components/Dropdown';
 import { insertItem } from '@utils/productService';
 import './InsertItem.css';
 import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { usePartyNames } from '@hooks/productsHook';
 
 const allergensArr = [
   'Cereali contenenti glutine',
@@ -26,6 +27,10 @@ function InsertItem() {
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
   const [allergens, setAllergens] = useState([]);
+  const [isBeverage, setIsBeverage] = useState(false);
+  const [isGlobal, setIsGlobal] = useState(false);
+  const partyNames = usePartyNames();
+  const [partiesRelated,setPartiesRelated] = useState([]);
 
   const handlePriceInput = key => {
     if (key === '.' && price.includes('.')) return;
@@ -52,6 +57,12 @@ function InsertItem() {
     setPrice(prev => prev.slice(0, 0));
   };
 
+  const handleGlobalProductCleaner = (e) => {
+    setIsGlobal(e.target.checked);
+    setPartiesRelated([]);
+  }
+
+  console.log(partyNames);
   return (
     <form className="form insert-item" onSubmit={insertItem} method='POST' >
       <div className="form__columns">
@@ -112,6 +123,34 @@ function InsertItem() {
             {allergens.map((allergen) => {
               return <input key={allergen} type="hidden" name="allergens" value={allergen} />
             })}
+
+            <label className='label-form'>
+              e' una bevanda <input className="checkBox" type="checkBox" name='isbeverage' checked={isBeverage} onChange={(e) => setIsBeverage(e.target.checked)}/>  
+            </label>
+
+            <label className='label-form'> 
+              e' un prodotto globale <input className="checkBox" type="checkbox" name='isglobal' checked={isGlobal} onChange={handleGlobalProductCleaner} />
+            </label>
+            <div style={isGlobal? {opacity: 0.4,  pointerEvents:'none'} : {}}>
+              <Dropdown side={'left'} selected={partiesRelated} onChange={setPartiesRelated} multiple>
+                <Dropdown.Trigger>
+                  <p> seleziona le feste di appartenenza</p>
+                  <ChevronRightIcon className="rotate" width={20} height={15} />
+                </Dropdown.Trigger>
+                <Dropdown.Content>
+                  {partyNames.map((party) => {
+                    return (
+                      <Dropdown.Item key={party.id} option={party.name_party}>
+                       <span className="check-icon-wrapper">
+                        {partiesRelated.includes(party) && <CheckIcon width={30} height={20} />}
+                      </span>
+                      <span>{party.name_party}</span>
+                    </Dropdown.Item>
+                    );
+                  })}
+                </Dropdown.Content>
+              </Dropdown>
+            </div>
           </div>
         </div>
       </div>

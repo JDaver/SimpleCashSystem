@@ -39,7 +39,7 @@ module.exports = class Party{
     static async fetchParty(){
         try{
             const result = await pool.query(`SELECT * from party`);
-            return result.rows[0];
+            return result.rows;
         }catch(err){
             throw new Error(`Error from DB in fetchParty(): ${err.message}`);
         }

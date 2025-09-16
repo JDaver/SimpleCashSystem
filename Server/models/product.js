@@ -4,11 +4,11 @@ const format = require("pg-format");
 
 module.exports = class Product {
     
-    constructor(name,price,allergens,isBeverage,isGloabal){
+    constructor(name,price,allergens,isbeverage,isglobal){
         this.name = name;
         this.price = price;
-        this.isBeverage = isBeverage;
-        this.isGlobal = isGloabal;
+        this.isBeverage = isbeverage;
+        this.isGlobal = isglobal;
         this.allergens = JSON.stringify(allergens);
     }
 

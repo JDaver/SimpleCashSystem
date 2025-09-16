@@ -1,12 +1,9 @@
 const Product = require("../models/product");
 exports.createProduct = async(product) => {
         try {
-                const { product_name, price, allergens } = product;
-                const isBeverage = product.isBeverage ?? false;
-                const isGlobal = product.isGlobal ?? true;
-                const prodToCreate = new Product(product_name, price, allergens, isBeverage, isGlobal);
+                const { product_name, price, allergens, isbeverage, isglobal } = product;
+                const prodToCreate = new Product(product_name, price, allergens, isbeverage, isglobal);
                 const result = await prodToCreate.createProd();
-                console.log(result);
                 return result;
         }catch (err) {
                 throw new Error(`product controller cathed an error -> ${err}`);

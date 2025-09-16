@@ -23,6 +23,7 @@ const allergensArr = [
   'Molluschi',
 ];
 
+
 function InsertItem() {
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
@@ -31,6 +32,7 @@ function InsertItem() {
   const [isGlobal, setIsGlobal] = useState(false);
   const partyNames = usePartyNames();
   const [partiesRelated,setPartiesRelated] = useState([]);
+
 
   const handlePriceInput = key => {
     if (key === '.' && price.includes('.')) return;
@@ -61,6 +63,8 @@ function InsertItem() {
     setIsGlobal(e.target.checked);
     setPartiesRelated([]);
   }
+
+
 
   console.log(partyNames);
   return (
@@ -140,9 +144,9 @@ function InsertItem() {
                 <Dropdown.Content>
                   {partyNames.map((party) => {
                     return (
-                      <Dropdown.Item key={party.id} option={party.name_party}>
+                      <Dropdown.Item key={party.id.toString()} option={party.id}>
                        <span className="check-icon-wrapper">
-                        {partiesRelated.includes(party) && <CheckIcon width={30} height={20} />}
+                        {partiesRelated.includes(party.id) && <CheckIcon width={30} height={20} />}
                       </span>
                       <span>{party.name_party}</span>
                     </Dropdown.Item>
@@ -150,6 +154,9 @@ function InsertItem() {
                   })}
                 </Dropdown.Content>
               </Dropdown>
+              {partiesRelated.map((id) => {
+              return <input key={id} type="hidden" name="partyIDs" value={String(id)} />
+            })}
             </div>
           </div>
         </div>

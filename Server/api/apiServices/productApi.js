@@ -5,14 +5,15 @@ const partyController = require('../../controllers/controllerParty');
 
 
 exports.createProduct = async(req,res) => {
-    const {product = {}, partyIDs = []} = req.body || {};
+    const { product } = req.body || {};
+    const { partyIDs = [], ...productData } = product || {};
+    console.log(partyIDs);
     let relationRes = "nessuna relazione con feste";
-
     try{
-        const productRes = await productController.createProduct(product);
-        
+        const productRes = await productController.createProduct(productData);
+
         if(Array.isArray(partyIDs) && partyIDs.length > 0){
-            const product_id = productRes.rows[0].id;
+            const product_id = productRes.id;
             relationRes = await product_partyController.createProduct_party(product_id, partyIDs);
         }
 

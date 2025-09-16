@@ -4,6 +4,9 @@ async function productConstructor(formData) {
     const values = formData.getAll(key);
     data[key] = values.length > 1 ? values : values[0];
   }
+  data.isbeverage = formData.get("isbeverage") === "on";
+  data.isglobal = formData.get("isglobal") === "on";
+ 
   return data;
 }
 export async function fetchAllProducts() {
@@ -28,8 +31,9 @@ export async function insertItem(event) {
   if(!valuesForCheck.product_name || !valuesForCheck.price){
     throw new Error("Impossibile inserire prodotti vuoti.");
   }
+  
   const data = await productConstructor(formData);
-
+  console.log(data);
   fetch('http://localhost:4444/api/insert_item', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

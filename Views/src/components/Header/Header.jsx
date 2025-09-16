@@ -1,6 +1,6 @@
 import Navbar from '@components/Navbar';
 import ThemeSwitcher from '@components/ThemeSwitcher';
-import { useTheme } from '@contexts/useTheme';
+import { useTheme } from '@contexts/Theme';
 import './Header.css';
 
 function Header() {

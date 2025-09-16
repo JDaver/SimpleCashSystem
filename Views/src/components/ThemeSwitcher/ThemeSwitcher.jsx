@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react';
-import { useTheme } from '@contexts/useTheme';
+import { useTheme } from '@contexts/Theme';
 import './ThemeSwitcher.css';
 
 function ThemeSwitcher() {

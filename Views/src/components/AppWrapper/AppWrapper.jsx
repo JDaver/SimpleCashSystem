@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import PageWrapper from '@components/PageWrapper';
 import Header from '@components/Header';
 import { useViewTransition } from '@hooks/useViewTransition';
+import { ManageItemProvider } from '@contexts/ManageItem';
 
 const Home = React.lazy(() => import('@pages/Home'));
 const ManageItem = React.lazy(() => import('@pages/ManageItem'));
@@ -21,7 +22,14 @@ function AppWrapper() {
           <Routes location={currentLocation}>
             <Route path="/" element={<Home />} />
             <Route path="/Home" element={<Navigate to="/" replace />} />
-            <Route path="/ManageItem" element={<ManageItem />} />
+            <Route
+              path="/ManageItem"
+              element={
+                <ManageItemProvider>
+                  <ManageItem />
+                </ManageItemProvider>
+              }
+            />
             <Route path="/Collection" element={<Collection />} />
             <Route path="/SettingsPage" element={<SettingsPage />} />
             <Route path="*" element={<NotFound />} />

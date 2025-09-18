@@ -2,12 +2,11 @@
 import SingleItem from "../Components/SingleItem";
 import { useFetchAll } from "@hooks/productsHook"
 import './CashierScreen.css';
-import { useReceipt } from "@contexts/receiptHandlerContext";
 import CashierButtons from "./CashierButtons";
+import InfoButton from "../Components/InfoButton";
 
 export default function CashierScreen(){
   const {products, loading, error} = useFetchAll();
-  const {receipt , clearReceipt} = useReceipt();
   const label = [
     "Allergeni", 
     "Articolo", 
@@ -17,7 +16,6 @@ export default function CashierScreen(){
 
   const isLoading= (loading ? "Caricamento..." : "");
   const notLoaded =(error ? "Errore!" : "");
- 
 
   
     return(
@@ -33,10 +31,10 @@ export default function CashierScreen(){
             {products && products.map((product)=>{
                         return (
                           <SingleItem key={product.id}
-                            Extra={product.allergens}
+                            mode='cash'
                             Record={product}
-                            ShowButtons={true}
-                            ButtonsComponent={CashierButtons}
+                            InfoComponent={InfoButton}
+                            ActionButtonsComponent={CashierButtons}
                           />
                         )})}
           </ul>

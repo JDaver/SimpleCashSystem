@@ -5,14 +5,12 @@ import { deleteItem } from '@utils/productService';
 
 export default function InfoButton({
   Data = null, 
-  mode = "display",
-  id = null,
   active = false,
    ...props 
   }){
   
   let Icon = Bars3BottomLeftIcon;  
-  if(mode === "delete") Icon = TrashIcon;
+  
 
   const items = Array.isArray(Data) ? Data : Data ? [Data] : [];
     
@@ -20,13 +18,8 @@ export default function InfoButton({
   const popOverRef = useRef(null);
   useClickOutside(popOverRef, () => setShow(false));
 
-  const handleClick = (id) => {
-    if(mode === "display"){
+  const handleClick = () => {
       setShow(prev => !prev);
-    }else if(mode === "delete"){
-      deleteItem(id);
-      // console.log(id);
-    }
   }
 
   return (
@@ -34,7 +27,7 @@ export default function InfoButton({
     {active &&
       <button 
       {...props } 
-      onClick={() =>handleClick(id)} 
+      onClick={() =>handleClick()} 
       ref={popOverRef}
       className={(show ? 'info-button-active' : 'info-button')}>
         <Icon  style={{ width: props.width || 24, height: props.height || 24 }} />

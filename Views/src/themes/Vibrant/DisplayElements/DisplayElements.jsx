@@ -7,11 +7,12 @@ import { useSwipe } from "@hooks/useSwipe";
 import SlideButton from "./SlideButton";
 import { useFetchReceipts } from "@hooks/receiptHook";
 import { useInfiniteScroll } from "@hooks/useInfiniteScroll";
+import InfoButton from "../Components/InfoButton";
 
 const labelManage = ["Allergeni","Nome Prodoto","Prezzo","Modifica" ];
 const labelDeleteMode = ["Elimina","Nome Prodoto","Prezzo","Seleziona" ];
-const labelReeiptColection = ["Articoli","Scontrino e data","Totale" ];
-const labelItemColection = ["In quanti scontrini","Nome Prodotto","Venduti"];
+const labelReceiptColection = ["Articoli","Scontrino e data","Totale" ];
+const labelItemCollection = ["In quanti scontrini","Nome Prodotto","Venduti"];
 
 
 function DisplayElements({topic = "manage", swipeLeft}){
@@ -19,9 +20,9 @@ const { products } = useFetchAll();
 const { records: items } = useFetchItems();
 const { receipts, hasMoreNext,fetchNext } = useFetchReceipts();
 const [swipingItem, setSwipingItem] = useState({ id: null, deltaX: 0 });
-const [active,setActive] = useState(false);
+const [activeDelMode,setActiveDeleteMode] = useState(false);
 const recordBeingSwipedRef = useRef(null);
-const longPress = useLongPress(() => setActive(prev => !prev),2000);
+const longPress = useLongPress(() => setActiveDeleteMode(prev => !prev),2000);
 const { bottomLoaderRef, isLoading } = useInfiniteScroll(fetchNext, hasMoreNext);
 
 const isItemBeingSwiped = useCallback(
@@ -75,65 +76,62 @@ const swipeHandlers = useSwipe({
   );
 
 
-let labels;
-let records;
+let labels = [];
+let records = [];
+let actionComponent = null;
+let sideEffectsComponent = null;
+let mode = topic;
 
 
 switch(topic) {
     case "manage":
-        labels = active ? labelDeleteMode : labelManage;
+        labels = activeDelMode ? labelDeleteMode : labelManage;
         records = products;
+        actionComponent = activeDelMode ? null : <SlideButton/>;
+        sideEffectsComponent = InfoButton;
+        mode = activeDelMode ? "delete" : "manage";
         break;
     
     case "item":
-        labels = labelItemColection;
+        labels = labelItemCollection;
         records = items || [];
+        actionComponent = null;
+        sideEffectsComponent = <InfoButton/>
+        mode = "item"
         break;
     
     case "receipt":
-        labels = labelReeiptColection;
+        labels = labelReceiptColection;
         records = receipts || []; //funtion for receipts
+        actionComponent = null;
+        sideEffectsComponent = <InfoButton/>
+        mode = "receipt";
         break;
     default:
         labels = [];
         records = [];
+        actionComponent = null;
+        sideEffectsComponent = null;
+        mode = topic;
 }
 return(
     
    <div className="elements-container">
-    <div {...(topic === 'manage' ? longPress : {})} className={active ? "label-DelMode" : "label"}>
+    <div {...(topic === 'manage' ? longPress : {})} className={activeDelMode ? "label-DelMode" : "label"}>
         <SingleItem PlaceHolders={labels} />
     </div>
-    <div className={active ? "display-element-DelMode" : "display-element"}>
+    <div className={activeDelMode ? "display-element-DelMode" : "display-element"}>
             <ul>
-                {active && 
-                (records.map((record) => {
+                {(records.map((record) => {
                     return(
                         <SingleItem key={record.id}
-                        mode="delete"
-                        Extra={true}
+                        mode={mode}
                         Record={record} 
-                        ButtonsComponent={(props) => <SlideButton {...props} extraMode= {active}/>}/>
-                    )
-                }))}
-                {!active && 
-                (records.map((record) => {
-                    return(
-                        // <div
-                        //         key={record.id}
-                        //         onTouchStart={e => handleTouchStart(e, record)}
-                        //         onTouchMove={e => handleTouchMove(e)}
-                        //         onTouchEnd={e => handleTouchEnd(e)}
-                        //         style={{ touchAction: 'pan-y', display: 'block', width: '100%' }}>
-                            <SingleItem 
-                                key={record.id}
-                                mode="display"
-                                Extra={true}
-                                Record={record} 
-                                ButtonsComponent={topic === 'manage' ? (props) => <SlideButton {...props} extraMode= {active} /> : null }
+                        ButtonsComponent={actionComponent}
+                        InfoComponent={sideEffectsComponent}
                         />
-                        // </div>
                     )}))}
+              
                  {(topic === 'receipt' && hasMoreNext) && (
                     <div ref={bottomLoaderRef} /*to change style*/ style={{ height: 40, backgroundColor: 'grey' } } />
                  )}

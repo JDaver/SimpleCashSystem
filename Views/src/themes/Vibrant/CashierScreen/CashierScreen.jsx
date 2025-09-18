@@ -15,9 +15,9 @@ export default function CashierScreen(){
     "Aggiungi e Rimuovi"
   ];
 
-  
   const isLoading= (loading ? "Caricamento..." : "");
   const notLoaded =(error ? "Errore!" : "");
+ 
 
   
     return(
@@ -28,19 +28,17 @@ export default function CashierScreen(){
                   PlaceHolders={label}/></div>
             <ul className="cashier-screen__content">
 
-            {error}
-            {loading}
-                {products.map((product)=>{
-                  return (
-                    <SingleItem key={product.id}
-                    Extra={product.allergens}
-                    Record={product}
-                    ShowButtons={true}
-                    ButtonsComponent={CashierButtons}
-                    />
-                    
-                  )
-                })}
+            {error && notLoaded}
+            {loading && isLoading}
+            {products && products.map((product)=>{
+                        return (
+                          <SingleItem key={product.id}
+                            Extra={product.allergens}
+                            Record={product}
+                            ShowButtons={true}
+                            ButtonsComponent={CashierButtons}
+                          />
+                        )})}
           </ul>
         </div>
       </div>

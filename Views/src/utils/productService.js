@@ -9,9 +9,14 @@ async function productConstructor(formData) {
  
   return data;
 }
-export async function fetchAllProducts() {
+
+
+export async function fetchAllProducts(params=null,partyIDs = [] ) {
     try {
-    const res = await fetch('http://localhost:4444/api/items');
+    const query = new URLSearchParams();
+    if(params) query.append("params", params);
+    if(partyIDs.length) query.append("partyIDs", partyIDs.join(","));  
+    const res = await fetch(`http://localhost:4444/api/items?${query.toString()}`);
 
     if (!res.ok) {
       throw new Error(`Errore nella fetch, status: ${res.status}`);
@@ -23,6 +28,7 @@ export async function fetchAllProducts() {
     throw new Error(`Errore nel recuperare i dati: ${err.message}`);
   }
 }
+
 
 export async function insertItem(event) {
   event.preventDefault();
@@ -48,19 +54,22 @@ export async function insertItem(event) {
   });
 }
 
+
 export async function deleteItem(id){
 
   fetch(`http://localhost:4444/api/delete_item/${id}`, {method:'DELETE'})
     .then(res => res.json())
-      .then(data => {console.log("eliminato: "+data)})
+      .then(data => {console.log("eliminato: " + data)})
   .catch (err => {
     console.error("Impossibile elimanare articolo: " + err);
   });
 }
 
+
 export async function modifyItem(){
   //TO DO
 }
+
 
 export async function queryItems(name = null, price = null, date = null) {
   try {
@@ -76,6 +85,7 @@ export async function queryItems(name = null, price = null, date = null) {
     throw new Error(`Errore nel recuperare i dati: ${err.message}`);
   }
 }
+
 
 export async function getPartys() {
   try{

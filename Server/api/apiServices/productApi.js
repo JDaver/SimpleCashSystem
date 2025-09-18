@@ -6,8 +6,8 @@ const partyController = require('../../controllers/controllerParty');
 
 exports.createProduct = async(req,res) => {
     const { product } = req.body || {};
-    const { partyIDs = [], ...productData } = product || {};
-    console.log(partyIDs);
+    let { partyIDs = [], ...productData } = product || {};
+    partyIDs = Array.isArray(partyIDs) ? partyIDs : [partyIDs];
     let relationRes = "nessuna relazione con feste";
     try{
         const productRes = await productController.createProduct(productData);
@@ -50,7 +50,8 @@ exports.updateProduct = async (req,res) => {
     }
 
 exports.deleteProduct = async (req,res) => {
-    const {product_id} = req.body || {};
+    const {product_id} = req.params || {};
+    console.log(product_id);
     try{
         await Product_party.deleteProduct_party_relations(product_id);
         const result = await productController.deleteProduct(product_id);
@@ -61,15 +62,19 @@ exports.deleteProduct = async (req,res) => {
 }
 
 exports.fetchRelatedProducts = async (req,res) => {
-    const{params,partyIds} = req.params || {};
+    const params = req.query.params || null;
+    const partyIDs = req.query.partyIDs ? req.query.partyIDs.split(",") : [];
+      console.log(partyIDs);
     let results = [];
-    const parsedPartyIds = Array.isArray(partyIds) ? partyIds : (partyIds ? partyIds.split(',') : []);
-
+    const parsedPartyIds = Array.isArray(partyIDs) ? partyIDs : (partyIDs ? partyIDs.split(',') : []);
+    console.log(parsedPartyIds);
     try{
-        if(Array.isArray(parsedPartyIds) && parsedPartyIds > 0){
+        if(Array.isArray(parsedPartyIds) && parsedPartyIds.length > 0){
             results = await Product_party.fetchProductsForParty(params, parsedPartyIds);
+            
         }else{
             results = await productController.fetchAllProducts(params); 
+            console.log(results);
         }
         const formattedData = results.map(row => ({
             id: row.product_id,
@@ -77,8 +82,8 @@ exports.fetchRelatedProducts = async (req,res) => {
             price: row.price,
             allergens: row.allergens 
         }));
-
-        res.status(200).json(formattedData);
+        
+        res.status(200).json({formattedData});
     }catch(err) {
         console.error(`controller cathced an error -> ${err}`);
         res.status(500).json({error: "Impossibile scaricare informazioni sugli articoli."});

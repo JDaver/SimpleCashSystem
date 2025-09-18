@@ -60,6 +60,7 @@ module.exports = class Product {
             column: "name",
             order: "DESC",
             filterParams: "isbeverage",
+            isGlobal: true,
             valueParams:false
         }
         const {column, order, filterParams, valueParams} = {...defaults, ...filters};

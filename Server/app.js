@@ -6,9 +6,10 @@ const apiCall = require('./api/ApiHandler');
 const cors = require('cors')
 const reactPath = path.join(__dirname, '..', 'Views', 'dist');
 app.use(express.static(reactPath));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(express.json());
+
 
 //API handler middleware
 app.use('/api',apiCall);

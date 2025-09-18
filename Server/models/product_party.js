@@ -70,37 +70,41 @@ module.exports = class Product_party{
             column: "name",
             order: "DESC",
             isBeverage: false,
-            isGlobal: true
+            isGlobal: false
         }
-
+        console.log(defaults);
         const {column, order, isBeverage, isGlobal} = {...defaults, ...params};
-        safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";
+        const safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";
 
         const conditions = [
             format("pp.party_id in (%L)",relatedIDs),
-            format("p.isBeverage = %L",isBeverage),
-            format("p.isGlobal = %L",isGlobal) 
+            format("p.isbeverage = %L",isBeverage),
+            format("p.isglobal = %L",isGlobal) 
         ]
 
-        try{
-            let queryConstructed = format(`
-                    SELECT 
-                        p.id as product_id, 
+        
+            try {
+                let queryConstructed = format(`
+                    SELECT DISTINCT
+                        p.id AS product_id, 
                         p.name AS product_name, 
                         p.price AS price, 
                         p.allergens AS allergens
                     FROM product p
                     INNER JOIN product_party pp ON p.id = pp.product_id
-                    WHERE %s`,conditions.join(` AND `));
-
-                    queryConstructed += format("ORDER BY %I %s",column,safeOrder);
-            
-                    const result = await pool.query(queryConstructed);
-                    return result.rows;
+                    WHERE %s
+                    ORDER BY %I %s`,
+                    conditions.join(" AND "),
+                    column,
+                    safeOrder
+                );
+                const result = await pool.query(queryConstructed);
+                console.log(result.rows);
+                return result.rows;
         }catch(err){
             console.log("error: ", err);
             throw new Error(`Error from DB in fetchProductsForParty(): ${err.message}`);
         }
     }
-}
+    }
         

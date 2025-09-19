@@ -1,15 +1,15 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useMemo, useReducer } from 'react';
 import { selectedItemsReducer } from '../reducers/SelectedItemsReducer';
 
 export function useSelectedItemsReducer() {
-  const [selectedItems, dispatch] = useReducer(selectedItemsReducer, []);
+  const [selectedIds, dispatch] = useReducer(selectedItemsReducer, []);
 
-  const toggleItem = useCallback(item => {
-    dispatch({ type: 'TOGGLE', item });
+  const toggleItem = useCallback(id => {
+    dispatch({ type: 'TOGGLE', id });
   }, []);
 
-  const selectAll = useCallback(items => {
-    dispatch({ type: 'SELECT_ALL', items });
+  const selectAll = useCallback(ids => {
+    dispatch({ type: 'SELECT_ALL', ids });
   }, []);
 
   const clearSelection = useCallback(() => {
@@ -17,7 +17,7 @@ export function useSelectedItemsReducer() {
   }, []);
 
   return {
-    selectedItems,
+    selectedIds,
     toggleItem,
     selectAll,
     clearSelection,

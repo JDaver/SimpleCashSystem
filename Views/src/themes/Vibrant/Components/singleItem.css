@@ -38,6 +38,7 @@
 .sngl-item > span{
     font-size: 1.5em;
 }
+
 .extra,.label-1{
   grid-column: 1;
 }

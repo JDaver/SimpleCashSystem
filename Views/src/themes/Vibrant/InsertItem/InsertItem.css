@@ -94,11 +94,11 @@ justify-content: center;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 2.5rem;
+  gap: 5rem;
   font-size: 1.3rem;
 }
 
 .checkBox{
-  transform: scale(2);
+  transform: scale(2.8);
   margin-left: 12px;
 }

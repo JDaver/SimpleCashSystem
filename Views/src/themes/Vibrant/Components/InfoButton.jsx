@@ -1,4 +1,4 @@
-import { Bars3BottomLeftIcon, TrashIcon} from '@heroicons/react/24/outline';
+import { ListBulletIcon, TrashIcon} from '@heroicons/react/24/outline';
 import { useState,useRef } from 'react';
 import { useClickOutside } from '@hooks/useClickOutside';
 import { deleteItem } from '@utils/productService';
@@ -9,7 +9,7 @@ export default function InfoButton({
    ...props 
   }){
   
-  let Icon = Bars3BottomLeftIcon;  
+  let Icon = ListBulletIcon;  
   
 
   const items = Array.isArray(Data) ? Data : Data ? [Data] : [];
@@ -30,7 +30,7 @@ export default function InfoButton({
       onClick={() =>handleClick()} 
       ref={popOverRef}
       className={(show ? 'info-button-active' : 'info-button')}>
-        <Icon  style={{ width: props.width || 24, height: props.height || 24 }} />
+      <Icon  style={{ width: props.width || 24, height: props.height || 24 }} />
       </button> }
       
       {show && items.length > 0 && (

@@ -28,15 +28,17 @@ export default function CashierScreen(){
 
             {error && notLoaded}
             {loading && isLoading}
-            {products && products.map((product)=>{
-                        return (
-                          <SingleItem key={product.id}
-                            mode='cash'
-                            Record={product}
-                            InfoComponent={InfoButton}
-                            ActionButtonsComponent={CashierButtons}
-                          />
-                        )})}
+            
+            {products && 
+            products.map((product)=>{
+              return (
+                <SingleItem key={product.id}
+                  mode='cash'
+                  Record={product}
+                  InfoComponent={InfoButton}
+                  ActionButtonsComponent={CashierButtons}
+                />
+              )})}
           </ul>
         </div>
       </div>

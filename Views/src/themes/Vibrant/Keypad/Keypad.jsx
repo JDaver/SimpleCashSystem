@@ -17,8 +17,8 @@ function Keypad({ keys = [], preset = null, onInput, onDelete, showDelete = true
   const longPress = useLongPress(() => {
     onErase();
   },500);
-
-  /*TODO FIXX range action of key buttons, it isn't sensitive on whole grid single box */
+  
+//verify best practice for touch behaviour
   return (
     <div className={`${preset}`}>
       
@@ -30,7 +30,7 @@ function Keypad({ keys = [], preset = null, onInput, onDelete, showDelete = true
                 key={key}
                 type="button"
                 className={`key-alphabet`}
-                onTouchEnd={() => onInput?.(key)} //verify best practice for touch behaviour
+                onTouchEnd={() => onInput?.(key)} 
                 aria-label={`Key ${key}`}>
               {key}
               </button>

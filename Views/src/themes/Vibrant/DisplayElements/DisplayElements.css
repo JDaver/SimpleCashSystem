@@ -17,28 +17,3 @@
     will-change: transform;
 }
 
-
-/*NTH (odd/even) logic*/
-.sngl-item:nth-of-type(even){
-  background-color: var(--blue-velvet);
-  transition: background-color 0.2s ease, transform 0.5s ease;
-}
-.display-element-DelMode .sngl-item:nth-of-type(even){
-  background-color: var(--del-mode);
-}
-.sngl-item:not(:last-child) {
-  border-bottom: 1px solid var(--neutral-900);
-}
-.sngl-item:not(:first-child) {
- border-top: 1px solid var(--neutral-900);
-}
-
-.slide-button{
-  margin: 1rem;
-  width: 55px;
-  height: 55px;
-}
-
- .sngl-item:nth-of-type(even) .slide-button{
-  filter:saturate(50%);
-}

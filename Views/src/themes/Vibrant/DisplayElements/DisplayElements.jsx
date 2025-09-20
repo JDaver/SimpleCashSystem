@@ -1,119 +1,22 @@
 import { useState, useRef, useCallback } from "react";
-import { useFetchAll,useFetchItems } from "@hooks/productsHook";
+import { useFetchReceipts } from "@hooks/receiptHook";
 import { useLongPress } from "@hooks/useLongPress";
 import SingleItem from "../Components/SingleItem";
 import './DisplayElements.css';
-import { useSwipe } from "@hooks/useSwipe";
-import SlideButton from "./SlideButton";
-import { useFetchReceipts } from "@hooks/receiptHook";
-import { useInfiniteScroll } from "@hooks/useInfiniteScroll";
-import InfoButton from "../Components/InfoButton";
 
-const labelManage = ["Allergeni","Nome Prodoto","Prezzo","Modifica" ];
-const labelDeleteMode = ["Elimina","Nome Prodoto","Prezzo","Seleziona" ];
-const labelReceiptColection = ["Articoli","Scontrino e data","Totale" ];
-const labelItemCollection = ["In quanti scontrini","Nome Prodotto","Venduti"];
+import { getProps } from "./DisplayElementsHook";
+import { useManageItemActions } from "../../../contexts/ManageItem/ManageItemActionsContext";
 
 
-function DisplayElements({topic = "manage", swipeLeft}){
-const { products } = useFetchAll();
-const { records: items } = useFetchItems();
-const { receipts, hasMoreNext,fetchNext } = useFetchReceipts();
-const [swipingItem, setSwipingItem] = useState({ id: null, deltaX: 0 });
+
+function DisplayElements({topic = "manage"}){
+const {handleClear} = useManageItemActions();
 const [activeDelMode,setActiveDeleteMode] = useState(false);
-const recordBeingSwipedRef = useRef(null);
 const longPress = useLongPress(() => setActiveDeleteMode(prev => !prev),2000);
-const { bottomLoaderRef, isLoading } = useInfiniteScroll(fetchNext, hasMoreNext);
+const {labels, records, actionComponent, sideEffectsComponent, mode, bottomLoaderRef} = getProps(topic,activeDelMode);
 
-const isItemBeingSwiped = useCallback(
-    product => swipingItem.id === product.id && Math.abs(swipingItem.deltaX) > 5,
-    [swipingItem]
-  );
+if(!activeDelMode) handleClear();
 
-
-
-const swipeHandlers = useSwipe({
-    onSwipeLeft: () => {
-      if (recordBeingSwipedRef.current) {
-        console.log("swipe avvenuto");
-        swipeLeft(recordBeingSwipedRef.current);
-      }
-    },
-    onSwipeProgress: ({ deltaX }) => {
-      if (recordBeingSwipedRef.current) {
-        setSwipingItem({ id: recordBeingSwipedRef.current.id, deltaX });
-      }
-    },
-    threshold: 30,
-  });
-
-   const handleTouchStart = useCallback(
-    (e, product) => {
-      recordBeingSwipedRef.current = product;
-        console.log(recordBeingSwipedRef);
-      swipeHandlers.onTouchStart(e);
-      setSwipingItem({ id: product.id, deltaX: 0 });
-    },
-    [swipeHandlers]
-  );
-
-  const handleTouchMove = useCallback(
-    e => {
-      swipeHandlers.onTouchMove(e);
-      console.log(swipingItem);
-    },
-    [swipeHandlers]
-  );
-
-  const handleTouchEnd = useCallback(
-    e => {
-      swipeHandlers.onTouchEnd(e);
-      
-
-      setSwipingItem({ id: null, deltaX: 0 });
-    },
-    [swipeHandlers]
-  );
-
-
-let labels = [];
-let records = [];
-let actionComponent = null;
-let sideEffectsComponent = null;
-let mode = topic;
-
-
-switch(topic) {
-    case "manage":
-        labels = activeDelMode ? labelDeleteMode : labelManage;
-        records = products;
-        actionComponent = activeDelMode ? null : <SlideButton/>;
-        sideEffectsComponent = InfoButton;
-        mode = activeDelMode ? "delete" : "manage";
-        break;
-    
-    case "item":
-        labels = labelItemCollection;
-        records = items || [];
-        actionComponent = null;
-        sideEffectsComponent = <InfoButton/>
-        mode = "item"
-        break;
-    
-    case "receipt":
-        labels = labelReceiptColection;
-        records = receipts || []; //funtion for receipts
-        actionComponent = null;
-        sideEffectsComponent = <InfoButton/>
-        mode = "receipt";
-        break;
-    default:
-        labels = [];
-        records = [];
-        actionComponent = null;
-        sideEffectsComponent = null;
-        mode = topic;
-}
 return(
     
    <div className="elements-container">
@@ -127,7 +30,7 @@ return(
                         <SingleItem key={record.id}
                         mode={mode}
                         Record={record} 
-                        ButtonsComponent={actionComponent}
+                        ActionButtonsComponent={actionComponent}
                         InfoComponent={sideEffectsComponent}
                         />
                     )}))}

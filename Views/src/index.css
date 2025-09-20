@@ -41,10 +41,10 @@
   );
   --red-btn: linear-gradient(
     50deg,
-    oklch(55.012% 0.22576 29.223 / 0.788),
+    oklch(63.818% 0.18939 24.21 / 0.788),
     oklch(62.793% 0.25768 29.223 / 0.709)
   );
-  --del-mode: oklch(63.487% 0.19475 24.57 / 0.505);
+  --del-mode: oklch(49.853% 0.18619 27.342 / 0.28);
   --gray-soft: oklch(80% 0 0);
   --gray-velvet: oklch(90% 0 0);
   --perfect-green: oklch(81.171% 0.24266 146.175);

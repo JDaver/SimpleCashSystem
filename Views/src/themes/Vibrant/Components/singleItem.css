@@ -3,13 +3,17 @@
   height: 100%;
   padding: 0.5rem;
   display: grid;
-  grid-template-columns: 150px 1fr 1fr auto;
+  grid-template-columns: 150px 1fr 1fr 1fr;
   align-items: center;
   position: relative;
 }
 
 .sngl-item:nth-of-type(even){
   background-color: var(--blue-velvet);
+  transition: background-color 0.2s ease, transform 0.5s ease;
+}
+.display-element-DelMode .sngl-item:nth-of-type(even){
+  background-color: var(--del-mode);
 }
 .sngl-item:not(:last-child) {
   border-bottom: 1px solid var(--neutral-900);
@@ -41,6 +45,7 @@
 
 .extra,.label-1{
   grid-column: 1;
+  justify-self: start;
 }
 .first-record, .label-2{
   grid-column: 2;
@@ -49,6 +54,25 @@
 .second-record,.label-3{
     grid-column: 3;
     text-align: center;
+}
+.action-record, .label-4{
+  grid-column: 4;
+  justify-self: end;
+}
+
+.red-cross{
+ margin: 1rem;
+  width: 50px;
+  height: 55px;
+}
+.slide-button{
+  margin: 1rem;
+  width: 55px;
+  height: 55px;
+}
+
+ .sngl-item:nth-of-type(even) .slide-button{
+  filter:saturate(50%);
 }
 
 

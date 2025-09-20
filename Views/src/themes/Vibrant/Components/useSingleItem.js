@@ -28,7 +28,7 @@ export function getComponentProps(topic,record,infoData){
             }
         case 'manage':
             return {
-                actionProps: {product: record},
+                actionProps: {record},
                 infoProps: {Data: dataToShow, active: (dataToShow.length > 0 ? true : false),  width: 40, height: 40 }
             }
         case 'item' :
@@ -43,8 +43,8 @@ export function getComponentProps(topic,record,infoData){
             }
         case 'delete' :
             return{
-                actionProps: {},
-                infoProps: {}
+                actionProps: {product: record},
+                infoProps: {record}
             }
         default:
             return {actionProps: {}, infoProps: {}}

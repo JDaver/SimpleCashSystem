@@ -1,15 +1,14 @@
-import InfoButton from './InfoButton';
 import { getComponentProps } from './useSingleItem';
 import './singleItem.css';
 
 export default function SingleItem({
-  mode = 'display',
+  mode = 'manage',
   Record = {}, 
   ActionButtonsComponent = null,
   InfoComponent = null, 
   PlaceHolders = null 
 }) {
-
+  
   const {allergens,items,inHowManyReceipts, name,price,id,total,date,quantity} = Record;
   const infoData = {allergens, items, inHowManyReceipts};
   const {actionProps, infoProps} = getComponentProps(mode, Record, infoData)
@@ -25,7 +24,10 @@ export default function SingleItem({
           <span className="second-record">{price ? price + " €" : total ? total + " €" : quantity } </span>
         </>}
         
-      {ActionButtonsComponent && <ActionButtonsComponent {...actionProps}/> }
+      {ActionButtonsComponent && 
+      <span  className="action-record">
+        <ActionButtonsComponent {...actionProps}/>
+      </span>}
 
       {PlaceHolders && PlaceHolders.map((label,i) =>{
         return(

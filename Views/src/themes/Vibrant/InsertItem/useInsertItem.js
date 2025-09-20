@@ -6,7 +6,8 @@ export  function handleInputs(key){
     const [name, setName] = useState('');
  
     const inputPrice = (key) => {
-        if (key === '.' && price.includes('.')) return;
+        if (key === '.' && (price.includes('.') || price.length == 0)) return;
+        if (key === '0' && price.at(0) === '0') return;
         setPrice(prev => prev + key);
     }
     const singleDeletePrice = () => setPrice(prev => prev.slice(0, -1));

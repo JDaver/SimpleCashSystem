@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useFetchReceipts } from "@hooks/receiptHook";
 import { useLongPress } from "@hooks/useLongPress";
 import SingleItem from "../Components/SingleItem";
@@ -15,7 +15,9 @@ const [activeDelMode,setActiveDeleteMode] = useState(false);
 const longPress = useLongPress(() => setActiveDeleteMode(prev => !prev),2000);
 const {labels, records, actionComponent, sideEffectsComponent, mode, bottomLoaderRef} = getProps(topic,activeDelMode);
 
-if(!activeDelMode) handleClear();
+useEffect(() => {
+    if(!activeDelMode) handleClear();
+},[activeDelMode]);
 
 return(
     

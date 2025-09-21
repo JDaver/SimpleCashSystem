@@ -1,18 +1,52 @@
 import { useState, useEffect, useRef } from "react";
 import { fetchAllProducts, getPartys } from "@utils/productService";
 import { queryItems } from "@utils/productService";
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { deleteItem } from "../utils/productService";
+
 
 
 export function useFetchAll(){
+  const queryClient = useQueryClient();
+
   const {data, isLoading, error} = useQuery({
     queryKey:["products"],
     queryFn: fetchAllProducts,
+    staleTime: 1000*60*5
+  });
+
+  const {mutate: deleteProduct, isPending: deleting } = useMutation({
+    mutationFn: deleteItem,
+    onMutate: async (id) => {
+
+      await queryClient.invalidateQueries({queryKey:["products"]});
+      const ids = Array.isArray(id) ? id : [id];
+
+      const rollBackData = queryClient.getQueryData(["products"]);
+
+      queryClient.setQueryData(["products"], (old) => {
+        return {
+          ...old,
+          formattedData: old.formattedData.filter((p) => !ids.includes(p.id))
+        };
+      });
+      return { rollBackData };
+    },
+    onError: (err, id, context) => {
+      if(context?.rollBackData) queryClient.setQueryData(["products"],context.rollBackData);
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["products"] })
   });
 
   const products = data?.formattedData ?? [];
-  return {products, loading: isLoading, error};
+  return {
+    products, 
+    loading: isLoading, 
+    error,
+    deleteProduct,
+    deleting
+};
 }
 
 export function useFetchItems(){

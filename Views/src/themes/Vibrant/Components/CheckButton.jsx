@@ -7,7 +7,6 @@ export default function CheckButton({record}){
 const {selectedItems} = useManageItemState();
 const {toggleItem} = useManageItemActions();
 
-console.log(record);
 const isSelected = (selectedItems.includes(record));
 
 const selectItem = useCallback ( product => {

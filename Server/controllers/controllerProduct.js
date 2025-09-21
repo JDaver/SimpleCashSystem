@@ -23,6 +23,11 @@ exports.updateProduct = async (product) => {
 }
 
 exports.deleteProduct = async (id) => {
+        
+        if(!Array.isArray(id)){
+                id = [id];
+        }
+
         try {
                 const result = await Product.deleteProd(id);
                 return result;

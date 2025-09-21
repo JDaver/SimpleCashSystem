@@ -5,7 +5,7 @@ import { ManageItemStateContext } from './ManageItemStateContext';
 import { ManageItemActionsContext } from './ManageItemActionsContext';
 
 export const ManageItemProvider = ({ children }) => {
-  const { products: fetchedProducts } = useFetchAll();
+  const { products, deleteProduct } = useFetchAll();
   const { selectedItems, selectAll, toggleItem, clearSelection } = useSelectedItemsReducer();
   const [activeTable, setActiveTable] = useState('box1');
   const [shouldResetForm, setShouldResetForm] = useState(false);
@@ -15,9 +15,7 @@ export const ManageItemProvider = ({ children }) => {
   const selectionMode = selectedItems.length > 0;
   const isModalOpen = pendingDelete.items.length > 0;
 
-  const memoizedProducts = useMemo(() => {
-    return fetchedProducts.filter(product => !deletedItemIds.includes(product.id));
-  }, [fetchedProducts, deletedItemIds]);
+  const memoizedProducts = products;
 
   const deleteItem = useCallback(
     itemsToDelete => {
@@ -41,8 +39,10 @@ export const ManageItemProvider = ({ children }) => {
   }, [clearSelection]);
 
   const handleDeleteConfirmed = useCallback(() => {
-    deleteItem(pendingDelete.items);
-  }, [deleteItem, pendingDelete]);
+    console.log(pendingDelete.id);
+    // deleteProduct(selectedItems.id);
+   
+  },[deleteProduct, pendingDelete?.id]);
 
   const handleSwipeLeft = useCallback(item => {
     selectedItemRef.current = item;
@@ -92,6 +92,7 @@ export const ManageItemProvider = ({ children }) => {
       handleDeleteConfirmed,
       handleSwipeLeft,
       handleTableChange,
+      deleteProduct
     }),
     [
       setPendingDelete,
@@ -102,6 +103,7 @@ export const ManageItemProvider = ({ children }) => {
       handleDeleteConfirmed,
       handleSwipeLeft,
       handleTableChange,
+      deleteProduct
     ]
   );
 

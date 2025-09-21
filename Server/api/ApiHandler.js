@@ -9,7 +9,7 @@ const party = require('../controllers/controllerParty');
 
 //Products related Operations: DONE
 router.post('/insert_item', productService.createProduct);
-router.delete('/delete_item/:product_id', productService.deleteProduct);
+router.delete('/delete_item', productService.deleteProduct);
 router.put('/update_item',productService.updateProduct);
 router.get('/items',productService.fetchRelatedProducts);
 

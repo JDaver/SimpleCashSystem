@@ -64,7 +64,7 @@ exports.deleteProduct = async (req,res) => {
 exports.fetchRelatedProducts = async (req,res) => {
     const params = req.query.params || null;
     const partyIDs = req.query.partyIDs ? req.query.partyIDs.split(",") : [];
-      console.log(partyIDs);
+
     let results = [];
     const parsedPartyIds = Array.isArray(partyIDs) ? partyIDs : (partyIDs ? partyIDs.split(',') : []);
     console.log(parsedPartyIds);

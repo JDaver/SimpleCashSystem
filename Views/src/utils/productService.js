@@ -1,3 +1,4 @@
+//private helper
 async function productConstructor(formData) {
   const data = {}; 
    for (const key of formData.keys()) {
@@ -13,6 +14,7 @@ async function productConstructor(formData) {
 
 export async function fetchAllProducts(params=null,partyIDs = [] ) {
     try {
+    
     const query = new URLSearchParams();
     if(params) query.append("params", params);
     if(partyIDs.length) query.append("partyIDs", partyIDs.join(","));  
@@ -56,8 +58,10 @@ export async function insertItem(event) {
 
 
 export async function deleteItem(id){
+  const query = new URLSearchParams();
+  if(id.length) query.append("product_id",id.join(","));
 
-  fetch(`http://localhost:4444/api/delete_item/${id}`, {method:'DELETE'})
+  fetch(`http://localhost:4444/api/delete_item/${query.toString()}`, {method:'DELETE'})
     .then(res => res.json())
       .then(data => {console.log("eliminato: " + data)})
   .catch (err => {

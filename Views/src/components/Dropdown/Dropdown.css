@@ -30,7 +30,7 @@
 }
 
 .dropdown__content {
-  background-color: var(--neutral-200);
+  background-color: var(--neutral-100);
   border-radius: 10px;
   box-shadow: 0 4px 6px -1px var(--shadow);
   display: flex;

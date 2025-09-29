@@ -1,0 +1,22 @@
+.selected-items {
+  color: var(--neutral-900);
+  width: 12ch;
+}
+
+.selection-btn {
+  color: oklch(65.68% 0.233 257.2);
+}
+
+.toolbar__button:disabled,
+.toolbar__button.trigger:disabled {
+  color: var(--neutral-400);
+}
+
+.toolbar__button:active:not(:disabled) {
+  color: var(--neutral-700);
+}
+
+.toolbar__button.trigger {
+  background-color: transparent;
+  color: oklch(62.5% 0.27 27);
+}

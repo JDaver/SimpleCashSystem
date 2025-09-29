@@ -1,116 +1,17 @@
-import { useFetchAll } from '@hooks/productsHook';
-import { useSelectedItemsReducer } from '@hooks/useSelectedItemsReducer';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { ManageItemStateContext } from './ManageItemStateContext';
-import { ManageItemActionsContext } from './ManageItemActionsContext';
+import { EditingProvider } from './EditingProvider';
+import { ProductsProvider } from './ProductsProvider';
+import { SelectionProvider } from './SelectionProvider';
+import { UIProvider } from './UIProvider';
 
 export const ManageItemProvider = ({ children }) => {
-  const { products: fetchedProducts } = useFetchAll();
-  const { selectedItems, selectAll, toggleItem, clearSelection } = useSelectedItemsReducer();
-  const [activeTable, setActiveTable] = useState('box1');
-  const [shouldResetForm, setShouldResetForm] = useState(false);
-  const [deletedItemIds, setDeletedItemIds] = useState([]);
-  const [pendingDelete, setPendingDelete] = useState({ items: [] });
-  const selectedItemRef = useRef(null);
-  const selectionMode = selectedItems.length > 0;
-  const isModalOpen = pendingDelete.items.length > 0;
-
-  const memoizedProducts = useMemo(() => {
-    return fetchedProducts.filter(product => !deletedItemIds.includes(product.id));
-  }, [fetchedProducts, deletedItemIds]);
-
-  const deleteItem = useCallback(
-    itemsToDelete => {
-      const idsToDelete = (Array.isArray(itemsToDelete) ? itemsToDelete : [itemsToDelete]).map(
-        item => item.id
-      );
-
-      setDeletedItemIds(prev => [...prev, ...idsToDelete]);
-      clearSelection();
-      setPendingDelete({ items: [] });
-    },
-    [clearSelection]
-  );
-
-  const handleSelectAll = useCallback(() => {
-    selectAll(memoizedProducts);
-  }, [selectAll, memoizedProducts]);
-
-  const handleClear = useCallback(() => {
-    clearSelection();
-  }, [clearSelection]);
-
-  const handleDeleteConfirmed = useCallback(() => {
-    deleteItem(pendingDelete.items);
-  }, [deleteItem, pendingDelete]);
-
-  const handleSwipeLeft = useCallback(item => {
-    selectedItemRef.current = item;
-    setShouldResetForm(false);
-    setActiveTable('box2');
-  }, []);
-
-  const handleTableChange = useCallback(nextId => {
-    if (nextId === 'box1') {
-      selectedItemRef.current = null;
-      setShouldResetForm(true);
-    } else {
-      setShouldResetForm(false);
-    }
-    setActiveTable(nextId);
-  }, []);
-
-  const stateValue = useMemo(
-    () => ({
-      selectedItems,
-      selectionMode,
-      isModalOpen,
-      pendingDelete,
-      activeTable,
-      shouldResetForm,
-      selectedItemRef,
-      memoizedProducts,
-    }),
-    [
-      selectedItems,
-      selectionMode,
-      isModalOpen,
-      pendingDelete,
-      activeTable,
-      shouldResetForm,
-      memoizedProducts,
-    ]
-  );
-
-  const actionsValue = useMemo(
-    () => ({
-      setPendingDelete,
-      toggleItem,
-      deleteItem,
-      handleSelectAll,
-      handleClear,
-      handleDeleteConfirmed,
-      handleSwipeLeft,
-      handleTableChange,
-    }),
-    [
-      setPendingDelete,
-      toggleItem,
-      deleteItem,
-      handleSelectAll,
-      handleClear,
-      handleDeleteConfirmed,
-      handleSwipeLeft,
-      handleTableChange,
-    ]
-  );
-
   return (
-    <ManageItemStateContext.Provider value={stateValue}>
-      <ManageItemActionsContext.Provider value={actionsValue}>
-        {children}
-      </ManageItemActionsContext.Provider>
-    </ManageItemStateContext.Provider>
+    <ProductsProvider>
+      <SelectionProvider>
+        <EditingProvider>
+          <UIProvider>{children}</UIProvider>
+        </EditingProvider>
+      </SelectionProvider>
+    </ProductsProvider>
   );
 };
 

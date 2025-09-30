@@ -39,7 +39,7 @@ function ManageItem() {
       {
         id: 'box1',
         title: 'Modifica Articoli',
-        content: <DisplayElements topic='manage' isInteractive />,
+        content: <DisplayElements topic="manage" isInteractive />,
         icon: <PencilIcon width={30} height={20} />,
       },
       {

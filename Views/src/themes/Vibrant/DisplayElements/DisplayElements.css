@@ -10,6 +10,7 @@
   flex: 1;
   height:450px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .display-element-DelMode .sngl-item > *{

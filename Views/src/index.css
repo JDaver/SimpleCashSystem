@@ -17,11 +17,29 @@
   --gradient: linear-gradient(to bottom, var(--gradient-start) 0%, var(--gradient-end) 100%);
 
   /*Colors Vibrant*/
-  --dynamic-bg1: linear-gradient(50deg, oklch(63.184% 0.14697 155.744), oklch(89.095% 0.0918 85.097));
-  --dynamic-bg2: linear-gradient(50deg,var(--neutral-700), var(--blue-dark), var(--perfect-green));
-  --dynamic-bg3: linear-gradient(45deg,var(--neutral-700)20%, var(--blue-dark)50%, var(--perfect-green)100%);
-  --gradient-label2: linear-gradient(50deg,oklch(62.793% 0.25768 29.223 / 0.709), var(--neutral-700) );
-  --gradient-label:linear-gradient(to right,oklch(55.012% 0.22576 29.223 / 0.788) 0%, var(--neutral-700)30%, var(--blue-dark)75%);
+  --dynamic-bg1: linear-gradient(
+    50deg,
+    oklch(63.184% 0.14697 155.744),
+    oklch(89.095% 0.0918 85.097)
+  );
+  --dynamic-bg2: linear-gradient(50deg, var(--neutral-700), var(--blue-dark), var(--perfect-green));
+  --dynamic-bg3: linear-gradient(
+    45deg,
+    var(--neutral-700) 20%,
+    var(--blue-dark) 50%,
+    var(--perfect-green) 100%
+  );
+  --gradient-label2: linear-gradient(
+    50deg,
+    oklch(62.793% 0.25768 29.223 / 0.709),
+    var(--neutral-700)
+  );
+  --gradient-label: linear-gradient(
+    to right,
+    oklch(55.012% 0.22576 29.223 / 0.788) 0%,
+    var(--neutral-700) 30%,
+    var(--blue-dark) 75%
+  );
   --dynamic-bg: linear-gradient(
     50deg,
     var(--neutral-700),
@@ -49,8 +67,7 @@
   --gray-velvet: oklch(90% 0 0);
   --perfect-green: oklch(81.171% 0.24266 146.175);
   --green-velvet: oklch(61.918% 0.14965 153.932 / 0.346);
-  --blue-abyss:oklch(26.673% 0.08294 258.471);
-  
+  --blue-abyss: oklch(26.673% 0.08294 258.471);
 
   /* Spacing */
   --space-0: 0rem;
@@ -218,7 +235,6 @@ button:focus-visible {
 }
 
 @keyframes vibrateDel {
-
   0% {
     transform: translate(0) rotate(0);
   }
@@ -242,15 +258,14 @@ button:focus-visible {
   }
 }
 
-
 /* Chrome, Safari, Edge, Opera */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }

@@ -6,7 +6,7 @@ import axios from "axios";
 import { deleteItem } from "../utils/productService";
 
 
-
+//Fetch AllProducts
 export function useFetchAll(){
   const queryClient = useQueryClient();
 

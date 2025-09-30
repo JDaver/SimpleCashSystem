@@ -1,45 +1,70 @@
-import { QueueListIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline';
-import { useTheme } from '@contexts/useTheme';
-import { useMemo } from 'react';
-import InsertItem from '@themes/Minimal/InsertItem';
+import { QueueListIcon, ReceiptPercentIcon, FunnelIcon } from '@heroicons/react/24/outline';
+import { useTheme } from '@contexts/Theme/ThemeContext';
+import { useMemo, useState } from 'react';
+import Table from '@components/Table';
+import Toolbar from '@components/Toolbar';
+import Dropdown from '@components/Dropdown';
 import { loadThemedComponent} from '@utils/LoadThemedComponent';
-import DisplayElements from '../themes/Vibrant/DisplayElements';
+import { useManageItemActions, useManageItemState } from '@contexts/ManageItem';
 
-const tables = [
-  { id: 'box1', title: 'Articoli', content : <DisplayElements topic='item'/>, icon: <QueueListIcon width={30} height={20} /> },
-  { id: 'box2', title: 'Scontrini', content : <DisplayElements topic='receipt'/>, icon: <ReceiptPercentIcon width={30} height={20} /> },
-];
+const orderByArr = ['Nome', 'Prezzo', 'Più venduto'];
 
 function Collection() {
-
   const { theme } = useTheme();
-  const TableGroup = useMemo(() => loadThemedComponent(theme, 'TableGroup'), [theme]);
-  const Table = useMemo(() => loadThemedComponent(theme, 'Table'), [theme]);
-  const TableSection = useMemo(() => loadThemedComponent(theme, 'TableSection'), [theme]);
-  const TableControls = useMemo(() => loadThemedComponent(theme, 'TableControls'), [theme]);
+  const DisplayElements = useMemo(() => loadThemedComponent(theme, 'DisplayElements'), [theme]);
+  const [orderBy, setOrderBy] = useState('');
+  const {activeTable} = useManageItemState();
+  const {handleTableChange} = useManageItemActions();
+  const tables = useMemo(() => {
+    return [
+      {
+        id: 'box1',
+        title: 'Storico Venduti',
+        content : <DisplayElements topic='item'/>, 
+        icon: <QueueListIcon width={30} height={20} />,
+      },
+      {
+        id: 'box2',
+        title: 'Scontrini',
+        content : <DisplayElements topic='receipt'/>, 
+        icon: <ReceiptPercentIcon width={30} height={20} />,
+      },
+    ];
+  }, [DisplayElements]);
+
+
 
   return (
-    <TableGroup defaultActive={'box1'}>
-      {tables.map(table => {
-        const DynamicComponent = table.content;
-        return (
-          <Table key={table.id} id={table.id} title={table.title} icon={table.icon}>
-            <TableSection>
-              <TableControls />
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}>
-                {DynamicComponent}
-              </div>
-            </TableSection>
-          </Table>
-        );
-      })}
-    </TableGroup>
+    <Table activeId={activeTable} defaultActive={'box2'} onChange={handleTableChange}> 
+    {tables.map(table => {
+      return(
+        <Table.Item key={table.id} id={table.id} title={table.title} icon={table.icon}>
+            <Table.Section>
+              <Table.Controls>
+                <Toolbar>
+                <Toolbar.Section>
+                    <p>Ordina per:</p>
+                    <Dropdown side="right" selected={orderBy} onChange={setOrderBy}>
+                      <Dropdown.Trigger>
+                        <FunnelIcon width={30} height={20} />
+                      </Dropdown.Trigger>
+                      <Dropdown.Content>
+                        {orderByArr.map(orderBy => (
+                          <Dropdown.Item key={orderBy} option={orderBy}>
+                            <span>{orderBy}</span>
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Content>
+                    </Dropdown>
+                    </Toolbar.Section>
+                  </Toolbar>
+                   </Table.Controls>
+              <Table.Content>{table.content}</Table.Content>
+            </Table.Section>
+          </Table.Item>
+      )
+    })}
+    </Table>
   );
 }
 

@@ -30,7 +30,14 @@ function AppWrapper() {
                 </ManageItemProvider>
               }
             />
-            <Route path="/Collection" element={<Collection />} />
+            <Route
+              path="/Collection"
+              element={
+                <ManageItemProvider>
+                  <Collection />
+                </ManageItemProvider>
+              }
+            />
             <Route path="/SettingsPage" element={<SettingsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

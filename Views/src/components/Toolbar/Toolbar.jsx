@@ -10,9 +10,9 @@ const Toolbar = ({ children, ...props }) => {
 
 Toolbar.displayName = 'Toolbar';
 
-const ToolbarSection = ({ children, ...props }) => {
+const ToolbarSection = ({ side, children, ...props }) => {
   return (
-    <div className="toolbar__section" {...props}>
+    <div side={side} className={`toolbar__section ${side}`} {...props}>
       {children}
     </div>
   );
@@ -21,9 +21,10 @@ const ToolbarSection = ({ children, ...props }) => {
 Toolbar.Section = ToolbarSection;
 ToolbarSection.displayName = 'ToolbarSection';
 
-const ToolbarLabel = ({ children, ...props }) => {
+const ToolbarLabel = ({ className, children, ...props }) => {
+  const combinedClassName = ['toolbar__label', className].filter(Boolean).join(' ');
   return (
-    <span className="toolbar__label" {...props}>
+    <span className={combinedClassName} {...props}>
       {children}
     </span>
   );
@@ -32,9 +33,10 @@ const ToolbarLabel = ({ children, ...props }) => {
 Toolbar.Label = ToolbarLabel;
 ToolbarLabel.displayName = 'ToolbarLabel';
 
-const ToolbarButton = ({ children, ...props }) => {
+const ToolbarButton = ({ className, children, ...props }) => {
+  const combinedClassName = ['toolbar__button', className].filter(Boolean).join(' ');
   return (
-    <button className="toolbar__button" {...props}>
+    <button className={combinedClassName} {...props}>
       {children}
     </button>
   );

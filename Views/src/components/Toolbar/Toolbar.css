@@ -8,20 +8,19 @@
 .toolbar__section {
   align-items: center;
   display: flex;
-  gap: 0.5rem;
   padding-inline: 1rem;
+}
+
+.left {
+  margin-right: auto;
+}
+
+.right {
+  margin-left: auto;
 }
 
 .toolbar__button {
+  color: var(--neutral-900);
   padding-block: 0.625rem;
   padding-inline: 1rem;
-}
-
-.toolbar__button.trigger:disabled {
-  color: grey;
-}
-
-.toolbar__button.trigger {
-  background-color: transparent;
-  color: red;
 }

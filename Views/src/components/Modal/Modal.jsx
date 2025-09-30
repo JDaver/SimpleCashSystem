@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.css';
 
@@ -10,23 +10,26 @@ export function Modal({ children, isOpen: controlledIsOpen, onClose }) {
   const isControlled = controlledIsOpen !== undefined;
   const actualIsOpen = isControlled ? controlledIsOpen : isOpen;
 
-  const open = () => {
+  const open = useCallback(() => {
     if (!isControlled) setIsOpen(true);
-  };
+  }, [isControlled]);
 
-  const close = () => {
+  const close = useCallback(() => {
     if (isControlled) {
       if (onClose) onClose();
     } else {
       setIsOpen(false);
     }
-  };
+  }, [isControlled, onClose]);
 
-  const contextValue = {
-    isOpen: actualIsOpen,
-    open,
-    close,
-  };
+  const contextValue = useMemo(
+    () => ({
+      isOpen: actualIsOpen,
+      open,
+      close,
+    }),
+    [actualIsOpen, open, close]
+  );
 
   return <ModalContext.Provider value={contextValue}>{children}</ModalContext.Provider>;
 }
@@ -95,7 +98,7 @@ Modal.Close = ModalClose;
 
 // ------------ Overlay component
 
-export function ModalOverlay({ closeOnClickOutside = true }) {
+export function ModalOverlay({ closeOnClickOutside = false }) {
   const { close, isOpen } = useModalContext();
 
   if (!isOpen) return null;
@@ -113,10 +116,25 @@ export function ModalOverlay({ closeOnClickOutside = true }) {
 ModalOverlay.displayName = 'ModalOverlay';
 Modal.Overlay = ModalOverlay;
 
+// ------------ Header component
+
+export function ModalHeader({ className, children, ...props }) {
+  const combinedClassName = ['modal__header', className].filter(Boolean).join(' ');
+  return (
+    <div className={combinedClassName} {...props}>
+      {children}
+    </div>
+  );
+}
+
+ModalHeader.displayName = 'ModalHeader';
+Modal.Header = ModalHeader;
+
 // ------------ Content component
 
-export function ModalContent({ children, ...props }) {
+export function ModalContent({ className, children, ...props }) {
   const { isOpen } = useModalContext();
+  const combinedClassName = ['modal__content', className].filter(Boolean).join(' ');
 
   if (!isOpen) return null;
 
@@ -126,7 +144,7 @@ export function ModalContent({ children, ...props }) {
       aria-modal="true"
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
-      className="modal__content"
+      className={combinedClassName}
       {...props}
     >
       {children}
@@ -139,9 +157,10 @@ Modal.Content = ModalContent;
 
 // ------------ Footer component
 
-export function ModalFooter({ children, ...props }) {
+export function ModalFooter({ className, children, ...props }) {
+  const combinedClassName = ['modal__footer', className].filter(Boolean).join(' ');
   return (
-    <div className="modal__footer" {...props}>
+    <div className={combinedClassName} {...props}>
       {children}
     </div>
   );
@@ -152,9 +171,10 @@ Modal.Footer = ModalFooter;
 
 // ------------ Title component
 
-export function ModalTitle({ children, ...props }) {
+export function ModalTitle({ className, children, ...props }) {
+  const combinedClassName = ['modal__title', className].filter(Boolean).join(' ');
   return (
-    <h2 id="modal-title" className="modal__title" {...props}>
+    <h2 id="modal-title" className={combinedClassName} {...props}>
       {children}
     </h2>
   );
@@ -165,9 +185,10 @@ Modal.Title = ModalTitle;
 
 // ------------ Description component
 
-export function ModalDescription({ children, ...props }) {
+export function ModalDescription({ className, children, ...props }) {
+  const combinedClassName = ['modal__description', className].filter(Boolean).join(' ');
   return (
-    <p id="modal-description" className="modal__description" {...props}>
+    <p id="modal-description" className={combinedClassName} {...props}>
       {children}
     </p>
   );

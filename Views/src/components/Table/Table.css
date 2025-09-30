@@ -20,6 +20,8 @@
 
 .table.active {
   background-color: var(--neutral-300);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   width: 95%;
 }
 
@@ -102,12 +104,6 @@
   position: relative;
   width: 100%;
   z-index: 1;
-}
-
-.table__controls-inner {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
 }
 
 .check-icon-wrapper {

@@ -1,62 +1,47 @@
-import { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Keypad from '@themes/Minimal/Keypad';
-import Dropdown from '@components/Dropdown';
 import { insertItem } from '../../../utils/productService';
-import { useManageItemState } from '@contexts/ManageItem';
 import './InsertItem.css';
-import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-
-const allergensArr = [
-  'Cereali contenenti glutine',
-  'Crostacei',
-  'Uova',
-  'Pesce',
-  'Arachidi',
-  'Soia',
-  'Latte',
-  'Frutta a guscio',
-  'Sedano',
-  'Semi di sesamo',
-  'Senape',
-  'Anidride solforosa e solfiti',
-  'Lupini',
-  'Molluschi',
-];
+import { useEditingContext } from '@contexts/ManageItem';
+import AllergensDropdown from '@themes/Minimal/AllergensDropdown';
 
 function InsertItem() {
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
   const [allergens, setAllergens] = useState([]);
-  const { selectedItemRef, shouldResetForm } = useManageItemState();
-
-  const itemToEdit = selectedItemRef.current;
+  const { selectedItem, shouldResetForm } = useEditingContext();
 
   useEffect(() => {
     if (shouldResetForm) {
       setName('');
       setPrice('');
       setAllergens([]);
-    } else if (!shouldResetForm && itemToEdit) {
-      setName(itemToEdit.name || '');
-      setPrice(itemToEdit.price?.toString() || '');
-      setAllergens(itemToEdit.allergens || []);
+    } else if (selectedItem) {
+      setName(selectedItem.name || '');
+      setPrice(selectedItem.price?.toString() || '');
+      setAllergens(selectedItem.allergens || []);
     }
-  }, [shouldResetForm, itemToEdit]);
+  }, [shouldResetForm, selectedItem]);
 
-  const fieldSetters = {
-    name: setName,
-    price: setPrice,
-  };
+  const handleNameInput = useCallback(key => {
+    setName(prev => prev + key);
+  }, []);
 
-  const handleInput = (key, field) => {
-    if (field === 'price' && key === ',' && price.includes(',')) return;
+  const handleNameDelete = useCallback(() => {
+    setName(prev => prev.slice(0, -1));
+  }, []);
 
-    fieldSetters[field](prev => prev + key);
-  };
+  const handlePriceInput = useCallback(
+    key => {
+      if (key === ',' && price.includes(',')) return;
+      setPrice(prev => prev + key);
+    },
+    [price]
+  );
 
-  const handleDelete = field => {
-    fieldSetters[field](prev => prev.slice(0, -1));
-  };
+  const handlePriceDelete = useCallback(() => {
+    setPrice(prev => prev.slice(0, -1));
+  }, []);
 
   return (
     <form className="form insert-item" onSubmit={insertItem} method="POST">
@@ -75,11 +60,7 @@ function InsertItem() {
               readOnly
               autoComplete="off"
             />
-            <Keypad
-              preset={'alphabet'}
-              onInput={key => handleInput(key, 'name')}
-              onDelete={() => handleDelete('name')}
-            />
+            <Keypad preset={'alphabet'} onInput={handleNameInput} onDelete={handleNameDelete} />
           </div>
         </div>
         <div className="form__column">
@@ -98,43 +79,22 @@ function InsertItem() {
               readOnly
               autoComplete="off"
             />
-            <Keypad
-              preset={'numeric'}
-              onInput={key => handleInput(key, 'price')}
-              onDelete={() => handleDelete('price')}
-            />
+            <Keypad preset={'numeric'} onInput={handlePriceInput} onDelete={handlePriceDelete} />
           </div>
         </div>
         <div className="form__column">
           <div className="form__field">
-            <Dropdown side={'left'} selected={allergens} onChange={setAllergens} multiple>
-              <Dropdown.Trigger aria-label="Seleziona allergeni">
-                <p>Allergeni</p>
-                <ChevronRightIcon className="rotate" width={20} height={15} />
-              </Dropdown.Trigger>
-              <Dropdown.Content>
-                {allergensArr.map(allergen => {
-                  return (
-                    <Dropdown.Item key={allergen} option={allergen}>
-                      <span className="check-icon-wrapper">
-                        {allergens.includes(allergen) && <CheckIcon width={30} height={20} />}
-                      </span>
-                      <span>{allergen}</span>
-                    </Dropdown.Item>
-                  );
-                })}
-              </Dropdown.Content>
-            </Dropdown>
+            <AllergensDropdown allergens={allergens} setAllergens={setAllergens} />
           </div>
         </div>
       </div>
       <div className="form__button-wrapper">
         <button className="form__button" disabled={!name || !price}>
-          Inserisci Prodotto
+          {`${selectedItem ? 'Modifica' : 'Inserisci'} Prodotto`}
         </button>
       </div>
     </form>
   );
 }
 
-export default InsertItem;
+export default React.memo(InsertItem);

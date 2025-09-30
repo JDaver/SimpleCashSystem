@@ -1,13 +1,16 @@
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import './Keypad.css';
+import React, { useMemo } from 'react';
 
 const PRESET_KEYS = {
-  numeric: ['1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '0'],
+  numeric: '123456789,0'.split(''),
   alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
 };
 
+const MemoArrowLeft = React.memo(ArrowLeftIcon);
+
 function Keypad({ keys = [], preset = null, onInput, onDelete, showDelete = true }) {
-  const finalKeys = preset ? PRESET_KEYS[preset] : keys;
+  const finalKeys = useMemo(() => (preset ? PRESET_KEYS[preset] : keys), [preset, keys]);
 
   return (
     <div className={`keypad ${preset}`}>
@@ -29,11 +32,11 @@ function Keypad({ keys = [], preset = null, onInput, onDelete, showDelete = true
           className={`keypad__key keypad__key-${preset} keypad__key-delete`}
           onClick={onDelete}
         >
-          <ArrowLeftIcon width={40} height={40} />
+          <MemoArrowLeft width={30} height={30} />
         </button>
       )}
     </div>
   );
 }
 
-export default Keypad;
+export default React.memo(Keypad);

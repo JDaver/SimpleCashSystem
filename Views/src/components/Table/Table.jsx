@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import './Table.css';
 
 const TableContext = createContext(null);
@@ -41,7 +41,7 @@ export function useTableContext() {
 
 // --------------- Item Component
 
-const TableItem = ({ id, icon, title, children, ...props }) => {
+const TableItemComponent = ({ id, icon, title, children, ...props }) => {
   const { actualActiveId, handleId } = useTableContext();
   const active = actualActiveId === id;
   const contentRef = useRef(null);
@@ -100,15 +100,17 @@ const TableItem = ({ id, icon, title, children, ...props }) => {
   );
 };
 
-Table.Item = TableItem;
+const TableItem = React.memo(TableItemComponent);
 TableItem.displayName = 'TableItem';
+
+Table.Item = TableItem;
 
 // --------------- Controls Component
 
 const TableControls = ({ children, ...props }) => {
   return (
     <div className="table__controls" {...props}>
-      <div className="table__controls-inner">{children}</div>
+      {children}
     </div>
   );
 };
@@ -131,14 +133,16 @@ TableSection.displayName = 'TableSection';
 
 // --------------- Content Component
 
-const TableContent = ({ children, ...props }) => {
+const TableContentComponent = ({ className, children, ...props }) => {
+  const combinedClassName = `table__content ${className ? ' ' + className : ''}`;
   return (
-    <div className="table__content" {...props}>
+    <div className={combinedClassName} {...props}>
       {children}
     </div>
   );
 };
 
+const TableContent = React.memo(TableContentComponent);
 Table.Content = TableContent;
 TableContent.displayName = 'TableContent';
 

@@ -1,110 +1,146 @@
-const format = require('pg-format');
-const pool = require('../db/db');
-const { deleteProduct } = require('../controllers/controllerProduct');
+const format = require("pg-format");
+const pool = require("../db/db");
+const { deleteProduct } = require("../controllers/controllerProduct");
 
-module.exports = class Product_party{
-    constructor(product_id, relatedIDs = []){
-        this.product_id = parseInt(product_id,10);
-        this.relatedIDs = (relatedIDs || []).map(id => parseInt(id, 10));
+module.exports = class Product_party {
+  constructor(product_id, relatedIDs = []) {
+    this.product_id = parseInt(product_id, 10);
+    this.relatedIDs = (relatedIDs || []).map((id) => parseInt(id, 10));
+  }
+
+  async createProduct_Party() {
+    if (!this.relatedIDs.length)
+      return { message: "Nessuna relazione da inserire" };
+
+    const values = [];
+    const placeholders = this.relatedIDs
+      .map((party_id, i) => {
+        const idx = i * 2;
+        values.push(this.product_id, party_id);
+        return `($${idx + 1}, $${idx + 2})`;
+      })
+      .join(",");
+
+    const query = `INSERT INTO product_party (product_id, party_id) VALUES ${placeholders}`;
+    try {
+      const result = await pool.query(query, values);
+      return result;
+    } catch (err) {
+      console.log("error: ", err);
+      throw new Error(`Error from DB in CreateProduct_party(): ${err.message}`);
     }
+  }
 
-    async createProduct_Party(){
-        if (!this.relatedIDs.length) return { message: "Nessuna relazione da inserire" };
+  async ModifyProduct_Party() {
+    try {
+      if (!this.relatedIDs || this.relatedIDs.length === 0) {
+        await pool.query(`DELETE FROM product_party WHERE product_id = $1`, [
+          this.product_id,
+        ]);
+        return { message: "Tutte le relazioni rimosse" };
+      }
 
-        const values = [];
-        const placeholders = this.relatedIDs.map((party_id,i) => {
-            const idx = i * 2;
-            values.push(this.product_id,party_id);
-            return `($${idx+1}, $${idx+2})`;
-        }).join(',');
-
-        const query = `INSERT INTO product_party (product_id, party_id) VALUES ${placeholders}`;
-        try{
-            const result = await pool.query(query,values);
-            return result;
-        }catch(err){
-            console.log("error: ",err);
-            throw new Error(`Error from DB in CreateProduct_party(): ${err.message}`);
-        }}
-
-    
-     async ModifyProduct_Party(){
-
-        try{
-            if (!this.relatedIDs || this.relatedIDs.length === 0) {
-                await pool.query(
-                `DELETE FROM product_party WHERE product_id = $1`,[this.product_id]);
-            return { message: "Tutte le relazioni rimosse" };
-            }
-
-            await pool.query(
-                `DELETE FROM product_party
+      await pool.query(
+        `DELETE FROM product_party
                 WHERE product_id = $1
-                AND party_id NOT IN (${this.relatedIDs.map((_,i)=> (
-                    `$${i+2}`)).join(",")})`,
-                [this.product_id, ...this.relatedIDs]);
+                AND party_id NOT IN (${this.relatedIDs
+                  .map((_, i) => `$${i + 2}`)
+                  .join(",")})`,
+        [this.product_id, ...this.relatedIDs]
+      );
 
-            const  values = this.relatedIDs.map((partyId) => `( ${this.product_id}, ${partyId})`).join(",");
-            const query = `
+      const values = this.relatedIDs
+        .map((partyId) => `( ${this.product_id}, ${partyId})`)
+        .join(",");
+      const query = `
                 INSERT INTO product_party (product_id, party_id)
                 VALUES ${values}
                 ON CONFLICT (product_id, party_id) DO NOTHING
-                RETURNING *;`
-            const result = await pool.query(query);           
-            return result.rows;
-        }catch(err){
-            throw new Error(`Error from DB in ModifyProduct_party(): ${err.message}`);
-        }}
-
-    static async deleteProduct_party_relations(product_id){
-        try{
-            const result = await pool.query('DELETE FROM product_party WHERE product_id = $1',[parseInt(product_id, 10)]);
-            return result.rows;
-        }catch(err) {
-            throw new Error(`Error drom DB in deleteProduct_party_relations() -> ${err.message} `);
-        }
+                RETURNING *;`;
+      const result = await pool.query(query);
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Error from DB in ModifyProduct_party(): ${err.message}`);
     }
+  }
 
-    static async fetchProductsForParty(params,relatedIDs){
-        const defaults = {
-            column: "name",
-            order: "DESC",
-            isBeverage: false,
-            isGlobal: false
-        }
-        console.log(defaults);
-        const {column, order, isBeverage, isGlobal} = {...defaults, ...params};
-        const safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";
+  static async deleteProduct_party_relations(product_id) {
+    try {
+      const result = await pool.query(
+        "DELETE FROM product_party WHERE product_id = $1",
+        [parseInt(product_id, 10)]
+      );
+      return result.rows;
+    } catch (err) {
+      throw new Error(
+        `Error drom DB in deleteProduct_party_relations() -> ${err.message} `
+      );
+    }
+  }
 
-        const conditions = [
-            format("pp.party_id in (%L)",relatedIDs),
-            format("p.isbeverage = %L",isBeverage),
-            format("p.isglobal = %L",isGlobal) 
-        ]
+  static async fetchProductsForParty(params, relatedIDs, orderValues) {
+    const defaults = {
+      column: "name",
+      order: "DESC",
+    };
+    console.log(defaults);
+    const { isBeverage, isGlobal } = params || {};
+    const { column, order } = { ...defaults, ...orderValues };
+    const safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";
 
-        
-            try {
-                let queryConstructed = format(`
+    const conditions = [
+      format("pp.party_id in (%L)", relatedIDs),
+      isBeverage !== undefined
+        ? format("p.isbeverage = %L", isBeverage)
+        : "p.isbeverage IN (true, false)",
+
+      isGlobal !== undefined
+        ? format("p.isglobal = %L", isGlobal)
+        : "p.isglobal IN (true, false)",
+    ];
+
+    try {
+      let queryConstructed = format(
+        `
                     SELECT DISTINCT
                         p.id AS product_id, 
                         p.name AS product_name, 
                         p.price AS price, 
-                        p.allergens AS allergens
+                        p.allergens AS allergens,
+                        p.isglobal AS isglobal,
+                        p.isbeverage As isbeverage
                     FROM product p
                     INNER JOIN product_party pp ON p.id = pp.product_id
                     WHERE %s
                     ORDER BY %I %s`,
-                    conditions.join(" AND "),
-                    column,
-                    safeOrder
-                );
-                const result = await pool.query(queryConstructed);
-                console.log(result.rows);
-                return result.rows;
-        }catch(err){
-            console.log("error: ", err);
-            throw new Error(`Error from DB in fetchProductsForParty(): ${err.message}`);
-        }
+        conditions.join(" AND "),
+        column,
+        safeOrder
+      );
+      const result = await pool.query(queryConstructed);
+      return result.rows;
+    } catch (err) {
+      console.log("error: ", err);
+      throw new Error(
+        `Error from DB in fetchProductsForParty(): ${err.message}`
+      );
     }
+  }
+
+  static async partiesRelatedToIDs(productIDs) {
+    try {
+      const partiesResult = await pool.query(
+        `SELECT pp.product_id, pp.party_id, p.name_party AS party_name
+   FROM product_party pp
+   INNER JOIN party p ON pp.party_id = p.id
+   WHERE pp.product_id = ANY($1)`,
+        [productIDs]
+      );
+
+      return partiesResult;
+    } catch (err) {
+      console.log("error: ", err);
+      throw new Error(`Error from DB in partiesRelatedToIDs(): ${err.message}`);
     }
-        
+  }
+};

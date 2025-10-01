@@ -1,58 +1,75 @@
 const Product = require("../models/product");
-exports.createProduct = async(product) => {
-        try {
-                const { product_name, price, allergens, isbeverage, isglobal } = product;
-                const prodToCreate = new Product(product_name, price, allergens, isbeverage, isglobal);
-                const result = await prodToCreate.createProd();
-                return result;
-        }catch (err) {
-                throw new Error(`product controller cathed an error -> ${err}`);
-        }
-}
+exports.createProduct = async (product) => {
+  try {
+    const { product_name, price, allergens, isbeverage, isglobal } = product;
+    const prodToCreate = new Product(
+      product_name,
+      price,
+      allergens,
+      isbeverage,
+      isglobal
+    );
+    const result = await prodToCreate.createProd();
+    return result;
+  } catch (err) {
+    throw new Error(`product controller cathed an error -> ${err}`);
+  }
+};
 
 exports.updateProduct = async (product) => {
-        try {
-                const { product_name, price, allergens,id } = product || {};
-                const prodToModify = new Product(product_name, price, allergens);
-                const result = await prodToModify.modifyProd(id);
-                console.log(result);
-                return result;
-        }catch (err) {
-                throw new Error(`product controller cathed an error -> ${err}`);
-        }
-}
+  try {
+    const { product_name, price, allergens, id } = product || {};
+    const prodToModify = new Product(product_name, price, allergens);
+    const result = await prodToModify.modifyProd(id);
+    console.log(result);
+    return result;
+  } catch (err) {
+    throw new Error(`product controller cathed an error -> ${err}`);
+  }
+};
 
 exports.deleteProduct = async (id) => {
-        
-        if(!Array.isArray(id)){
-                id = [id];
-        }
+  if (!Array.isArray(id)) {
+    id = [id];
+  }
 
-        try {
-                const result = await Product.deleteProd(id);
-                return result;
-        }catch (err) {
-                throw new Error(`product controller cathed an error -> ${err}`);
-        }
-}
+  try {
+    const result = await Product.deleteProd(id);
+    return result;
+  } catch (err) {
+    throw new Error(`product controller cathed an error -> ${err}`);
+  }
+};
 
-exports.fetchAllProducts = async (params) => {
-        const {column, order, filterParams, valueParams} = params || {};
-        const filters = {};
+exports.fetchFilteredProducts = async (params, orderValues) => {
+  const { column, order } = orderValues || {};
+  const { isBeverage, isGlobal } = params || {};
+  const filters = {};
 
-        try{
-                if(column) filters.column = column;
-                if(order) filters.order = order;
-                if(filterParams) filters.filterParams = filterParams;
-                if(valueParams) filters.valueParams = valueParams
-        
-                const products = await Product.selectAllProd(filters);
-                return products;
-        }catch (err) {
-                console.error(`controller catched an error -> ${err}`)
-                throw new Error(`product controller catched and erro -> ${err}`);
-        }
-        
-}
+  try {
+    if (column) filters.column = column;
+    if (order) filters.order = order;
+    if (isBeverage !== undefined) filters.isBeverage = isBeverage;
+    if (isGlobal !== undefined) filters.isGlobal = isGlobal;
 
+    const products = await Product.selectFilteredProd(filters);
+    return products;
+  } catch (err) {
+    console.error(`controller catched an error -> ${err}`);
+    throw new Error(`product controller catched and erro -> ${err}`);
+  }
+};
 
+exports.fetchAllProducts = async (orderValues) => {
+  const { column, order } = orderValues || null;
+  const filters = {};
+  try {
+    if (column) filters.column = column;
+    if (order) filters.order = order;
+    const products = await Product.selectAllProd(filters);
+    return products;
+  } catch (err) {
+    console.error(`controller catched an error -> ${err}`);
+    throw new Error(`product controller catched and erro -> ${err}`);
+  }
+};

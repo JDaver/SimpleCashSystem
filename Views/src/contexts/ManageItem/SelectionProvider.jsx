@@ -1,9 +1,15 @@
 import { useCallback, useMemo } from 'react';
 import { useSelectedItemsReducer } from '@hooks/useSelectedItemsReducer';
 import { SelectionContext } from './SelectionContext';
+import { useFetchAll } from '@hooks/productsHook';
 
 export const SelectionProvider = ({ children }) => {
   const { selectedIds, selectAll, toggleItem, clearSelection } = useSelectedItemsReducer();
+  const { products, loading } = useFetchAll();
+
+  const allProductsIds = useMemo(() => {
+    return products.map(p => p.id);
+  }, [products]);
 
   const selectedIdsSet = useMemo(() => new Set(selectedIds), [selectedIds]);
 
@@ -19,8 +25,17 @@ export const SelectionProvider = ({ children }) => {
       isItemSelected,
       toggleItem,
       clearSelection,
+      allProductsIds,
     }),
-    [selectedIds, selectionMode, selectAll, isItemSelected, toggleItem, clearSelection]
+    [
+      selectedIds,
+      selectionMode,
+      selectAll,
+      isItemSelected,
+      toggleItem,
+      clearSelection,
+      allProductsIds,
+    ]
   );
 
   return <SelectionContext.Provider value={contextValue}>{children}</SelectionContext.Provider>;

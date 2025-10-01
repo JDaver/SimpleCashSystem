@@ -5,6 +5,7 @@ import CheckButton from '../Components/CheckButton';
 import SlideButton from '../Components/SlideButton';
 import TrashCanButton from '../Components/TrashCanButton';
 import { useInfiniteScroll } from '@hooks/useInfiniteScroll';
+import { useProductsContext } from '../../../contexts/ManageItem/ProductsContext';
 
 export function getProps(topic, activeDelMode) {
   const labelManage = ['Allergeni', 'Nome Prodoto', 'Prezzo', 'Modifica'];
@@ -27,7 +28,7 @@ export function getProps(topic, activeDelMode) {
   switch (topic) {
     case 'manage':
       labels = activeDelMode ? labelDeleteMode : labelManage;
-      records = products;
+      records = products || [];
       actionComponent = activeDelMode ? TrashCanButton : SlideButton;
       sideEffectsComponent = activeDelMode ? CheckButton : InfoButton;
       mode = activeDelMode ? 'delete' : 'manage';

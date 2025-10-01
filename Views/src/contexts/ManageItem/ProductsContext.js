@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-export const ProductsContext = createContext(null);
+export const ProductsContext = createContext([]);
 
 export const useProductsContext = () => {
   const context = useContext(ProductsContext);

@@ -3,7 +3,7 @@ import Modal from '@components/Modal';
 import './DeleteModal.css';
 
 function DeleteModal() {
-  const { productMap } = useProductsContext();
+  const { products } = useProductsContext();
   const { isModalOpen, pendingDelete, setPendingDelete, handleDeleteConfirmed } = useUIContext();
 
   return (
@@ -14,7 +14,8 @@ function DeleteModal() {
           <Modal.Description>
             {pendingDelete.items.length > 1
               ? 'Sei sicuro di voler eliminare gli elementi selezionati?'
-              : `Sei sicuro di voler eliminare ${productMap.get(pendingDelete.items[0])?.name}?`}
+              : `Sei sicuro di voler eliminare ?`}
+            {/* // ${products.get(pendingDelete.items[0])?.name}// */}
           </Modal.Description>
           <Modal.Footer>
             <button onClick={handleDeleteConfirmed}>Elimina</button>

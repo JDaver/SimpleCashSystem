@@ -1,16 +1,24 @@
-import { useState } from "react"; 
 import Keypad from '@themes/Vibrant/Keypad';
 import InfoColumn from './InfoColumn';
 import { insertItem } from '@utils/productService';
-import {handleInputs} from "./useInsertItem";
-import './InsertItem.css'
-
+import { useInsertItem } from './useInsertItem';
+import './InsertItem.css';
 
 function InsertItem() {
-const {price, name, inputPrice, singleDeletePrice, erasePrice, inputName, singleDeleteName, eraseName} = handleInputs();
+  const {
+    price,
+    name,
+    inputPrice,
+    singleDeletePrice,
+    erasePrice,
+    inputName,
+    singleDeleteName,
+    eraseName,
+    updateMode,
+  } = useInsertItem();
 
   return (
-    <form className="form insert-item" onSubmit={insertItem} method='POST' >
+    <form className="form insert-item" onSubmit={insertItem} method="POST">
       <div className="form__columns">
         <div className="form__column">
           <div className="form__field">
@@ -26,7 +34,12 @@ const {price, name, inputPrice, singleDeletePrice, erasePrice, inputName, single
               readOnly
               autoComplete="off"
             />
-            <Keypad preset={'alphabet'} onInput={inputName} onDelete={singleDeleteName} onErase = {eraseName} />
+            <Keypad
+              preset={'alphabet'}
+              onInput={inputName}
+              onDelete={singleDeleteName}
+              onErase={eraseName}
+            />
           </div>
         </div>
 
@@ -44,15 +57,21 @@ const {price, name, inputPrice, singleDeletePrice, erasePrice, inputName, single
               readOnly
               autoComplete="off"
             />
-            <Keypad preset={'numeric'} onInput={inputPrice} onDelete={singleDeletePrice} onErase = {erasePrice} />
+            <Keypad
+              preset={'numeric'}
+              onInput={inputPrice}
+              onDelete={singleDeletePrice}
+              onErase={erasePrice}
+            />
           </div>
         </div>
         <div className="form__column">
-            <InfoColumn/>
+          <InfoColumn />
         </div>
       </div>
       <div className="form__button-wrapper">
-        <button className="form__button" >Inserisci Prodotto</button>
+        {updateMode === false && <button className="form__button">Inserisci Prodotto</button>}
+        {updateMode === true && <button className="form__button">Modifica Prodotto</button>}
       </div>
     </form>
   );

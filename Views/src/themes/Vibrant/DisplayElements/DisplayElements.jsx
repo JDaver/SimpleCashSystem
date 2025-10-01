@@ -4,12 +4,13 @@ import { useLongPress } from '@hooks/useLongPress';
 import SingleItem from '../Components/SingleItem';
 import './DisplayElements.css';
 import { getProps } from './DisplayElementsHook';
-import { useManageItemActions } from '../../../contexts/ManageItem/ManageItemActionsContext';
+import { useSelectionContext } from '../../../contexts/ManageItem/SelectionContext';
 
 function DisplayElements({ topic = 'manage' }) {
-  const { handleClear } = useManageItemActions();
+  const { clearSelection } = useSelectionContext();
   const [activeDelMode, setActiveDeleteMode] = useState(false);
   const longPress = useLongPress(() => setActiveDeleteMode(prev => !prev), 2000);
+
   const {
     labels,
     records,
@@ -18,11 +19,10 @@ function DisplayElements({ topic = 'manage' }) {
     mode,
     bottomLoaderRef,
     hasMoreNext,
-    fetchNext,
   } = getProps(topic, activeDelMode);
-
+  console.log(records);
   useEffect(() => {
-    if (!activeDelMode) handleClear();
+    if (!activeDelMode) clearSelection();
   }, [activeDelMode]);
 
   return (

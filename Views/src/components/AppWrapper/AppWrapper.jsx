@@ -4,7 +4,7 @@ import PageWrapper from '@components/PageWrapper';
 import Header from '@components/Header';
 import { useViewTransition } from '@hooks/useViewTransition';
 import { ManageItemProvider } from '@contexts/ManageItem';
-import { GlobalProductsProvider } from '../../contexts/Global';
+// import { GlobalProductsProvider } from '../../contexts/Global';
 
 const Home = React.lazy(() => import('@pages/Home'));
 const ManageItem = React.lazy(() => import('@pages/ManageItem'));

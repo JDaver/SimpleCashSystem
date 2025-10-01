@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FunnelIcon } from '@heroicons/react/24/outline';
 import Dropdown from '@components/Dropdown';
-import './OrderByDropdown.css';
+// import './OrderByDropdown.css';
 
 const orderByOptions = [
   { label: 'Nome (A-Z)', value: 'A-Z' },

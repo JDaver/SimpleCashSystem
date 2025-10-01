@@ -5,7 +5,7 @@ import { useSelectionContext } from './SelectionContext';
 import { useEditingContext } from './EditingContext';
 
 export const UIProvider = ({ children }) => {
-  const { deleteItems, productMap } = useProductsContext();
+  const { products } = useProductsContext();
   const { clearSelection } = useSelectionContext();
   const { setShouldResetForm, setSelectedItem } = useEditingContext();
 
@@ -15,20 +15,19 @@ export const UIProvider = ({ children }) => {
   const isModalOpen = pendingDelete.items.length > 0;
 
   const handleDeleteConfirmed = useCallback(() => {
-    deleteItems(pendingDelete.items);
+    // deleteItems(pendingDelete.items);
     clearSelection();
-    setPendingDelete({ items: [] });
-  }, [deleteItems, pendingDelete.items, clearSelection]);
+    // setPendingDelete({ items: [] });
+  }, [products, clearSelection]);
 
   const handleSwipeLeft = useCallback(
-    id => {
-      const product = productMap.get(id);
-      if (!product) return;
-      setSelectedItem(product);
+    record => {
+      if (!record) return;
+      setSelectedItem(record);
       setShouldResetForm(false);
       setActiveTable('box2');
     },
-    [productMap]
+    [products]
   );
 
   const handleTableChange = useCallback(nextId => {

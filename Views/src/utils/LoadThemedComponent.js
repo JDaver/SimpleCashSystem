@@ -6,12 +6,13 @@ const componentMap = {
     Receipt: () => import('@themes/Minimal/Receipt'),
     InsertItem: () => import('@themes/Minimal/InsertItem'),
     DisplayElements: () => import('@themes/Minimal/DisplayElements'),
+    Settings: () => import('@themes/Minimal/Settings'),
   },
   vibrant: {
     CashierScreen: () => import('@themes/Vibrant/CashierScreen'),
     Receipt: () => import('@themes/Vibrant/Receipt'),
     InsertItem: () => import('@themes/Vibrant/InsertItem'),
-    DisplayElements: () => import('@themes/Vibrant/DisplayElements'),
+    Settings: () => import('@themes/Vibrant/Settings'),
   },
 };
 

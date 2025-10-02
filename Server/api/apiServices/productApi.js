@@ -33,19 +33,32 @@ exports.createProduct = async (req, res) => {
 };
 
 exports.updateProduct = async (req, res) => {
-  const { product, partyIDs } = req.body || {};
+  const { product } = req.body || {};
+  let { partyIDs = [], ...productData } = product || {};
   let relationRes = "Relazioni con feste non modificate";
 
   try {
-    const productRes = await productController.updateProduct(product);
-
-    if ((Array, isArray(partyIDs))) {
-      const product_id = productRes.rows[0].id;
+    const productRes = await productController.updateProduct(productData);
+    console.log(productRes);
+    const product_id = productRes.id;
+    if (productRes.isglobal === true) {
+      relationRes = await product_partyController.modifyProduct_party(
+        product_id,
+        []
+      );
+    } else {
+      if (!partyIDs || partyIDs.length === 0) {
+        return res.status(400).json({
+          error:
+            "Un prodotto non globale deve avere almeno una festa associata",
+        });
+      }
       relationRes = await product_partyController.modifyProduct_party(
         product_id,
         partyIDs
       );
     }
+
     res.status(200).json({
       product: productRes,
       relations: relationRes,

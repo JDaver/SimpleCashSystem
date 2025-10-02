@@ -130,7 +130,7 @@ module.exports = class Product_party {
   static async partiesRelatedToIDs(productIDs) {
     try {
       const partiesResult = await pool.query(
-        `SELECT pp.product_id, pp.party_id, p.name_party AS party_name
+        `SELECT pp.product_id, pp.party_id, p.name_party
    FROM product_party pp
    INNER JOIN party p ON pp.party_id = p.id
    WHERE pp.product_id = ANY($1)`,

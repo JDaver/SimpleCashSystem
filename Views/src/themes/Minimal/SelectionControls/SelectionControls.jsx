@@ -4,9 +4,9 @@ import Toolbar from '@components/Toolbar';
 import './SelectionControls.css';
 
 function SelectionControls() {
-  const { selectedIds, selectAll, clearSelection, allProductsIds } = useSelectionContext();
+  const { selectedIds, selectAll, clearSelection } = useSelectionContext();
   const { setPendingDelete } = useUIContext();
-
+  const { allProductsIds } = useProductsContext();
   const canSelectAll = selectedIds.length < allProductsIds.length;
   const hasMultipleSelections = selectedIds.length > 1;
 

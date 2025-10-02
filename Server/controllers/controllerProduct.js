@@ -18,10 +18,18 @@ exports.createProduct = async (product) => {
 
 exports.updateProduct = async (product) => {
   try {
-    const { product_name, price, allergens, id } = product || {};
-    const prodToModify = new Product(product_name, price, allergens);
+    const { product_name, price, allergens, id, isbeverage, isglobal } =
+      product || {};
+
+    const prodToModify = new Product(
+      product_name,
+      price,
+      allergens,
+      isbeverage,
+      isglobal
+    );
     const result = await prodToModify.modifyProd(id);
-    console.log(result);
+
     return result;
   } catch (err) {
     throw new Error(`product controller cathed an error -> ${err}`);

@@ -39,9 +39,10 @@ module.exports = class Product {
           this.allergens,
           this.isBeverage,
           this.isGlobal,
-          id,
+          Number(id),
         ]
       );
+      console.log(result.rows[0]);
       return result.rows[0];
     } catch (err) {
       throw new Error(`Error from DB in modifyProd(): ${err.message}`);

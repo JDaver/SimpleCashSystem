@@ -21,11 +21,18 @@ const allergensArr = [
 ];
 
 export default function InfoColumn() {
-  const { allergens, setAllergens, partyNames } = useInsertItem();
+  const {
+    allergens,
+    setAllergens,
+    partyNames,
+    isBeverage,
+    setIsBeverage,
+    isGlobal,
+    setIsGlobal,
+    partiesRelated,
+    setPartiesRelated,
+  } = useInsertItem();
 
-  const [isBeverage, setIsBeverage] = useState(false);
-  const [isGlobal, setIsGlobal] = useState(false);
-  const [partiesRelated, setPartiesRelated] = useState([]);
   const handleGlobalProductCleaner = e => {
     setIsGlobal(e.target.checked);
     setPartiesRelated([]);
@@ -86,9 +93,11 @@ export default function InfoColumn() {
           <Dropdown.Content>
             {partyNames.map(party => {
               return (
-                <Dropdown.Item key={party.id.toString()} option={party.id}>
+                <Dropdown.Item key={party.party_id.toString()} option={party.party_id}>
                   <span className="check-icon-wrapper">
-                    {partiesRelated.includes(party.id) && <CheckIcon width={30} height={20} />}
+                    {partiesRelated.includes(party.party_id) && (
+                      <CheckIcon width={30} height={20} />
+                    )}
                   </span>
                   <span>{party.name_party}</span>
                 </Dropdown.Item>
@@ -96,8 +105,8 @@ export default function InfoColumn() {
             })}
           </Dropdown.Content>
         </Dropdown>
-        {partiesRelated.map(id => {
-          return <input key={id} type="hidden" name="partyIDs" value={String(id)} />;
+        {partiesRelated.map(party => {
+          return <input key={party} type="hidden" name="partyIDs" value={String(party)} />;
         })}
       </div>
     </div>

@@ -12,7 +12,7 @@ function groupingPartiesBuilder(partiesResult) {
     if (!partiesMap[row.product_id]) partiesMap[row.product_id] = [];
     partiesMap[row.product_id].push({
       party_id: row.party_id,
-      party_name: row.party_name,
+      name_party: row.name_party,
     });
   });
   return partiesMap;

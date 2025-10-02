@@ -13,11 +13,6 @@ async function productConstructor(formData) {
 
 export async function fetchAllProducts(orderValues = null, params = null, partyIDs = []) {
   try {
-    // const query = new URLSearchParams();
-    // if (order) query.append('order', JSON.stringify(order)); // solo JSON.stringify
-    // if (params) query.append('params', JSON.stringify(params));
-    // if (partyIDs.length) query.append('partyIDs', partyIDs.join(','));
-
     const res = await fetch('http://localhost:4444/api/items', {
       method: 'POST',
       headers: {
@@ -44,11 +39,40 @@ export async function insertItem(event) {
   if (!valuesForCheck.product_name || !valuesForCheck.price) {
     throw new Error('Impossibile inserire prodotti vuoti.');
   }
-
+  if (!valuesForCheck.isglobal && !valuesForCheck.partyIDs) {
+    throw new Error('Un prodotto deve essere globale o appartenere ad una festa.');
+  }
   const data = await productConstructor(formData);
   console.log(data);
   fetch('http://localhost:4444/api/insert_item', {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ product: data }),
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch(err => {
+      console.error('Error:', err);
+    });
+}
+
+export async function modifyItem(event) {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const valuesForCheck = Object.fromEntries(formData.entries());
+  if (!valuesForCheck.product_name || !valuesForCheck.price) {
+    throw new Error('Impossibile inserire prodotti vuoti.');
+  }
+  if (!valuesForCheck.isglobal && !valuesForCheck.partyIDs) {
+    throw new Error('Un prodotto deve essere globale o appartenere ad una festa.');
+  }
+
+  const data = await productConstructor(formData);
+  console.log(data);
+  fetch('http://localhost:4444/api/update_item', {
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ product: data }),
   })
@@ -73,10 +97,6 @@ export async function deleteItem(id) {
     .catch(err => {
       console.error('Impossibile elimanare articolo: ' + err);
     });
-}
-
-export async function modifyItem() {
-  //TO DO
 }
 
 export async function queryItems(name = null, price = null, date = null) {

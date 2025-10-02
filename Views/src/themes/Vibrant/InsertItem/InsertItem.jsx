@@ -1,6 +1,6 @@
 import Keypad from '@themes/Vibrant/Keypad';
 import InfoColumn from './InfoColumn';
-import { insertItem } from '@utils/productService';
+import { insertItem, modifyItem } from '@utils/productService';
 import { useInsertItem } from './useInsertItem';
 import './InsertItem.css';
 
@@ -15,10 +15,15 @@ function InsertItem() {
     singleDeleteName,
     eraseName,
     updateMode,
+    productID,
   } = useInsertItem();
 
   return (
-    <form className="form insert-item" onSubmit={insertItem} method="POST">
+    <form
+      className="form insert-item"
+      onSubmit={updateMode === true ? modifyItem : insertItem}
+      method={updateMode === true ? 'PUT' : 'POST'}
+    >
       <div className="form__columns">
         <div className="form__column">
           <div className="form__field">
@@ -68,6 +73,7 @@ function InsertItem() {
         <div className="form__column">
           <InfoColumn />
         </div>
+        {updateMode === true && <input type="hidden" name="id" value={productID} />}
       </div>
       <div className="form__button-wrapper">
         {updateMode === false && <button className="form__button">Inserisci Prodotto</button>}

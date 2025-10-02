@@ -4,18 +4,26 @@ import { usePartyNames } from '@hooks/productsHook';
 
 export function useInsertItem() {
   const { selectedItem, shouldResetForm, setShouldResetForm } = useEditingContext();
+  const partyNames = usePartyNames();
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
-  const partyNames = usePartyNames();
   const [updateMode, setUpdateMode] = useState(false);
   const [allergens, setAllergens] = useState([]);
-
+  const [isBeverage, setIsBeverage] = useState(false);
+  const [isGlobal, setIsGlobal] = useState(false);
+  const [partiesRelated, setPartiesRelated] = useState([]);
+  const [productID, setProductId] = useState(null);
+  console.log(selectedItem);
   useEffect(() => {
     if (shouldResetForm) {
       setUpdateMode(false);
       setName('');
       setPrice('');
       setAllergens([]);
+      setIsBeverage(false);
+      setIsGlobal(false);
+      setPartiesRelated([]);
+      setProductId(null);
     } else if (selectedItem) {
       setUpdateMode(true);
       setName(selectedItem.name || '');
@@ -27,8 +35,13 @@ export function useInsertItem() {
             ? [selectedItem.allergens]
             : []
       );
+      setIsBeverage(selectedItem.isBeverage);
+      setIsGlobal(selectedItem.isGlobal);
+      setPartiesRelated(selectedItem.parties.map(p => p.party_id));
+      setProductId(selectedItem.id);
     }
   }, [shouldResetForm, selectedItem]);
+  console.log(partiesRelated);
   const inputPrice = key => {
     if (key === '.' && (price.includes('.') || price.length == 0)) return;
     if (key === '0' && price.at(0) === '0') return;
@@ -54,5 +67,12 @@ export function useInsertItem() {
     allergens,
     setAllergens,
     updateMode,
+    isBeverage,
+    setIsBeverage,
+    isGlobal,
+    setIsGlobal,
+    partiesRelated,
+    setPartiesRelated,
+    productID,
   };
 }

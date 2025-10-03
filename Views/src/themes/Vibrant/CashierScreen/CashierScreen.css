@@ -21,7 +21,6 @@
   display: flex;
   flex-direction: column;
   margin-block: var(--space-4);
-  /*padding-top: 0.5rem;*/
   padding-inline: var(--space-4);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -31,15 +30,40 @@
 }
 
 .cashier-screen__header {
-  color: var(--neutral-800);
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 5rem;
+  margin-right: 5rem;
+}
+.mode-label {
+  color: grey;
+  font-size: xx-large;
+  background-color: var(--soft-grey);
+  margin-inline: 2rem;
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+.mode-label-active {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  font-size: xx-large;
+  background-color: var(--blue-soft);
+  margin-inline: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /*Single Item*/
 
-
 .plus-btn,
-.minus-btn{
+.minus-btn {
   margin: 1rem;
   width: 50px;
   height: 50px;
@@ -47,7 +71,7 @@
   background: none;
   border: none;
 }
-.minus-btn-disabled{
+.minus-btn-disabled {
   margin: 1rem;
   width: 50px;
   height: 50px;
@@ -56,12 +80,12 @@
   background: none;
   border: none;
 }
-.minus-btn img,.minus-btn-disabled img {
+.minus-btn img,
+.minus-btn-disabled img {
   object-fit: contain;
 }
 .plus-btn:active,
-.minus-btn:active{
+.minus-btn:active {
   animation: tiltPress;
   animation-duration: 160ms;
 }
-

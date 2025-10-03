@@ -73,7 +73,7 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   const { product_id } = req.params || {};
-  console.log(product_id);
+
   try {
     await Product_party.deleteProduct_party_relations(product_id);
     const result = await productController.deleteProduct(product_id);
@@ -85,7 +85,7 @@ exports.deleteProduct = async (req, res) => {
 
 exports.fetchRelatedProducts = async (req, res) => {
   const { partyIDs, orderValues, params } = req.body;
-
+  console.log("params", params);
   let results = [];
 
   try {

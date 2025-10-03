@@ -12,6 +12,7 @@ async function productConstructor(formData) {
 }
 
 export async function fetchAllProducts(orderValues = null, params = null, partyIDs = []) {
+  console.log(params);
   try {
     const res = await fetch('http://localhost:4444/api/items', {
       method: 'POST',

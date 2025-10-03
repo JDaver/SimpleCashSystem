@@ -4,10 +4,38 @@ import Dropdown from '@components/Dropdown';
 // import './OrderByDropdown.css';
 
 const orderByOptions = [
-  { label: 'Nome (A-Z)', value: 'A-Z' },
-  { label: 'Nome (Z-A)', value: 'Z-A' },
-  { label: 'Prezzo crescente', value: 'price-asc' },
-  { label: 'Prezzo decrescente', value: 'price-desc' },
+  {
+    label: 'Nome (A-Z)',
+    value: {
+      column: 'name',
+      order: 'ASC',
+    },
+  },
+  {
+    label: 'Nome (Z-A)',
+    value: {
+      column: 'name',
+      order: 'DESC',
+    },
+  },
+  {
+    label: 'Prezzo crescente',
+    value: {
+      column: 'price',
+      order: 'ASC',
+    },
+  },
+  {
+    label: 'Prezzo decrescente',
+    value: {
+      column: 'price',
+      order: 'DESC',
+    },
+  },
+  {
+    label: 'Bevanda',
+    value: { isbeverage: true },
+  },
 ];
 
 // placeholders

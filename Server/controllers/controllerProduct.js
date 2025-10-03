@@ -69,7 +69,7 @@ exports.fetchFilteredProducts = async (params, orderValues) => {
 };
 
 exports.fetchAllProducts = async (orderValues) => {
-  const { column, order } = orderValues || null;
+  const { column, order } = orderValues || {};
   const filters = {};
   try {
     if (column) filters.column = column;

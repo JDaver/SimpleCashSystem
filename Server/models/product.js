@@ -108,12 +108,12 @@ module.exports = class Product {
 
     const conditions = [
       isBeverage !== undefined
-        ? format("p.isbeverage = %L", isBeverage)
-        : "p.isbeverage IN (true, false)",
+        ? format("isbeverage = %L", isBeverage)
+        : "isbeverage IN (true, false)",
 
       isGlobal !== undefined
-        ? format("p.isglobal = %L", isGlobal)
-        : "p.isglobal IN (true, false)",
+        ? format("isglobal = %L", isGlobal)
+        : "isglobal IN (true, false)",
     ];
 
     const query = format(
@@ -135,7 +135,9 @@ module.exports = class Product {
       return result.rows;
     } catch (err) {
       console.log("errore: ", err);
-      throw new Error(`Error from DB during selectAllProd(): ${err.message}`);
+      throw new Error(
+        `Error from DB during selectFilteredProd(): ${err.message}`
+      );
     }
   }
 };

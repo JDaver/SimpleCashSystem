@@ -83,7 +83,7 @@ module.exports = class Product_party {
       column: "name",
       order: "DESC",
     };
-    console.log(defaults);
+
     const { isBeverage, isGlobal } = params || {};
     const { column, order } = { ...defaults, ...orderValues };
     const safeOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";

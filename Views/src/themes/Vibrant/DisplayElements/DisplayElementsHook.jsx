@@ -13,7 +13,7 @@ export function getProps(topic, activeDelMode) {
   const labelReceiptColection = ['Articoli', 'Scontrino e data', 'Totale'];
   const labelItemCollection = ['Rapporto', 'Nome Prodotto', 'Venduti'];
 
-  const { products } = useFetchAll();
+  const { products } = useProductsContext();
   const { records: items } = useFetchItems();
   const { receipts, hasMoreNext, fetchNext } = useFetchReceipts();
   const { bottomLoaderRef, isLoading } = useInfiniteScroll(fetchNext, hasMoreNext);

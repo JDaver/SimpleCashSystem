@@ -4,7 +4,7 @@ import ProductItem from '../ProductItem';
 import './DisplayElements.css';
 
 function DisplayElements({ isInteractive = false }) {
-  const { filteredProducts } = useProductsContext();
+  const { products } = useProductsContext();
 
   return (
     <div className="display-elements">
@@ -14,7 +14,7 @@ function DisplayElements({ isInteractive = false }) {
           <span>Prezzo</span>
         </div>
         <div className="display-elements__list">
-          {filteredProducts.map(({ id, name, price, allergens }) => {
+          {products.map(({ id, name, price, allergens }) => {
             return (
               <ProductItem
                 key={id}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useEditingContext } from '@contexts/ManageItem';
 import { usePartyNames } from '@hooks/productsHook';
 
@@ -13,7 +13,7 @@ export function useInsertItem() {
   const [isGlobal, setIsGlobal] = useState(false);
   const [partiesRelated, setPartiesRelated] = useState([]);
   const [productID, setProductId] = useState(null);
-  console.log(selectedItem);
+
   useEffect(() => {
     if (shouldResetForm) {
       setUpdateMode(false);
@@ -42,17 +42,21 @@ export function useInsertItem() {
     }
   }, [shouldResetForm, selectedItem]);
   console.log(partiesRelated);
-  const inputPrice = key => {
+  const inputPrice = useCallback(key => {
     if (key === '.' && (price.includes('.') || price.length == 0)) return;
     if (key === '0' && price.at(0) === '0') return;
     setPrice(prev => prev + key);
-  };
-  const singleDeletePrice = () => setPrice(prev => prev.slice(0, -1));
-  const erasePrice = () => setPrice('');
+  }, []);
+  const singleDeletePrice = useCallback(() => setPrice(prev => prev.slice(0, -1)), []);
+  const erasePrice = useCallback(() => setPrice(''), []);
 
-  const inputName = key => setName(prev => prev + key);
-  const singleDeleteName = () => setName(prev => prev.slice(0, -1));
-  const eraseName = () => setName('');
+  const inputName = useCallback(key => {
+    setName(prev => prev + key);
+  }, []);
+  const singleDeleteName = useCallback(() => {
+    setName(prev => prev.slice(0, -1));
+  }, []);
+  const eraseName = useCallback(() => setName(''));
 
   return {
     price,

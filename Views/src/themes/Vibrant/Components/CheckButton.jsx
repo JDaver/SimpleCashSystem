@@ -3,10 +3,7 @@ import { useSelectionContext } from '@contexts/ManageItem/SelectionContext';
 import { useCallback } from 'react';
 
 export default function CheckButton({ record }) {
-  const { selectedIds } = useSelectionContext();
-  const { toggleItem } = useSelectionContext();
-
-  const isSelected = selectedIds.includes(record.id);
+  const { selectedIds, toggleItem, isItemSelected } = useSelectionContext();
 
   const selectItem = useCallback(
     product => {
@@ -20,7 +17,7 @@ export default function CheckButton({ record }) {
       <img
         src={redCross}
         className="red-cross"
-        style={!isSelected ? { filter: 'grayscale(100%)' } : {}}
+        style={!isItemSelected(record.id) ? { filter: 'grayscale(100%)' } : {}}
       />
     </button>
   );

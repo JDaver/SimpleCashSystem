@@ -33,10 +33,9 @@ export async function fetchAllProducts(orderValues = null, params = null, partyI
   }
 }
 
-export async function insertItem(event) {
-  event.preventDefault();
-  const formData = new FormData(event.target);
+export async function insertItem(formData) {
   const valuesForCheck = Object.fromEntries(formData.entries());
+
   if (!valuesForCheck.product_name || !valuesForCheck.price) {
     throw new Error('Impossibile inserire prodotti vuoti.');
   }
@@ -45,23 +44,28 @@ export async function insertItem(event) {
   }
   const data = await productConstructor(formData);
   console.log(data);
-  fetch('http://localhost:4444/api/insert_item', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ product: data }),
-  })
-    .then(res => res.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch(err => {
-      console.error('Error:', err);
+  try {
+    const res = await fetch('http://localhost:4444/api/insert_item', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ product: data }),
     });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Errore API: ${text}`);
+    }
+
+    const result = await res.json();
+    console.log('Success:', result);
+    return result;
+  } catch (err) {
+    console.error("Errore nell'insertItem:", err);
+    throw err;
+  }
 }
 
-export async function modifyItem(event) {
-  event.preventDefault();
-  const formData = new FormData(event.target);
+export async function modifyItem(formData) {
   const valuesForCheck = Object.fromEntries(formData.entries());
   if (!valuesForCheck.product_name || !valuesForCheck.price) {
     throw new Error('Impossibile inserire prodotti vuoti.');
@@ -72,32 +76,53 @@ export async function modifyItem(event) {
 
   const data = await productConstructor(formData);
   console.log(data);
-  fetch('http://localhost:4444/api/update_item', {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ product: data }),
-  })
-    .then(res => res.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch(err => {
-      console.error('Error:', err);
+  try {
+    const res = await fetch('http://localhost:4444/api/update_item', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ product: data }),
     });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Errore API: ${text}`);
+    }
+
+    const result = await res.json();
+    console.log('Success:', result);
+    return result;
+  } catch (err) {
+    console.error('Errore in modifyItem:', err);
+    throw err;
+  }
 }
 
 export async function deleteItem(id) {
-  const query = new URLSearchParams();
-  if (id.length) query.append('product_id', id.join(','));
+  const ids = Array.isArray(id) ? id : [id];
+  console.log('Elimino:', ids);
 
-  fetch(`http://localhost:4444/api/delete_item/${query.toString()}`, { method: 'DELETE' })
-    .then(res => res.json())
-    .then(data => {
-      console.log('eliminato: ' + data);
-    })
-    .catch(err => {
-      console.error('Impossibile elimanare articolo: ' + err);
+  try {
+    const res = await fetch(`http://localhost:4444/api/delete_item?product_id=${ids.join(',')}`, {
+      method: 'DELETE',
     });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Errore HTTP ${res.status}: ${errText}`);
+    }
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      data = { success: true };
+    }
+
+    console.log('Eliminato:', data);
+    return data;
+  } catch (err) {
+    console.error('Impossibile eliminare articolo:', err);
+    throw err;
+  }
 }
 
 export async function queryItems(name = null, price = null, date = null) {

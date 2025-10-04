@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { FunnelIcon } from '@heroicons/react/24/outline';
+import { FunnelIcon, CheckIcon } from '@heroicons/react/24/outline';
 import Dropdown from '@components/Dropdown';
-// import './OrderByDropdown.css';
+import { useProductsContext } from '../../../contexts/ManageItem/ProductsContext';
 
 const orderByOptions = [
   {
@@ -32,10 +32,6 @@ const orderByOptions = [
       order: 'DESC',
     },
   },
-  {
-    label: 'Bevanda',
-    value: { isbeverage: true },
-  },
 ];
 
 // placeholders
@@ -49,17 +45,18 @@ const partiesOptions = [
 ];
 
 function OrderByDropdown() {
-  const [orderBy, setOrderBy] = useState('');
+  const { setOrders, orderValues } = useProductsContext();
   return (
     <>
       <p>Ordina per:</p>
-      <Dropdown side="left" selected={orderBy} onChange={setOrderBy}>
+      <Dropdown side="left" selected={orderValues} onChange={setOrders}>
         <Dropdown.Trigger>
           <FunnelIcon width={30} height={20} />
         </Dropdown.Trigger>
         <Dropdown.Content>
           {orderByOptions.map(option => (
-            <Dropdown.Item key={option.value} option={option.value}>
+            <Dropdown.Item key={option.label} option={option.value}>
+              <span>{orderValues === option.value && <CheckIcon height={16} width={16} />}</span>
               <span>{option.label}</span>
             </Dropdown.Item>
           ))}

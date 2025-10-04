@@ -47,7 +47,7 @@
   cursor: pointer;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: all 0.3s ease;
+  transition: all 0.6s ease;
 }
 .mode-label-active {
   border-top-left-radius: 12px;

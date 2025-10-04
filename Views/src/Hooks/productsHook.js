@@ -2,59 +2,84 @@ import { useState, useEffect, useRef } from 'react';
 import { fetchAllProducts, getPartys } from '@utils/productService';
 import { queryItems } from '@utils/productService';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteItem } from '../utils/productService';
+import { deleteItem, insertItem, modifyItem } from '../utils/productService';
 
-//Fetch AllProducts
+//Fetch AllProducts: TO IMPLEMENT MUTATION FOR UPDATE AND INSERT
 export function useFetchAll() {
   const queryClient = useQueryClient();
 
-  // Stato locale dei filtri → reattivo, ogni cambio triggera la query
   const [filters, setFiltersState] = useState(
     queryClient.getQueryData({ queryKey: ['filters'] }) ?? { isBeverage: undefined }
   );
 
-  // Query prodotti, dipende dai filtri
+  const [orderValues, SetOrderValuesState] = useState(
+    queryClient.getQueryData({ queryKey: ['orderValues'] }) ?? { column: 'name', order: 'ASC' }
+  );
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ['products', filters],
-    queryFn: () => fetchAllProducts(null, filters, []),
+    queryKey: ['products', filters, orderValues],
+    queryFn: () => fetchAllProducts(orderValues, filters, []),
     staleTime: 1000 * 60 * 5,
   });
 
-  // Delete prodotto con ottimistico update
-  const { mutate: deleteProduct, isPending: deleting } = useMutation({
+  const { mutate: insertProduct } = useMutation({
+    mutationFn: insertItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['products', filters, orderValues]);
+    },
+    onError: err => {
+      console.error("Errore nell' inserimento", err);
+    },
+  });
+  const { mutate: editProduct } = useMutation({
+    mutationFn: modifyItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['products', filters, orderValues]);
+    },
+    onError: err => {
+      console.error('Errore modifica prodotto:', err);
+    },
+  });
+
+  const { mutate: deleteProduct } = useMutation({
     mutationFn: deleteItem,
     onMutate: async id => {
-      await queryClient.cancelQueries({ queryKey: ['products', filters] });
       const ids = Array.isArray(id) ? id : [id];
-      const previousData = queryClient.getQueryData({ queryKey: ['products', filters] });
+      console.log(ids);
 
-      queryClient.setQueryData({
-        queryKey: ['products', filters],
-        updater: old => ({
+      await queryClient.cancelQueries(['products', filters, orderValues]);
+
+      const previousData = queryClient.getQueryData(['products', filters, orderValues]);
+
+      queryClient.setQueryData(['products', filters, orderValues], old => {
+        if (!old) return old;
+        return {
           ...old,
           formattedData: old.formattedData.filter(p => !ids.includes(p.id)),
-        }),
+        };
       });
 
       return { previousData };
     },
     onError: (err, id, context) => {
       if (context?.previousData) {
-        queryClient.setQueryData({
-          queryKey: ['products', filters],
-          data: context.previousData,
-        });
+        queryClient.setQueryData(['products', filters, orderValues], context.previousData);
       }
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['products', filters] });
+
+    onSuccess: () => {
+      queryClient.invalidateQueries(['products', filters, orderValues]);
     },
   });
 
-  // Funzione per aggiornare i filtri
   const setFilters = newFilters => {
-    setFiltersState(newFilters); // aggiorna stato locale → triggera query
-    queryClient.setQueryData({ queryKey: ['filters'], data: newFilters }); // aggiorna cache globale
+    setFiltersState(newFilters);
+    queryClient.setQueryData({ queryKey: ['filters'], data: newFilters });
+  };
+
+  const setOrders = newOrders => {
+    SetOrderValuesState(newOrders);
+    queryClient.setQueryData({ queryKey: ['orderValues'], data: newOrders });
   };
 
   const products = data?.formattedData ?? [];
@@ -64,9 +89,12 @@ export function useFetchAll() {
     loading: isLoading,
     error,
     deleteProduct,
-    deleting,
     setFilters,
     filters,
+    setOrders,
+    orderValues,
+    insertProduct,
+    editProduct,
   };
 }
 

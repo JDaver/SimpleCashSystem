@@ -5,11 +5,11 @@ import SingleItem from '../Components/SingleItem';
 import './DisplayElements.css';
 import { getProps } from './DisplayElementsHook';
 import { useSelectionContext } from '../../../contexts/ManageItem/SelectionContext';
+import { useUIContext } from '../../../contexts/ManageItem/UIContext';
 
 function DisplayElements({ topic = 'manage' }) {
   const { clearSelection } = useSelectionContext();
-  const [activeDelMode, setActiveDeleteMode] = useState(false);
-  const longPress = useLongPress(() => setActiveDeleteMode(prev => !prev), 2000);
+  const { longPress, setActiveDeleteMode, activeDelMode } = useUIContext();
 
   const {
     labels,

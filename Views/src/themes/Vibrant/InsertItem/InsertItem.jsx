@@ -3,8 +3,13 @@ import InfoColumn from './InfoColumn';
 import { insertItem, modifyItem } from '@utils/productService';
 import { useInsertItem } from './useInsertItem';
 import './InsertItem.css';
+import { useCallback } from 'react';
+import { useProductsContext } from '@contexts/ManageItem/ProductsContext';
+import { useUIContext } from '../../../contexts/ManageItem/UIContext';
 
 function InsertItem() {
+  const { editProduct, insertProduct } = useProductsContext();
+  const { handleTableChange } = useUIContext();
   const {
     price,
     name,
@@ -18,10 +23,25 @@ function InsertItem() {
     productID,
   } = useInsertItem();
 
+  const handleSubmit = useCallback(
+    e => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      if (updateMode === true) {
+        editProduct(formData, {
+          onSuccess: () => handleTableChange('box1'),
+        });
+      } else {
+        insertProduct(formData);
+      }
+    },
+    [updateMode, editProduct, insertProduct, handleTableChange]
+  );
+
   return (
     <form
       className="form insert-item"
-      onSubmit={updateMode === true ? modifyItem : insertItem}
+      onSubmit={handleSubmit}
       method={updateMode === true ? 'PUT' : 'POST'}
     >
       <div className="form__columns">

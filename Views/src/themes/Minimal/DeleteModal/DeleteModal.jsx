@@ -1,9 +1,11 @@
 import { useProductsContext, useUIContext } from '@contexts/ManageItem';
 import Modal from '@components/Modal';
 import './DeleteModal.css';
+import { useSelectionContext } from '../../../contexts/ManageItem/SelectionContext';
 
 function DeleteModal() {
-  const { products } = useProductsContext();
+  const { products, deleteProduct } = useProductsContext();
+  const { selectedIds } = useSelectionContext();
   const { isModalOpen, pendingDelete, setPendingDelete, handleDeleteConfirmed } = useUIContext();
 
   return (
@@ -15,7 +17,6 @@ function DeleteModal() {
             {pendingDelete.items.length > 1
               ? 'Sei sicuro di voler eliminare gli elementi selezionati?'
               : `Sei sicuro di voler eliminare ?`}
-            {/* // ${products.get(pendingDelete.items[0])?.name}// */}
           </Modal.Description>
           <Modal.Footer>
             <button onClick={handleDeleteConfirmed}>Elimina</button>

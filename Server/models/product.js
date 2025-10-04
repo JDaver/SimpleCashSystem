@@ -49,13 +49,17 @@ module.exports = class Product {
     }
   }
 
-  static async deleteProd(id) {
+  static async deleteProd(product_ids) {
     try {
+      const ids = Array.isArray(product_ids)
+        ? product_ids.map((id) => parseInt(id, 10)).filter((id) => !isNaN(id))
+        : [parseInt(product_ids, 10)];
+
       const result = await pool.query(
         "DELETE FROM product WHERE id = ANY($1::int[]) RETURNING *",
-        [id]
+        [ids]
       );
-      return result.rows[0];
+      return result.rows;
     } catch (err) {
       throw new Error(`Error from DB in deleteProd(): ${err.message}`);
     }

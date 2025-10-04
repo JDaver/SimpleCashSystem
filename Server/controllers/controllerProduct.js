@@ -36,13 +36,11 @@ exports.updateProduct = async (product) => {
   }
 };
 
-exports.deleteProduct = async (id) => {
-  if (!Array.isArray(id)) {
-    id = [id];
-  }
+exports.deleteProduct = async (product_ids) => {
+  const ids = Array.isArray(product_ids) ? product_ids : [product_ids];
 
   try {
-    const result = await Product.deleteProd(id);
+    const result = await Product.deleteProd(ids);
     return result;
   } catch (err) {
     throw new Error(`product controller cathed an error -> ${err}`);

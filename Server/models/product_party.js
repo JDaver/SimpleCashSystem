@@ -5,7 +5,9 @@ const { deleteProduct } = require("../controllers/controllerProduct");
 module.exports = class Product_party {
   constructor(product_id, relatedIDs = []) {
     this.product_id = parseInt(product_id, 10);
-    this.relatedIDs = (relatedIDs || []).map((id) => parseInt(id, 10));
+    this.relatedIDs = (
+      Array.isArray(relatedIDs) ? relatedIDs : [relatedIDs]
+    ).map((id) => parseInt(id, 10));
   }
 
   async createProduct_Party() {
@@ -64,11 +66,18 @@ module.exports = class Product_party {
     }
   }
 
-  static async deleteProduct_party_relations(product_id) {
+  static async deleteProduct_party_relations(product_ids) {
     try {
+      const ids = Array.isArray(product_ids)
+        ? product_ids.map((id) => parseInt(id, 10)).filter((id) => !isNaN(id))
+        : [parseInt(product_ids, 10)];
+
+      if (ids.length === 0) return [];
+      const placeholders = ids.map((_, i) => `$${i + 1}`).join(",");
+
       const result = await pool.query(
-        "DELETE FROM product_party WHERE product_id = $1",
-        [parseInt(product_id, 10)]
+        `DELETE FROM product_party WHERE product_id IN (${placeholders})`,
+        ids
       );
       return result.rows;
     } catch (err) {

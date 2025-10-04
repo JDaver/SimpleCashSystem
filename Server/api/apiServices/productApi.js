@@ -64,7 +64,7 @@ exports.updateProduct = async (req, res) => {
       relations: relationRes,
     });
   } catch (err) {
-    console.error(`product api catched an error -> ${err}`);
+    console.error(`product api catched an error -> ${err.message}`);
     res.status(500).json({
       error: "Impossibile completare operazione di modfica del prodotto!",
     });
@@ -72,14 +72,28 @@ exports.updateProduct = async (req, res) => {
 };
 
 exports.deleteProduct = async (req, res) => {
-  const { product_id } = req.params || {};
+  const { product_id } = req.query || {};
+  if (!product_id) {
+    return res.status(400).json({ error: "Nessun product_id fornito" });
+  }
+  const ids = Array.isArray(product_id)
+    ? product_id.map((id) => parseInt(id, 10)).filter((id) => !isNaN(id))
+    : product_id
+        .toString()
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id));
+
+  if (ids.length === 0) {
+    return res.status(400).json({ error: "Nessun ID valido" });
+  }
 
   try {
-    await Product_party.deleteProduct_party_relations(product_id);
-    const result = await productController.deleteProduct(product_id);
+    await Product_party.deleteProduct_party_relations(ids);
+    const result = await productController.deleteProduct(ids);
     res.status(200).json(result);
   } catch (err) {
-    res.status(500).json({ error: err });
+    res.status(500).json({ error: err.message || "Errore sconosciuto" });
   }
 };
 

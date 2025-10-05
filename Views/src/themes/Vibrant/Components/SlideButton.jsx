@@ -1,22 +1,22 @@
-import { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, memo } from 'react';
 import { useSwipe } from '@hooks/useSwipe';
 import blueArrow from '@assets/blueArrow.png';
 import { useUIContext } from '@contexts/ManageItem';
 
-export default function SlideButton({ record }) {
+function SlideButton({ record }) {
   const { handleSwipeLeft } = useUIContext();
   const [swipingItem, setSwipingItem] = useState({ id: null, deltaX: 0 });
   const recordBeingSwipedRef = useRef(null);
 
-  const opacityButton = swipingItem.deltaX / 500 + 1;
+  const opacityButton = swipingItem.deltaX / 400 + 1;
   const swipeAmount = Math.min(Math.abs(swipingItem.deltaX), 500);
   const swipeProgress = -swipeAmount;
 
   const swipeHandlers = useSwipe({
     onSwipeLeft: () => {
       if (recordBeingSwipedRef.current) {
-        console.log('swipe avvenuto');
-        handleSwipeLeft(recordBeingSwipedRef.current);
+        console.log('swipe avvenuto', recordBeingSwipedRef.current.id);
+        handleSwipeLeft(recordBeingSwipedRef.current.id);
       }
     },
     onSwipeProgress: ({ deltaX }) => {
@@ -24,7 +24,7 @@ export default function SlideButton({ record }) {
         setSwipingItem({ id: recordBeingSwipedRef.current.id, deltaX });
       }
     },
-    threshold: 600,
+    threshold: 350,
   });
 
   const handleTouchStart = useCallback(
@@ -66,3 +66,4 @@ export default function SlideButton({ record }) {
     </button>
   );
 }
+export default React.memo(SlideButton);

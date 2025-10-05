@@ -14,7 +14,7 @@ function DisplayElements({ isInteractive = false }) {
           <span>Prezzo</span>
         </div>
         <div className="display-elements__list">
-          {products.map(({ id, name, price, allergens }) => {
+          {Array.from(products.values()).map(({ id, name, price, allergens }) => {
             return (
               <ProductItem
                 key={id}

@@ -1,9 +1,10 @@
+import React, { useCallback } from 'react';
 import Keypad from '@themes/Vibrant/Keypad';
 import InfoColumn from './InfoColumn';
 import { insertItem, modifyItem } from '@utils/productService';
 import { useInsertItem } from './useInsertItem';
 import './InsertItem.css';
-import { useCallback } from 'react';
+
 import { useProductsContext } from '@contexts/ManageItem/ProductsContext';
 import { useUIContext } from '../../../contexts/ManageItem/UIContext';
 
@@ -21,6 +22,7 @@ function InsertItem() {
     eraseName,
     updateMode,
     productID,
+    setShouldResetForm,
   } = useInsertItem();
 
   const handleSubmit = useCallback(
@@ -32,7 +34,9 @@ function InsertItem() {
           onSuccess: () => handleTableChange('box1'),
         });
       } else {
-        insertProduct(formData);
+        insertProduct(formData, {
+          onSuccess: () => setShouldResetForm(true),
+        });
       }
     },
     [updateMode, editProduct, insertProduct, handleTableChange]
@@ -103,4 +107,4 @@ function InsertItem() {
   );
 }
 
-export default InsertItem;
+export default React.memo(InsertItem);

@@ -3,7 +3,6 @@ import { UIContext } from './UIContext';
 import { useProductsContext } from './ProductsContext';
 import { useSelectionContext } from './SelectionContext';
 import { useEditingContext } from './EditingContext';
-import { useLongPress } from '@hooks/useLongPress';
 
 export const UIProvider = ({ children }) => {
   const { products, deleteProduct } = useProductsContext();
@@ -11,14 +10,13 @@ export const UIProvider = ({ children }) => {
   const { setShouldResetForm, setSelectedItem } = useEditingContext();
 
   const [activeDelMode, setActiveDeleteMode] = useState(false);
-  const longPress = useLongPress(() => setActiveDeleteMode(prev => !prev), 2000);
   const [activeTable, setActiveTable] = useState('box1');
   const [pendingDelete, setPendingDelete] = useState({ items: [] });
 
   const isModalOpen = pendingDelete.items.length > 0;
 
   const handleDeleteConfirmed = useCallback(() => {
-    deleteProduct(selectedIds);
+    deleteProduct(pendingDelete.items);
     clearSelection();
     setPendingDelete({ items: [] });
     setActiveDeleteMode(false);
@@ -27,7 +25,7 @@ export const UIProvider = ({ children }) => {
   const handleSwipeLeft = useCallback(
     record => {
       if (!record) return;
-      setSelectedItem(record);
+      setSelectedItem(products.get(record));
       setShouldResetForm(false);
       setActiveTable('box2');
     },
@@ -57,7 +55,6 @@ export const UIProvider = ({ children }) => {
       handleDeleteConfirmed,
       handleSwipeLeft,
       handleTableChange,
-      longPress,
       activeDelMode,
       setActiveDeleteMode,
     }),
@@ -68,7 +65,6 @@ export const UIProvider = ({ children }) => {
       handleDeleteConfirmed,
       handleSwipeLeft,
       handleTableChange,
-      longPress,
       activeDelMode,
       setActiveDeleteMode,
     ]

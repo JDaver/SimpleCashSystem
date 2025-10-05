@@ -1,4 +1,4 @@
-//import { useState } from "react";
+import React from 'react';
 import SingleItem from '../Components/SingleItem';
 import { useFetchAll } from '@hooks/productsHook';
 import './CashierScreen.css';
@@ -8,7 +8,7 @@ import Food from '@assets/Food1.svg?component';
 import Drink from '../../../assets/Food2.svg?component';
 import FoodandDrink from '@assets/food.png';
 
-export default function CashierScreen() {
+function CashierScreen() {
   const { products, loading, error, filters, setFilters } = useFetchAll();
   const label = ['Allergeni', 'Articolo', 'prezzo', 'Aggiungi e Rimuovi'];
   const cashierMode = [
@@ -58,7 +58,7 @@ export default function CashierScreen() {
           {loading && isLoading}
 
           {products &&
-            products.map(product => {
+            Array.from(products.values()).map(product => {
               return (
                 <SingleItem
                   key={product.id}
@@ -74,3 +74,4 @@ export default function CashierScreen() {
     </div>
   );
 }
+export default React.memo(CashierScreen);

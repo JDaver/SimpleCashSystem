@@ -16,10 +16,19 @@ export function useFetchAll() {
     queryClient.getQueryData({ queryKey: ['orderValues'] }) ?? { column: 'name', order: 'ASC' }
   );
 
-  const { data, isLoading, error } = useQuery({
+  const {
+    data: productsMap,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['products', filters, orderValues],
     queryFn: () => fetchAllProducts(orderValues, filters, []),
     staleTime: 1000 * 60 * 5,
+    select: data => {
+      const map = new Map();
+      (data?.formattedData ?? []).forEach(p => map.set(p.id, p));
+      return map;
+    },
   });
 
   const { mutate: insertProduct } = useMutation({
@@ -82,7 +91,7 @@ export function useFetchAll() {
     queryClient.setQueryData({ queryKey: ['orderValues'], data: newOrders });
   };
 
-  const products = data?.formattedData ?? [];
+  const products = productsMap ?? new Map();
 
   return {
     products,

@@ -15,7 +15,7 @@ export const ProductsProvider = ({ children }) => {
     editProduct,
   } = useFetchAll();
   const allProductsIds = useMemo(() => {
-    return products.map(p => p.id);
+    return Array.from(products.values()).map(p => p.id);
   }, [products]);
 
   const contextValue = useMemo(

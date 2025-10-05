@@ -9,8 +9,8 @@ import { useUIContext } from '../../../contexts/ManageItem/UIContext';
 
 function DisplayElements({ topic = 'manage' }) {
   const { clearSelection } = useSelectionContext();
-  const { longPress, setActiveDeleteMode, activeDelMode } = useUIContext();
-
+  const { setActiveDeleteMode, activeDelMode } = useUIContext();
+  const longPress = useLongPress(() => setActiveDeleteMode(prev => !prev), 2000);
   const {
     labels,
     records,
@@ -20,7 +20,6 @@ function DisplayElements({ topic = 'manage' }) {
     bottomLoaderRef,
     hasMoreNext,
   } = getProps(topic, activeDelMode);
-  console.log(records);
   useEffect(() => {
     if (!activeDelMode) clearSelection();
   }, [activeDelMode]);
@@ -35,7 +34,7 @@ function DisplayElements({ topic = 'manage' }) {
       </div>
       <div className={activeDelMode ? 'display-element-DelMode' : 'display-element'}>
         <ul>
-          {records.map(record => {
+          {Array.from(records.values()).map(record => {
             return (
               <SingleItem
                 key={record.id}

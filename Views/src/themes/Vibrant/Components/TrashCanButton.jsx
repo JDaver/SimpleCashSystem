@@ -1,11 +1,15 @@
+import React, { useCallback } from 'react';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import { useSelectionContext } from '../../../contexts/ManageItem/SelectionContext';
-export default function CheckButton({ product }) {
-  const { id } = product;
+import { useUIContext } from '../../../contexts/ManageItem/UIContext';
 
+function CheckButton({ product }) {
+  const { setPendingDelete } = useUIContext();
+  const { id } = product;
+  const handleDelete = useCallback(() => setPendingDelete({ items: [id] }), [setPendingDelete, id]);
   return (
-    <button>
+    <button onClick={handleDelete}>
       <TrashIcon height={50} width={60} />
     </button>
   );
 }
+export default React.memo(CheckButton);

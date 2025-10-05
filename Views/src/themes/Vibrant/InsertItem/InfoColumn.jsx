@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useInsertItem } from './useInsertItem';
 import Dropdown from '@components/Dropdown';
@@ -20,7 +20,7 @@ const allergensArr = [
   'Molluschi',
 ];
 
-export default function InfoColumn() {
+function InfoColumn() {
   const {
     allergens,
     setAllergens,
@@ -112,3 +112,5 @@ export default function InfoColumn() {
     </div>
   );
 }
+
+export default React.memo(InfoColumn);

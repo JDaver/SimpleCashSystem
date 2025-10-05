@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useEditingContext } from '@contexts/ManageItem';
 import { usePartyNames } from '@hooks/productsHook';
+import { useProductsContext } from '../../../contexts/ManageItem/ProductsContext';
 
 export function useInsertItem() {
   const { selectedItem, shouldResetForm, setShouldResetForm } = useEditingContext();
+  const { products } = useProductsContext();
   const partyNames = usePartyNames();
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
@@ -41,12 +43,14 @@ export function useInsertItem() {
       setProductId(selectedItem.id);
     }
   }, [shouldResetForm, selectedItem]);
-  console.log(partiesRelated);
-  const inputPrice = useCallback(key => {
-    if (key === '.' && (price.includes('.') || price.length == 0)) return;
-    if (key === '0' && price.at(0) === '0') return;
-    setPrice(prev => prev + key);
-  }, []);
+  const inputPrice = useCallback(
+    key => {
+      if (key === '.' && (price.includes('.') || price.length == 0)) return;
+      if (key === '0' && price.at(0) === '0') return;
+      setPrice(prev => prev + key);
+    },
+    [price]
+  );
   const singleDeletePrice = useCallback(() => setPrice(prev => prev.slice(0, -1)), []);
   const erasePrice = useCallback(() => setPrice(''), []);
 
@@ -56,7 +60,7 @@ export function useInsertItem() {
   const singleDeleteName = useCallback(() => {
     setName(prev => prev.slice(0, -1));
   }, []);
-  const eraseName = useCallback(() => setName(''));
+  const eraseName = useCallback(() => setName(''), []);
 
   return {
     price,
@@ -78,5 +82,6 @@ export function useInsertItem() {
     partiesRelated,
     setPartiesRelated,
     productID,
+    setShouldResetForm,
   };
 }

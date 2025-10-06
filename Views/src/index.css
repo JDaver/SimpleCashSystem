@@ -17,12 +17,6 @@
   --gradient: linear-gradient(to bottom, var(--gradient-start) 0%, var(--gradient-end) 100%);
 
   /*Colors Vibrant*/
-  --dynamic-bg1: linear-gradient(
-    50deg,
-    oklch(63.184% 0.14697 155.744),
-    oklch(89.095% 0.0918 85.097)
-  );
-  --dynamic-bg2: linear-gradient(50deg, var(--neutral-700), var(--blue-dark), var(--perfect-green));
   --dynamic-bg3: linear-gradient(
     45deg,
     var(--neutral-700) 20%,
@@ -61,6 +55,19 @@
     50deg,
     oklch(63.818% 0.18939 24.21 / 0.788),
     oklch(62.793% 0.25768 29.223 / 0.709)
+  );
+  --switcher-btn: linear-gradient(
+    50deg,
+    var(--neutral-700) 0%,
+    var(--blue-dark) 20%,
+    var(--neutral-700) 50%,
+    var(--blue-dark) 70%
+  );
+  --switcher-btn2: linear-gradient(
+    50deg,
+    var(--perfect-green),
+    var(--neutral-700),
+    var(--blue-dark)
   );
   --del-mode: oklch(49.853% 0.18619 27.342 / 0.28);
   --gray-soft: oklch(80% 0 0);

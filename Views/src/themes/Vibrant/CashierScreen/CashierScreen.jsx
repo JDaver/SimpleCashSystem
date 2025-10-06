@@ -1,33 +1,30 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import SingleItem from '../Components/SingleItem';
 import { useFetchAll } from '@hooks/productsHook';
 import './CashierScreen.css';
 import CashierButtons from './CashierButtons';
 import InfoButton from '../Components/InfoButton';
-import Food from '@assets/Food1.svg?component';
-import Drink from '../../../assets/Food2.svg?component';
-import FoodandDrink from '@assets/food.png';
+import { useMode } from './useMode';
+
+function ModeSwitcher({ mode, switchMode }) {
+  return (
+    <div className="mode-switcher">
+      <label className="mode-switcher__content">
+        <input type="checkBox" onChange={switchMode} defaultChecked={mode.label === 'Cucina'} />
+        <span className="mode-switcher__slider" />
+      </label>
+      <p className="mode-switcher__label">{mode.label}</p>
+    </div>
+  );
+}
 
 function CashierScreen() {
-  const { products, loading, error, filters, setFilters } = useFetchAll();
+  const { products, loading, error } = useFetchAll();
+  const { mode, switchMode } = useMode();
   const label = ['Allergeni', 'Articolo', 'prezzo', 'Aggiungi e Rimuovi'];
-  const cashierMode = [
-    {
-      icon: FoodandDrink,
-      label: 'Tutti i prodotti',
-      params: { isBeverage: undefined },
-    },
-    {
-      icon: Food,
-      label: 'Cucina',
-      params: { isBeverage: false },
-    },
-    {
-      icon: Drink,
-      label: 'Bar',
-      params: { isBeverage: true },
-    },
-  ];
+  const filteredProducts = Array.from(products.values()).filter(
+    product => product.isBeverage === mode.params
+  );
 
   const isLoading = loading ? 'Caricamento...' : '';
   const notLoaded = error ? 'Errore!' : '';
@@ -36,18 +33,7 @@ function CashierScreen() {
     <div className="cashier-screen">
       <div className="cashier-screen__wrapper">
         <div className="cashier-screen__header">
-          {cashierMode.map(mode => (
-            <span
-              key={mode.label}
-              onClick={() => setFilters(mode.params)}
-              className={
-                filters.isBeverage === mode.params.isBeverage ? 'mode-label-active' : 'mode-label'
-              }
-            >
-              <img src={mode.icon} alt={mode.label} width={42} height={36} />
-              {filters.isBeverage === mode.params.isBeverage ? mode.label : ''}
-            </span>
-          ))}
+          <ModeSwitcher mode={mode} switchMode={switchMode} />
         </div>
         <div className="label">
           {' '}
@@ -58,7 +44,7 @@ function CashierScreen() {
           {loading && isLoading}
 
           {products &&
-            Array.from(products.values()).map(product => {
+            filteredProducts.map(product => {
               return (
                 <SingleItem
                   key={product.id}

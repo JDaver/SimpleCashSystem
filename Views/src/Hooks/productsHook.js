@@ -4,7 +4,6 @@ import { queryItems } from '@utils/productService';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteItem, insertItem, modifyItem } from '../utils/productService';
 
-//Fetch AllProducts: TO IMPLEMENT MUTATION FOR UPDATE AND INSERT
 export function useFetchAll() {
   const queryClient = useQueryClient();
 

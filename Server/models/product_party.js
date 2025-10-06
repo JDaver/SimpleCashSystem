@@ -28,7 +28,7 @@ module.exports = class Product_party {
       const result = await pool.query(query, values);
       return result;
     } catch (err) {
-      console.log("error: ", err);
+      console.error("error: ", err);
       throw new Error(`Error from DB in CreateProduct_party(): ${err.message}`);
     }
   }

@@ -29,4 +29,7 @@ router.get("/getYears", utils.getYear);
 router.get("/getPartys", party.fetchPartyNames);
 module.exports = router;
 
-/**TODO REWIRING OF BACKEND */
+/*to IMPLEMENT FEATUREs
+ last 30 days for deleted items,
+ JSONB on receipt ??
+ Cash History  */

@@ -99,7 +99,6 @@ exports.deleteProduct = async (req, res) => {
 
 exports.fetchRelatedProducts = async (req, res) => {
   const { partyIDs, orderValues, params } = req.body;
-  console.log("params", params);
   let results = [];
 
   try {
@@ -116,7 +115,6 @@ exports.fetchRelatedProducts = async (req, res) => {
       );
     } else {
       results = await productController.fetchAllProducts(orderValues);
-      console.log(results);
     }
 
     const productIDs = results.map((r) => r.product_id);

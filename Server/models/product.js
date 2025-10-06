@@ -42,7 +42,6 @@ module.exports = class Product {
           Number(id),
         ]
       );
-      console.log(result.rows[0]);
       return result.rows[0];
     } catch (err) {
       throw new Error(`Error from DB in modifyProd(): ${err.message}`);

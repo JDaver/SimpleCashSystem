@@ -46,8 +46,9 @@
   height: 55px;
 }
 
-.key:active{
+.key-alphabet:active{
   background-color:var(--blue-abyss);
+  transform: scale(0.92);
 }
 
 .space-bar {
@@ -81,8 +82,8 @@
   height: 55px;
   border-radius: 6px;
   justify-content: center;
-  background-color: oklch(0.8643 0.1518 24.74);
-  color: oklch(0.4284 0.2513 27.95);
+  background-image: linear-gradient(45deg,oklch(61.171% 0.24988 27.764 / 0.988),oklch(35.092% 0.10053 19.042 / 0.859) );
+  color: white;
 }
 
 
@@ -116,7 +117,8 @@
 }
 
 .key-numeric:active {
-  background-color: var(--blue-dark);
+  background-color: var(--blue-abyss);
+  transform: scale(0.9);
 }
 
 
@@ -131,12 +133,12 @@
   height: 60px;
   border-radius: 6px;
   justify-content: center;
-  background-color: oklch(0.8643 0.1518 24.74);
-  color: oklch(0.4284 0.2513 27.95);
+  background-image: linear-gradient(45deg,oklch(61.171% 0.24988 27.764 / 0.988),oklch(35.092% 0.10053 19.042 / 0.859) );
+  color: white;
 }
 
 .keypad__key-delete:active{
   background-color: oklch(0.4284 0.2513 27.95) ;
-  color: oklch(0.8643 0.1518 24.74);
+  color: black;
   transform: scale(0.90);
 }

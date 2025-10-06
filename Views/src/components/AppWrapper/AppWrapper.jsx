@@ -4,7 +4,7 @@ import PageWrapper from '@components/PageWrapper';
 import Header from '@components/Header';
 import { useViewTransition } from '@hooks/useViewTransition';
 import { ManageItemProvider } from '@contexts/ManageItem';
-import { GlobalProductsProvider } from '../../contexts/Global';
+// import { GlobalProductsProvider } from '../../contexts/Global';
 
 const Home = React.lazy(() => import('@pages/Home'));
 const ManageItem = React.lazy(() => import('@pages/ManageItem'));
@@ -20,23 +20,28 @@ function AppWrapper() {
       <Header />
       <PageWrapper>
         <Suspense fallback={<div>Page Loader...</div>}>
-          <GlobalProductsProvider>
-            <Routes location={currentLocation}>
-              <Route path="/" element={<Home />} />
-              <Route path="/Home" element={<Navigate to="/" replace />} />
-              <Route
-                path="/ManageItem"
-                element={
-                  <ManageItemProvider>
-                    <ManageItem />
-                  </ManageItemProvider>
-                }
-              />
-              <Route path="/Collection" element={<Collection />} />
-              <Route path="/SettingsPage" element={<SettingsPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </GlobalProductsProvider>
+          <Routes location={currentLocation}>
+            <Route path="/" element={<Home />} />
+            <Route path="/Home" element={<Navigate to="/" replace />} />
+            <Route
+              path="/ManageItem"
+              element={
+                <ManageItemProvider>
+                  <ManageItem />
+                </ManageItemProvider>
+              }
+            />
+            <Route
+              path="/Collection"
+              element={
+                <ManageItemProvider>
+                  <Collection />
+                </ManageItemProvider>
+              }
+            />
+            <Route path="/SettingsPage" element={<SettingsPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </Suspense>
       </PageWrapper>
     </div>

@@ -1,24 +1,26 @@
 import { useState, useRef, useEffect } from "react";
 import { queryReceipts } from "../utils/receiptService";
+
 export function useFetchReceipts() {
   const [receipts, setReceipts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMoreNext, setHasMoreNext] = useState(true);
-  const maxItems = 20; //ideally to set at 50/100
+  const pageRef = useRef(1);
   const isFetchingNext = useRef(false);
   const didFetch = useRef(false);
+  const [hasMoreNext, setHasMoreNext] = useState(true);
+  const maxItems = 20; //ideally to set at 50/100
+  
 
   const fetchNext = async () => {
     if (isFetchingNext.current || !hasMoreNext) return;
     isFetchingNext.current = true;
 
     try {
-      const data = await queryReceipts({page, limit:maxItems});
+      const data = await queryReceipts({page:pageRef.current, limit:maxItems});
       if (!data || data.length < maxItems) {
         setHasMoreNext(false);
       }
       setReceipts(prev => prev = [...prev, ...data]);
-      setPage(prev => prev + 1);
+      pageRef.current += 1;
     } catch (err) {
       console.error("Error fetching next receipts:", err);
     } finally {
@@ -35,7 +37,7 @@ export function useFetchReceipts() {
   return {
     receipts,
     fetchNext,
-    hasMoreNext
+    hasMoreNext,
   };
 }
 

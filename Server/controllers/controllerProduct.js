@@ -1,57 +1,81 @@
 const Product = require("../models/product");
-exports.createProduct = async(req,res) => {
-        try {
-                const { product_name, price, allergens } = req.body;
-                const prodToCreate = new Product(product_name, price, allergens);
-                result = await prodToCreate.createProd();
-                console.log(result);
-                res.status(201).json(result);
-        }catch (err) {
-                console.error(`controller catched an error -> ${err}`)
-                res.status(500).json({error: "Impossibile completare operazione di creazione del prodotto!"});
-        }
-}
+exports.createProduct = async (product) => {
+  try {
+    const { product_name, price, allergens, isbeverage, isglobal } = product;
+    const prodToCreate = new Product(
+      product_name,
+      price,
+      allergens,
+      isbeverage,
+      isglobal
+    );
+    const result = await prodToCreate.createProd();
+    return result;
+  } catch (err) {
+    throw new Error(`product controller cathed an error -> ${err}`);
+  }
+};
 
-exports.updateProduct = async (req, res) => {
-        try {
-                const { product_name, price, allergens,id } = req.body;
-                const prodToModify = new Product(product_name, price, allergens);
-                const result = await prodToModify.modifyProd(id);
-                console.log(result);
-                res.status(201).json(result);
-        }catch (err) {
-                console.error(`controller catched an error -> ${err}`)
-                res.status(500).json({error: "Impossibile completare operazione di modifica del prodotto!"});
-        }
-}
+exports.updateProduct = async (product) => {
+  try {
+    const { product_name, price, allergens, id, isbeverage, isglobal } =
+      product || {};
 
-exports.deleteProduct = async (req,res) => {
-        try {
-                const {id} = req.params;
-                const result = await Product.deleteProd(id);
-                res.status(200).json(result);
-        }catch (err) {
-                console.error(`controller catched an error -> ${err}`)
-                res.status(500).json({error: "Impossibile completare operazione di eliminazione del prodotto!"});
-        }
-}
+    const prodToModify = new Product(
+      product_name,
+      price,
+      allergens,
+      isbeverage,
+      isglobal
+    );
+    const result = await prodToModify.modifyProd(id);
 
-exports.fetchProducts = async (req, res) => {
-        try{
-        const {column, order} = req.body || {};
-        const filters = {};
+    return result;
+  } catch (err) {
+    throw new Error(`product controller cathed an error -> ${err}`);
+  }
+};
 
-        if(column) filters.column = column;
-        if(order) filters.order = order;
+exports.deleteProduct = async (product_ids) => {
+  const ids = Array.isArray(product_ids) ? product_ids : [product_ids];
 
-        
-                const products = await Product.selectAllProd(filters);
-                res.status(200).json(products);
-        }catch (err) {
-                console.error(`controller catched an error -> ${err}`)
-                res.status(500).json({error: "Impossibile scaricare i prodotti!"});
-        }
-        
-}
+  try {
+    const result = await Product.deleteProd(ids);
+    return result;
+  } catch (err) {
+    throw new Error(`product controller cathed an error -> ${err}`);
+  }
+};
 
+exports.fetchFilteredProducts = async (params, orderValues) => {
+  const { column, order } = orderValues || {};
+  const { isBeverage, isGlobal } = params || {};
+  const filters = {};
 
+  try {
+    if (column) filters.column = column;
+    if (order) filters.order = order;
+    if (isBeverage !== undefined) filters.isBeverage = isBeverage;
+    if (isGlobal !== undefined) filters.isGlobal = isGlobal;
+
+    const products = await Product.selectFilteredProd(filters);
+    return products;
+  } catch (err) {
+    console.error(`controller catched an error -> ${err}`);
+    throw new Error(`product controller catched and erro -> ${err}`);
+  }
+};
+
+exports.fetchAllProducts = async (orderValues) => {
+  const { column, order } = orderValues || {};
+  const filters = {};
+  try {
+    if (column) filters.column = column;
+    if (order) filters.order = order;
+    const products = await Product.selectAllProd(filters);
+    return products;
+  } catch (err) {
+    console.error(`controller catched an error -> ${err}`);
+    throw new Error(`product controller catched and erro -> ${err}`);
+  }
+};

@@ -5,41 +5,46 @@ import { useSelectionContext } from './SelectionContext';
 import { useEditingContext } from './EditingContext';
 
 export const UIProvider = ({ children }) => {
-  const { deleteItems, productMap } = useProductsContext();
-  const { clearSelection } = useSelectionContext();
+  const { products, deleteProduct } = useProductsContext();
+  const { clearSelection, selectedIds } = useSelectionContext();
   const { setShouldResetForm, setSelectedItem } = useEditingContext();
 
+  const [activeDelMode, setActiveDeleteMode] = useState(false);
   const [activeTable, setActiveTable] = useState('box1');
   const [pendingDelete, setPendingDelete] = useState({ items: [] });
 
   const isModalOpen = pendingDelete.items.length > 0;
 
   const handleDeleteConfirmed = useCallback(() => {
-    deleteItems(pendingDelete.items);
+    deleteProduct(pendingDelete.items);
     clearSelection();
     setPendingDelete({ items: [] });
-  }, [deleteItems, pendingDelete.items, clearSelection]);
+    setActiveDeleteMode(false);
+  }, [products, clearSelection, pendingDelete]);
 
   const handleSwipeLeft = useCallback(
-    id => {
-      const product = productMap.get(id);
-      if (!product) return;
-      setSelectedItem(product);
+    record => {
+      if (!record) return;
+      setSelectedItem(products.get(record));
       setShouldResetForm(false);
       setActiveTable('box2');
     },
-    [productMap]
+    [products]
   );
 
-  const handleTableChange = useCallback(nextId => {
-    if (nextId === 'box1') {
-      setSelectedItem(null);
-      setShouldResetForm(true);
-    } else {
-      setShouldResetForm(false);
-    }
-    setActiveTable(nextId);
-  }, []);
+  const handleTableChange = useCallback(
+    nextId => {
+      console.log('Cambio box a:', nextId);
+      if (nextId === 'box1') {
+        setSelectedItem(null);
+        setShouldResetForm(true);
+      } else {
+        setShouldResetForm(false);
+      }
+      setActiveTable(nextId);
+    },
+    [setSelectedItem, setShouldResetForm, setActiveTable]
+  );
 
   const contextValue = useMemo(
     () => ({
@@ -50,6 +55,8 @@ export const UIProvider = ({ children }) => {
       handleDeleteConfirmed,
       handleSwipeLeft,
       handleTableChange,
+      activeDelMode,
+      setActiveDeleteMode,
     }),
     [
       activeTable,
@@ -58,6 +65,8 @@ export const UIProvider = ({ children }) => {
       handleDeleteConfirmed,
       handleSwipeLeft,
       handleTableChange,
+      activeDelMode,
+      setActiveDeleteMode,
     ]
   );
 

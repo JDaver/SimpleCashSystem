@@ -4,15 +4,13 @@ import Toolbar from '@components/Toolbar';
 import './SelectionControls.css';
 
 function SelectionControls() {
-  const { filteredProducts } = useProductsContext();
   const { selectedIds, selectAll, clearSelection } = useSelectionContext();
   const { setPendingDelete } = useUIContext();
-
-  const allProductIds = useMemo(() => filteredProducts.map(p => p.id), [filteredProducts]);
-  const canSelectAll = selectedIds.length < allProductIds.length;
+  const { allProductsIds } = useProductsContext();
+  const canSelectAll = selectedIds.length < allProductsIds.length;
   const hasMultipleSelections = selectedIds.length > 1;
 
-  const handleSelectAll = useCallback(() => selectAll(allProductIds), [selectAll, allProductIds]);
+  const handleSelectAll = useCallback(() => selectAll(allProductsIds), [selectAll, allProductsIds]);
 
   const handleDelete = useCallback(
     () => setPendingDelete({ items: [...selectedIds] }),

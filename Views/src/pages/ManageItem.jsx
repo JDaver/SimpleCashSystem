@@ -2,7 +2,7 @@ import { PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useMemo } from 'react';
 import { useTheme } from '@contexts/Theme';
 import { useSelectionContext, useEditingContext, useUIContext } from '@contexts/ManageItem';
-import { loadThemedComponent } from '@utils/loadThemedComponent';
+import { loadThemedComponent } from '@utils/LoadThemedComponent';
 import Table from '@components/Table';
 import Toolbar from '@components/Toolbar';
 import SelectionControls from '@themes/Minimal/SelectionControls';

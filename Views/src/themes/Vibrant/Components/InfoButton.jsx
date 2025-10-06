@@ -1,45 +1,35 @@
-import { Bars3BottomLeftIcon, TrashIcon} from '@heroicons/react/24/outline';
-import { useState,useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import { ListBulletIcon } from '@heroicons/react/24/outline';
+import { useState, useRef } from 'react';
 import { useClickOutside } from '@hooks/useClickOutside';
-import { deleteItem } from '@utils/productService';
 
-export default function InfoButton({
-  Data = null, 
-  mode = "display",
-  id = null,
-  active = false,
-   ...props 
-  }){
-  
-  let Icon = Bars3BottomLeftIcon;  
-  if(mode === "delete") Icon = TrashIcon;
-
-  const items = Array.isArray(Data) ? Data : Data ? [Data] : [];
-    
-  const [show,setShow] = useState();
+export default function InfoButton({ Data = null, active = false, width, height }) {
+  const [show, setShow] = useState();
   const popOverRef = useRef(null);
+  let Icon = ListBulletIcon;
+
+  const items = useMemo(() => {
+    if (!Data) return [];
+    return Array.isArray(Data) ? Data : [Data];
+  }, [Data]);
+
   useClickOutside(popOverRef, () => setShow(false));
 
-  const handleClick = (id) => {
-    if(mode === "display"){
-      setShow(prev => !prev);
-    }else if(mode === "delete"){
-      deleteItem(id);
-      // console.log(id);
-    }
-  }
+  const handleClick = useCallback(() => {
+    setShow(prev => !prev);
+  }, []);
 
   return (
-    <>
-    {active &&
-      <button 
-      {...props } 
-      onClick={() =>handleClick(id)} 
-      ref={popOverRef}
-      className={(show ? 'info-button-active' : 'info-button')}>
-        <Icon  style={{ width: props.width || 24, height: props.height || 24 }} />
-      </button> }
-      
+    <div ref={popOverRef}>
+      {active && (
+        <button
+          onClick={() => handleClick()}
+          className={show ? 'info-button-active' : 'info-button'}
+        >
+          <Icon style={{ width: width || 24, height: height || 24 }} />
+        </button>
+      )}
+
       {show && items.length > 0 && (
         <div className="allergensPopOver">
           <ul>
@@ -49,6 +39,6 @@ export default function InfoButton({
           </ul>
         </div>
       )}
-    </>
+    </div>
   );
 }

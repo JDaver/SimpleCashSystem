@@ -1,13 +1,37 @@
 import React, { useState } from 'react';
-import { FunnelIcon } from '@heroicons/react/24/outline';
+import { FunnelIcon, CheckIcon } from '@heroicons/react/24/outline';
 import Dropdown from '@components/Dropdown';
-import './OrderByDropdown.css';
+import { useProductsContext } from '../../../contexts/ManageItem/ProductsContext';
 
 const orderByOptions = [
-  { label: 'Nome (A-Z)', value: 'A-Z' },
-  { label: 'Nome (Z-A)', value: 'Z-A' },
-  { label: 'Prezzo crescente', value: 'price-asc' },
-  { label: 'Prezzo decrescente', value: 'price-desc' },
+  {
+    label: 'Nome (A-Z)',
+    value: {
+      column: 'name',
+      order: 'ASC',
+    },
+  },
+  {
+    label: 'Nome (Z-A)',
+    value: {
+      column: 'name',
+      order: 'DESC',
+    },
+  },
+  {
+    label: 'Prezzo crescente',
+    value: {
+      column: 'price',
+      order: 'ASC',
+    },
+  },
+  {
+    label: 'Prezzo decrescente',
+    value: {
+      column: 'price',
+      order: 'DESC',
+    },
+  },
 ];
 
 // placeholders
@@ -21,17 +45,18 @@ const partiesOptions = [
 ];
 
 function OrderByDropdown() {
-  const [orderBy, setOrderBy] = useState('');
+  const { setOrders, orderValues } = useProductsContext();
   return (
     <>
       <p>Ordina per:</p>
-      <Dropdown side="left" selected={orderBy} onChange={setOrderBy}>
+      <Dropdown side="left" selected={orderValues} onChange={setOrders}>
         <Dropdown.Trigger>
           <FunnelIcon width={30} height={20} />
         </Dropdown.Trigger>
         <Dropdown.Content>
           {orderByOptions.map(option => (
-            <Dropdown.Item key={option.value} option={option.value}>
+            <Dropdown.Item key={option.label} option={option.value}>
+              <span>{orderValues === option.value && <CheckIcon height={16} width={16} />}</span>
               <span>{option.label}</span>
             </Dropdown.Item>
           ))}

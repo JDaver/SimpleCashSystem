@@ -1,59 +1,53 @@
-import { useState } from 'react';
+import React, { useCallback } from 'react';
 import Keypad from '@themes/Vibrant/Keypad';
-import Dropdown from '@components/Dropdown';
-import { insertItem } from '@utils/productService';
+import InfoColumn from './InfoColumn';
+import { insertItem, modifyItem } from '@utils/productService';
+import { useInsertItem } from './useInsertItem';
 import './InsertItem.css';
-import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
-const allergensArr = [
-  'Cereali contenenti glutine',
-  'Crostacei',
-  'Uova',
-  'Pesce',
-  'Arachidi',
-  'Soia',
-  'Latte',
-  'Frutta a guscio',
-  'Sedano',
-  'Semi di sesamo',
-  'Senape',
-  'Anidride solforosa e solfiti',
-  'Lupini',
-  'Molluschi',
-];
+import { useProductsContext } from '@contexts/ManageItem/ProductsContext';
+import { useUIContext } from '../../../contexts/ManageItem/UIContext';
 
 function InsertItem() {
-  const [price, setPrice] = useState('');
-  const [name, setName] = useState('');
-  const [allergens, setAllergens] = useState([]);
+  const { editProduct, insertProduct } = useProductsContext();
+  const { handleTableChange } = useUIContext();
+  const {
+    price,
+    name,
+    inputPrice,
+    singleDeletePrice,
+    erasePrice,
+    inputName,
+    singleDeleteName,
+    eraseName,
+    updateMode,
+    productID,
+    setShouldResetForm,
+  } = useInsertItem();
 
-  const handlePriceInput = key => {
-    if (key === '.' && price.includes('.')) return;
-    setPrice(prev => prev + key);
-  };
-
-  const handlePriceDelete = () => {
-    setPrice(prev => prev.slice(0, -1));
-  };
-
-  const handleNameInput = key => {
-    setName(prev => prev + key);
-  };
-
-  const handleNameDelete = () => {
-    setName(prev => prev.slice(0, -1));
-  };
-
-  const handleEraseName = () => {
-    setName(prev => prev.slice(0, 0));
-  };
-
-    const handleEraseNumber = () => {
-    setPrice(prev => prev.slice(0, 0));
-  };
+  const handleSubmit = useCallback(
+    e => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      if (updateMode === true) {
+        editProduct(formData, {
+          onSuccess: () => handleTableChange('box1'),
+        });
+      } else {
+        insertProduct(formData, {
+          onSuccess: () => setShouldResetForm(true),
+        });
+      }
+    },
+    [updateMode, editProduct, insertProduct, handleTableChange]
+  );
 
   return (
-    <form className="form insert-item" onSubmit={insertItem} method='POST' >
+    <form
+      className="form insert-item"
+      onSubmit={handleSubmit}
+      method={updateMode === true ? 'PUT' : 'POST'}
+    >
       <div className="form__columns">
         <div className="form__column">
           <div className="form__field">
@@ -69,9 +63,15 @@ function InsertItem() {
               readOnly
               autoComplete="off"
             />
-            <Keypad preset={'alphabet'} onInput={handleNameInput} onDelete={handleNameDelete} onErase = {handleEraseName} />
+            <Keypad
+              preset={'alphabet'}
+              onInput={inputName}
+              onDelete={singleDeleteName}
+              onErase={eraseName}
+            />
           </div>
         </div>
+
         <div className="form__column">
           <div className="form__field">
             <label className="form__label" htmlFor="price">
@@ -86,41 +86,25 @@ function InsertItem() {
               readOnly
               autoComplete="off"
             />
-            <Keypad preset={'numeric'} onInput={handlePriceInput} onDelete={handlePriceDelete} onErase = {handleEraseNumber} />
+            <Keypad
+              preset={'numeric'}
+              onInput={inputPrice}
+              onDelete={singleDeletePrice}
+              onErase={erasePrice}
+            />
           </div>
         </div>
         <div className="form__column">
-          <div className="form__field dropdown">
-            <Dropdown side={'left'} selected={allergens} onChange={setAllergens} multiple>
-              <Dropdown.Trigger aria-label="Seleziona allergeni">
-                <p>Allergeni</p>
-                <ChevronRightIcon className="rotate" width={20} height={15} />
-              </Dropdown.Trigger>
-              <Dropdown.Content>
-                {allergensArr.map(allergen => {
-                  return (
-                    <Dropdown.Item key={allergen} option={allergen}>
-                      <span className="check-icon-wrapper">
-                        {allergens.includes(allergen) && <CheckIcon width={30} height={20} />}
-                      </span>
-                      <span>{allergen}</span>
-                    </Dropdown.Item>
-                  );
-                })}
-              </Dropdown.Content>
-            </Dropdown>
-            {allergens.map((allergen) => {
-              return <input key={allergen} type="hidden" name="allergens" value={allergen} />
-            })}
-            
-          </div>
+          <InfoColumn />
         </div>
+        {updateMode === true && <input type="hidden" name="id" value={productID} />}
       </div>
       <div className="form__button-wrapper">
-        <button className="form__button" >Inserisci Prodotto</button>
+        {updateMode === false && <button className="form__button">Inserisci Prodotto</button>}
+        {updateMode === true && <button className="form__button">Modifica Prodotto</button>}
       </div>
     </form>
   );
 }
 
-export default InsertItem;
+export default React.memo(InsertItem);

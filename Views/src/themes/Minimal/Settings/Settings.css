@@ -1,0 +1,29 @@
+.settings-wrapper {
+  display: flex;
+  width: calc(100vw - 300px);
+}
+
+.settings__link {
+  display: flex;
+  gap: 1rem;
+  text-align: start;
+  margin-block: var(--space-2);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  padding-inline: 1rem;
+  padding-block: 0.875rem;
+  border-radius: 8px;
+  /* box-shadow: 0px 0px 3px var(--neutral-500); */
+  color: var(--neutral-900);
+  width: 100%;
+}
+
+.settings__link.active {
+  background-color: var(--neutral-400);
+  color: var(--neutral-200);
+}
+
+.settings__icon {
+  height: 20px;
+  width: 30px;
+}

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import SingleItem from '../Components/SingleItem';
-import { useFetchAll } from '@hooks/productsHook';
+import { useFetchCashier } from '@hooks/productsHook';
 import './CashierScreen.css';
 import CashierButtons from './CashierButtons';
 import InfoButton from '../Components/InfoButton';
@@ -19,14 +19,13 @@ function ModeSwitcher({ mode, switchMode }) {
 }
 
 function CashierScreen() {
-  const { products, loading, error } = useFetchAll();
+  const { products, isLoading, error } = useFetchCashier();
+  console.log(products);
   const { mode, switchMode } = useMode();
   const label = ['Allergeni', 'Articolo', 'prezzo', 'Aggiungi e Rimuovi'];
-  const filteredProducts = Array.from(products.values()).filter(
-    product => product.isBeverage === mode.params
-  );
+  const filteredProducts = products.filter(product => product.isBeverage === mode.params);
 
-  const isLoading = loading ? 'Caricamento...' : '';
+  const loading = isLoading ? 'Caricamento...' : '';
   const notLoaded = error ? 'Errore!' : '';
 
   return (

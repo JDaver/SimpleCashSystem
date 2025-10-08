@@ -33,7 +33,8 @@ export function useFetchAll() {
   const { mutate: insertProduct } = useMutation({
     mutationFn: insertItem,
     onSuccess: () => {
-      queryClient.invalidateQueries(['products', filters, orderValues]);
+      queryClient.invalidateQueries(['allProducts', filters, orderValues]);
+      // queryClient.invalidateQueries(['currentProduts']);
     },
     onError: err => {
       console.error("Errore nell' inserimento", err);
@@ -42,7 +43,7 @@ export function useFetchAll() {
   const { mutate: editProduct } = useMutation({
     mutationFn: modifyItem,
     onSuccess: () => {
-      queryClient.invalidateQueries(['products', filters, orderValues]);
+      queryClient.invalidateQueries(['allProducts', filters, orderValues]);
     },
     onError: err => {
       console.error('Errore modifica prodotto:', err);
@@ -55,11 +56,11 @@ export function useFetchAll() {
       const ids = Array.isArray(id) ? id : [id];
       console.log(ids);
 
-      await queryClient.cancelQueries(['products', filters, orderValues]);
+      await queryClient.cancelQueries(['allProducts', filters, orderValues]);
 
-      const previousData = queryClient.getQueryData(['products', filters, orderValues]);
+      const previousData = queryClient.getQueryData(['allProducts', filters, orderValues]);
 
-      queryClient.setQueryData(['products', filters, orderValues], old => {
+      queryClient.setQueryData(['allProducts', filters, orderValues], old => {
         if (!old) return old;
         return {
           ...old,
@@ -71,12 +72,12 @@ export function useFetchAll() {
     },
     onError: (err, id, context) => {
       if (context?.previousData) {
-        queryClient.setQueryData(['products', filters, orderValues], context.previousData);
+        queryClient.setQueryData(['allProducts', filters, orderValues], context.previousData);
       }
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries(['products', filters, orderValues]);
+      queryClient.invalidateQueries(['allProducts', filters, orderValues]);
     },
   });
 
@@ -145,6 +146,17 @@ export function useFetchAll() {
  *
  *
  */
+export function useFetchCashier() {
+  const queryClient = useQueryClient();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['currentProducts'],
+    queryFn: () => fetchAllProducts(null, null, []),
+    staleTime: 1000 * 60 * 5,
+  });
+  const products = data?.formattedData ?? [];
+
+  return { products, isLoading, error };
+}
 
 export function useFetchItems() {
   const [records, setRecords] = useState([]);

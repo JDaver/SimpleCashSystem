@@ -1,0 +1,12 @@
+.new-user-modal__content {
+  height: 550px;
+  width: 350px;
+}
+
+.new-user-modal__header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+  padding-inline: 1rem;
+  padding-top: 1rem;
+}

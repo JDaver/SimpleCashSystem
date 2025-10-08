@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import Keypad from '@themes/Vibrant/Keypad';
 import InfoColumn from './InfoColumn';
-import { insertItem, modifyItem } from '@utils/productService';
 import { useInsertItem } from './useInsertItem';
 import './InsertItem.css';
 

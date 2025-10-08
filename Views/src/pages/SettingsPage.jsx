@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useTheme } from '@contexts/Theme';
-import { loadThemedComponent } from '@utils/loadThemedComponent';
+import { loadThemedComponent } from '@utils/LoadThemedComponent';
 import General from '@themes/Minimal/Settings/Roots/General';
 import Receipts from '@themes/Minimal/Settings/Roots/Receipts';
 import Users from '@themes/Minimal/Settings/Roots/Users';

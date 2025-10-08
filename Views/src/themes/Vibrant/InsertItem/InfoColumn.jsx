@@ -2,6 +2,8 @@ import React from 'react';
 import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useInsertItem } from './useInsertItem';
 import Dropdown from '@components/Dropdown';
+import ModeSwitcher from '../ModeSwitcher/ModeSwitcher';
+import './InsertItem.css';
 
 const allergensArr = [
   'Cereali contenenti glutine',
@@ -62,25 +64,19 @@ function InfoColumn() {
         return <input key={allergen} type="hidden" name="allergens" value={allergen} />;
       })}
 
-      <label className="label-form">
-        e' una bevanda{' '}
-        <input
-          className="checkBox"
-          type="checkBox"
-          name="isbeverage"
-          checked={isBeverage}
-          onChange={e => setIsBeverage(e.target.checked)}
-        />
-      </label>
+      <ModeSwitcher
+        action={e => setIsBeverage(e.target.checked)}
+        checked={isBeverage}
+        label={'Bevanda'}
+        name="isbeverage"
+      />
 
       <label className="label-form">
-        e' un prodotto globale{' '}
-        <input
-          className="checkBox"
-          type="checkbox"
-          name="isglobal"
+        <ModeSwitcher
+          action={handleGlobalProductCleaner}
           checked={isGlobal}
-          onChange={handleGlobalProductCleaner}
+          label={'Prodotto Globale'}
+          name="isglobal"
         />
       </label>
 

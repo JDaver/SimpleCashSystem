@@ -12,6 +12,7 @@ const componentMap = {
     CashierScreen: () => import('@themes/Vibrant/CashierScreen'),
     Receipt: () => import('@themes/Vibrant/Receipt'),
     InsertItem: () => import('@themes/Vibrant/InsertItem'),
+    DisplayElements: () => import('@themes/Vibrant/DisplayElements'),
     Settings: () => import('@themes/Vibrant/Settings'),
   },
 };

@@ -1,8 +1,8 @@
 import './PageWrapper.css';
 
-function PageWrapper({ children, ...props }) {
+function PageWrapper({ children, className = '', ...props }) {
   return (
-    <main className="page-wrapper" id="page-transition" {...props}>
+    <main className={`page-wrapper ${className}`.trim()} id="page-transition" {...props}>
       {children}
     </main>
   );

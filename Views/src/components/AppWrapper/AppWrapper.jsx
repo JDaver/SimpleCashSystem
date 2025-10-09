@@ -1,10 +1,11 @@
-import React, { Suspense } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import PageWrapper from '@components/PageWrapper';
-import Header from '@components/Header';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { useViewTransition } from '@hooks/useViewTransition';
 import { ManageItemProvider } from '@contexts/ManageItem';
-// import { GlobalProductsProvider } from '../../contexts/Global';
+import Login from '../../pages/Login';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import Layout from '../Layout/Layout';
+import SessionExpiredModal from '@components/SessionExpiredModal';
 
 const Home = React.lazy(() => import('@pages/Home'));
 const ManageItem = React.lazy(() => import('@pages/ManageItem'));
@@ -16,35 +17,28 @@ function AppWrapper() {
   const currentLocation = useViewTransition();
 
   return (
-    <div id="view-wrapper">
-      <Header />
-      <PageWrapper>
-        <Suspense fallback={<div>Page Loader...</div>}>
-          <Routes location={currentLocation}>
-            <Route path="/" element={<Home />} />
-            <Route path="/Home" element={<Navigate to="/" replace />} />
+    <>
+      <SessionExpiredModal />
+      <Routes location={currentLocation}>
+        <Route path="/login" element={<Login />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>
+            <Route index element={<Home />} />
             <Route
-              path="/ManageItem"
+              path="manageitem"
               element={
                 <ManageItemProvider>
                   <ManageItem />
                 </ManageItemProvider>
               }
             />
-            <Route
-              path="/Collection"
-              element={
-                <ManageItemProvider>
-                  <Collection />
-                </ManageItemProvider>
-              }
-            />
-            <Route path="/SettingsPage" element={<SettingsPage />} />
+            <Route path="collection" element={<Collection />} />
+            <Route path="settings/*" element={<SettingsPage />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </PageWrapper>
-    </div>
+          </Route>
+        </Route>
+      </Routes>
+    </>
   );
 }
 

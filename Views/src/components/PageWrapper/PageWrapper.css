@@ -8,6 +8,15 @@
   height: 100vh;
 }
 
+.page-wrapper.login-page {
+  padding-top: 0;
+  gap: 0;
+  padding-inline: 0;
+  padding-bottom: 0;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #page-transition {
   view-transition-name: page;
   background-color: var(--gradient-fallback);

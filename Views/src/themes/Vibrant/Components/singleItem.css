@@ -24,22 +24,21 @@
   border-top: 1px solid var(--neutral-900);
 }
 
-.label {
-  background-image: var(--gradient-label);
-  background-size: 300% 100%;
-  background-position: 50% 0;
-  border-radius: 3px;
-  color: var(--neutral-300);
-  transition: ease-out 0.5s;
-}
+.label,
 .label-DelMode {
   background-image: var(--gradient-label);
   background-size: 300% 100%;
-  background-position: 0% 0;
   border-radius: 3px;
   color: var(--neutral-300);
-  animation: slide-left 1s forwards;
+  transition: background-position 1s ease;
 }
+.label {
+  background-position: 50% 0;
+}
+.label-DelMode {
+  background-position: 0% 0;
+}
+
 .sngl-item > span {
   font-size: 1.75em;
   font-weight: 400;
@@ -108,5 +107,13 @@
   }
   to {
     background-position: 0% 0;
+  }
+}
+@keyframes slide-right {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 50% 0;
   }
 }

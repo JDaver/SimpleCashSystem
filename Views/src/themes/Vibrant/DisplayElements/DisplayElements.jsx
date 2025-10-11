@@ -3,7 +3,7 @@ import { useFetchReceipts } from '@hooks/receiptHook';
 import { useLongPress } from '@hooks/useLongPress';
 import SingleItem from '../Components/SingleItem';
 import './DisplayElements.css';
-import { getProps } from './DisplayElementsHook';
+import { useProps } from './DisplayElementsHook';
 import { useSelectionContext } from '../../../contexts/ManageItem/SelectionContext';
 import { useUIContext } from '../../../contexts/ManageItem/UIContext';
 
@@ -19,7 +19,7 @@ function DisplayElements({ topic = 'manage' }) {
     mode,
     bottomLoaderRef,
     hasMoreNext,
-  } = getProps(topic, activeDelMode);
+  } = useProps(topic, activeDelMode);
   useEffect(() => {
     if (!activeDelMode) clearSelection();
   }, [activeDelMode]);

@@ -1,55 +1,18 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { useFetchReceipts } from '@hooks/receiptHook';
-import { useLongPress } from '@hooks/useLongPress';
-import SingleItem from '../Components/SingleItem';
+import React from 'react';
+import Label from './Label';
+import ElementContainer from './ElementsContainer';
 import './DisplayElements.css';
-import { useProps } from './DisplayElementsHook';
-import { useSelectionContext } from '../../../contexts/ManageItem/SelectionContext';
-import { useUIContext } from '../../../contexts/ManageItem/UIContext';
-
+import { useRecords } from './useDisplayElements';
 function DisplayElements({ topic = 'manage' }) {
-  const { clearSelection } = useSelectionContext();
-  const { setActiveDeleteMode, activeDelMode } = useUIContext();
-  const longPress = useLongPress(() => setActiveDeleteMode(prev => !prev), 2000);
-  const {
-    labels,
-    records,
-    actionComponent,
-    sideEffectsComponent,
-    mode,
-    bottomLoaderRef,
-    hasMoreNext,
-  } = useProps(topic, activeDelMode);
-  useEffect(() => {
-    if (!activeDelMode) clearSelection();
-  }, [activeDelMode]);
+  const { records, bottomLoaderRef, hasMoreNext } = useRecords(topic);
+  console.log(records);
 
   return (
     <div className="elements-container">
-      <div
-        {...(topic === 'manage' ? longPress : {})}
-        className={activeDelMode ? 'label-DelMode' : 'label'}
-      >
-        <SingleItem PlaceHolders={labels} />
-      </div>
-      <div className={activeDelMode ? 'display-element-DelMode' : 'display-element'}>
-        <ul>
-          {Array.from(records.values()).map(record => {
-            return (
-              <SingleItem
-                key={record.id}
-                mode={mode}
-                Record={record}
-                ActionButtonsComponent={actionComponent}
-                InfoComponent={sideEffectsComponent}
-              />
-            );
-          })}
-          {topic === 'receipt' && hasMoreNext && <div ref={bottomLoaderRef}></div>}
-        </ul>
-      </div>
+      <Label topic={topic} />
+      <ElementContainer currentValues={{ records, bottomLoaderRef, hasMoreNext }} topic={topic} />
     </div>
   );
 }
 
-export default DisplayElements;
+export default React.memo(DisplayElements);

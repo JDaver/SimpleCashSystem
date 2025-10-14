@@ -152,8 +152,10 @@ export function useFetchCashier() {
     queryKey: ['currentProducts'],
     queryFn: () => fetchAllProducts(null, null, []),
     staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
   });
   const products = data?.formattedData ?? [];
+  console.log(products);
 
   return { products, isLoading, error };
 }

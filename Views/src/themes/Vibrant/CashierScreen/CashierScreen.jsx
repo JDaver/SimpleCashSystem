@@ -1,22 +1,21 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
+import { useMode } from './useMode';
 import SingleItem from '../Components/SingleItem';
-import { useFetchCashier } from '@hooks/productsHook';
-import './CashierScreen.css';
 import CashierButtons from './CashierButtons';
 import InfoButton from '../Components/InfoButton';
 import ModeSwitcher from '../ModeSwitcher';
-import { useMode } from './useMode';
+import './CashierScreen.css';
 
-function CashierScreen() {
-  const { products, isLoading, error } = useFetchCashier();
-  console.log(products);
+function CashierScreen({ products }) {
   const { mode, switchMode } = useMode();
   const label = ['Allergeni', 'Articolo', 'prezzo', 'Aggiungi e Rimuovi'];
-  const filteredProducts = products.filter(product => product.isBeverage === mode.params);
+  const filteredProducts = useMemo(() => {
+    if (!products) return [];
+    return products.filter(product => product.isBeverage === mode.params);
+  }, [products, mode.params]);
 
-  const loading = isLoading ? 'Caricamento...' : '';
-  const notLoaded = error ? 'Errore!' : '';
-
+  // const loading = isLoading ? 'Caricamento...' : '';
+  // const notLoaded = error ? 'Errore!' : '';
   return (
     <div className="cashier-screen">
       <div className="cashier-screen__wrapper">
@@ -28,8 +27,8 @@ function CashierScreen() {
           <SingleItem PlaceHolders={label} />
         </div>
         <ul className="cashier-screen__content">
-          {error && notLoaded}
-          {loading && isLoading}
+          {/* {error && notLoaded} */}
+          {/* {loading && isLoading} */}
 
           {products &&
             filteredProducts.map(product => {

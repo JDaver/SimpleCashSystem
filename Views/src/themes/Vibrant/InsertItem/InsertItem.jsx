@@ -3,12 +3,12 @@ import Keypad from '@themes/Vibrant/Keypad';
 import InfoColumn from './InfoColumn';
 import { useInsertItem } from './useInsertItem';
 import './InsertItem.css';
-
-import { useProductsContext } from '@contexts/ManageItem/ProductsContext';
+// import { useProductsContext } from '@contexts/ManageItem/ProductsContext';
 import { useUIContext } from '../../../contexts/ManageItem/UIContext';
+import { useFetchAll } from '../../../Hooks/productsHook';
 
 function InsertItem() {
-  const { editProduct, insertProduct } = useProductsContext();
+  const { editProduct, insertProduct } = useFetchAll();
   const { handleTableChange } = useUIContext();
   const {
     price,

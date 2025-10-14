@@ -5,7 +5,7 @@ import { useProductsContext } from '../../../contexts/ManageItem/ProductsContext
 
 export function useInsertItem() {
   const { selectedItem, shouldResetForm, setShouldResetForm } = useEditingContext();
-  const { products } = useProductsContext();
+  // const { products } = useProductsContext();
   const partyNames = usePartyNames();
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');

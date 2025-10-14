@@ -5,6 +5,7 @@ import './DisplayElements.css';
 
 function DisplayElements({ isInteractive = false }) {
   const { products } = useProductsContext();
+  console.log(products);
 
   return (
     <div className="display-elements">

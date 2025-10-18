@@ -1,12 +1,15 @@
+-- EXTENSION--
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 -- ADD USERS FUNCTION --
 CREATE OR REPLACE FUNCTION add_user(
         new_username TEXT,
         new_schema TEXT,
         new_mail TEXT
-    ) RETURNS TEXT AS $$
+    ) RETURNS JSON AS $$
     DECLARE
         max_users INT:= 5;
         current_count INT;
+		new_user app_users;
         
     BEGIN
         SELECT COUNT(*) INTO current_count FROM app_users;
@@ -16,8 +19,8 @@ CREATE OR REPLACE FUNCTION add_user(
         
         EXECUTE FORMAT('CREATE SCHEMA IF NOT EXISTS %I',new_schema);
         
-        INSERT INTO app_users(username,schemaname,email)
-        VALUES (new_username, new_schema, new_mail);
+        INSERT INTO app_users(username,schema_name,email,token, token_expires)
+        VALUES (new_username, new_schema, new_mail, gen_random_uuid(), NOW() + INTERVAL '16 hours')  RETURNING * INTO new_user;
 
     EXECUTE FORMAT('
     CREATE TABLE IF NOT EXISTS %I.product (
@@ -26,14 +29,14 @@ CREATE OR REPLACE FUNCTION add_user(
         price NUMERIC(10,2) NOT NULL,
         isBeverage BOOLEAN DEFAULT FALSE,
         isGlobal BOOLEAN DEFAULT TRUE,
-        allergens JSON
+        allergens JSONB
     )
     ', new_schema);
 
     EXECUTE FORMAT('
         CREATE TABLE IF NOT EXISTS %I.party (
             id SERIAL PRIMARY KEY,
-            name VARCHAR(100) NOT NULL
+            name_party VARCHAR(100) NOT NULL
         )
     ', new_schema);
 
@@ -42,7 +45,7 @@ CREATE OR REPLACE FUNCTION add_user(
         CREATE TABLE IF NOT EXISTS %I.receipt (
             id SERIAL PRIMARY KEY,
             tot_price NUMERIC(10,2) NOT NULL,
-            party_id INT REFERENCES %I.party(id),
+            id_party INT REFERENCES %I.party(id),
             date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ', new_schema, new_schema);
@@ -63,7 +66,7 @@ CREATE OR REPLACE FUNCTION add_user(
         )
     ', new_schema, new_schema, new_schema);
 
-    RETURN 'Utente creato correttamente'
+    RETURN row_to_json(new_user);
     END;
 $$  LANGUAGE plpgsql;
 
@@ -75,12 +78,12 @@ DECLARE
     target_schema TEXT;
 BEGIN
     
-    SELECT schemaname INTO target_schema
+    SELECT schema_name INTO target_schema
     FROM app_users
     WHERE username = target_username;
 
     IF target_schema IS NULL THEN
-        RAISE EXCEPTION 'Utente % non trovato in app_users.', target_username;
+        RAISE EXCEPTION 'Utente %s non trovato in app_users.', target_username;
     END IF;
 
    
@@ -89,7 +92,7 @@ BEGIN
     
     DELETE FROM app_users WHERE username = target_username;
 
-    RETURN FORMAT('Utente % eliminato insieme allo schema %.', target_username, target_schema);
+    RETURN FORMAT('Utente %s eliminato insieme allo schema %s', target_username, target_schema);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -111,7 +114,7 @@ BEGIN
     WHERE username = old_username;
 
     IF old_schema_name IS NULL THEN
-        RAISE EXCEPTION 'Utente % non trovato.', old_username;
+        RAISE EXCEPTION 'Utente %s non trovato.', old_username;
     END IF;
 
 
@@ -126,8 +129,26 @@ BEGIN
     WHERE username = old_username;
 
     RETURN FORMAT(
-        'Utente % rinominato in %',
+        'Utente %s rinominato in %s',
         old_username, new_username
     );
 END;
 $$ LANGUAGE plpgsql;
+
+
+--CREATE APP_USERS--
+CREATE TABLE IF NOT EXISTS public.app_users
+(
+    id integer NOT NULL DEFAULT nextval('app_users_id_seq'::regclass),
+    username character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    schema_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(255) COLLATE pg_catalog."default",
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    token uuid DEFAULT gen_random_uuid(),
+    token_expires timestamp with time zone,
+    CONSTRAINT app_users_pkey PRIMARY KEY (id),
+    CONSTRAINT app_users_email_key UNIQUE (email),
+    CONSTRAINT app_users_username_key UNIQUE (username)
+)
+
+TABLESPACE pg_default;

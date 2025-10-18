@@ -34,11 +34,9 @@ exports.fetchItems = async (req, res) => {
     res.status(200).json(formattedData);
   } catch (err) {
     console.error(`controller cathced an error -> ${err}`);
-    res
-      .status(500)
-      .json({
-        error: "Impossibile scaricare informazioni sui prodotti venduti.",
-      });
+    res.status(500).json({
+      error: "Impossibile scaricare informazioni sui prodotti venduti.",
+    });
   }
 };
 

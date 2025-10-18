@@ -1,22 +1,39 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
+import { useAuthContext } from '@contexts/Auth/AuthContext';
 import NewUserModal from '@components/NewUserModal';
 import './SelectUser.css';
 
-const users = [
-  { id: 1, name: 'User 1' },
-  { id: 2, name: 'User 2' },
-  { id: 3, name: 'User 3' },
-  { id: 4, name: 'User 4' },
-  { id: 5, name: 'User 5' },
-];
-
 function SelectUser() {
+  const { handleLogin } = useAuthContext();
+  const [users, setUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch('http://localhost:4444/users');
+        const data = await res.json();
+        setUsers(data || []);
+      } catch (err) {
+        console.error('Errore nel fetch utenti:', err);
+        setUsers([]);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const toggleModal = useCallback(() => {
     setShowModal(prev => !prev);
   }, []);
+
+  const handler = useCallback(
+    (id, name) => {
+      const sessionData = { id, name };
+      handleLogin(sessionData);
+    },
+    [handleLogin]
+  );
 
   return (
     <>
@@ -24,9 +41,13 @@ function SelectUser() {
         <div className="select-user__list">
           {users.map(user => {
             return (
-              <div key={user.id} className="select-user__card">
+              <div
+                key={user.id}
+                className="select-user__card"
+                onClick={() => handler(user.id, user.username)}
+              >
                 <span>Avatar</span>
-                <span>{user.name}</span>
+                <span>{user.username}</span>
               </div>
             );
           })}

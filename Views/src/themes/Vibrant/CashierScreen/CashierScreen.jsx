@@ -9,10 +9,7 @@ import './CashierScreen.css';
 function CashierScreen({ products }) {
   const { mode, switchMode } = useMode();
   const label = ['Allergeni', 'Articolo', 'prezzo', 'Aggiungi e Rimuovi'];
-  const filteredProducts = useMemo(() => {
-    if (!products) return [];
-    return products.filter(product => product.isBeverage === mode.params);
-  }, [products, mode.params]);
+  const filteredProducts = products.filter(product => product.isBeverage === mode.params);
 
   // const loading = isLoading ? 'Caricamento...' : '';
   // const notLoaded = error ? 'Errore!' : '';

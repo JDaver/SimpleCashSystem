@@ -15,7 +15,7 @@ function Header() {
         <div style={{ display: 'flex', gap: '2rem' }}>
           <Navbar />
           <div style={{ alignItems: 'center', display: 'flex', gap: '0.5rem', color: 'white' }}>
-            <span>Ciao, {session.user}</span>
+            <span>Ciao, {session.username}</span>
             <button onClick={handleLogout}>
               <ArrowLeftStartOnRectangleIcon width={30} height={20} />
             </button>

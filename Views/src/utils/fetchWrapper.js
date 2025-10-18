@@ -1,9 +1,16 @@
 export async function apiFetch(url, bodyOpt = {}) {
-  const session = sessionStorage.getItem('session');
+  const storedSession = sessionStorage.getItem('session');
+  console.log('Check race:', storedSession);
+  let sessionToken;
+  try {
+    sessionToken = storedSession ? JSON.parse(storedSession) : null;
+  } catch (e) {
+    sessionToken = null;
+  }
   const headers = {
     'Content-Type': 'application/json',
     ...(bodyOpt.headers || {}),
-    ...(session ? { 'X-Session': session } : {}),
+    ...(sessionToken ? { 'x-session': sessionToken.token } : {}),
   };
   try {
     const res = await fetch(url, { ...bodyOpt, headers });

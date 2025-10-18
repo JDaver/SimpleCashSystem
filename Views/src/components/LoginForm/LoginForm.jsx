@@ -7,7 +7,7 @@ import AvatarSelector from '../AvatarSelector/AvatarSelector';
 
 function LoginForm({ isModal }) {
   const navigate = useNavigate();
-  const { handleLogin } = useAuthContext();
+  const { handleSignin } = useAuthContext();
   const [inputUser, setInputUser] = useState('');
   const [errorUser, setErrorUser] = useState('');
   const [inputEmail, setInputEmail] = useState('');
@@ -44,13 +44,13 @@ function LoginForm({ isModal }) {
     if (errorUser || errorEmail) return;
 
     const session = {
-      user: inputUser,
-      email: inputEmail,
+      new_username: inputUser,
+      new_email: inputEmail,
       avatarId: selectedAvatar,
     };
 
-    handleLogin(session);
-    navigate('/');
+    handleSignin(session);
+    // navigate('/');
   };
   return (
     <form

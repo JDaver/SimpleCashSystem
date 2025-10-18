@@ -6,6 +6,7 @@ const utils = require("../api/apiServices/utilsApi");
 const receiptService = require("./apiServices/receiptApi");
 const item_receipt = require("../controllers/controllerProduct_receipt");
 const party = require("../controllers/controllerParty");
+const user = require("../controllers/controllerUser");
 
 //Products related Operations: DONE
 router.post("/insert_item", productService.createProduct);
@@ -27,6 +28,7 @@ router.get("/fetch_partyNames", party.fetchPartyNames);
 //Other stuff
 router.get("/getYears", utils.getYear);
 router.get("/getPartys", party.fetchPartyNames);
+router.get("/users", user.fetchAllUsers);
 module.exports = router;
 
 /*to IMPLEMENT FEATUREs

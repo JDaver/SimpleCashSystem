@@ -12,7 +12,7 @@ module.exports = class Product_receipt {
     const placeholders = this.products
       .map((p, i) => {
         const idx = i * 3;
-        values.push(p.id, p.receipt_id, p.quantity);
+        values.push(p.id, p.receipt_id ?? null, p.quantity);
         return `($${idx + 1}, $${idx + 2}, $${idx + 3})`;
       })
       .join(",");
@@ -26,7 +26,7 @@ module.exports = class Product_receipt {
     } catch (err) {
       console.log("error: ", err);
       throw new Error(
-        `Error from DB in CreateProduct_rreceipt(): ${err.message}`
+        `Error from DB in CreateProduct_receipt(): ${err.message}`
       );
     }
   }
@@ -36,7 +36,7 @@ module.exports = class Product_receipt {
       date: null,
       column: "total_sell",
       order: "DESC",
-      id_party: 1,
+      // id_party: 1,   /*TO DELETE: THIS LINE IS USED JUST FOR DEBUGGING, partyId should come from frontend */
     };
     const { date, column, order, id_party } = { ...defaults, ...filters };
 
@@ -96,7 +96,7 @@ module.exports = class Product_receipt {
       date: null,
       column: "receipt_date",
       order: "DESC",
-      id_party: 1,
+      // id_party: 1,
       startingIndex: 0,
     };
 
@@ -104,6 +104,7 @@ module.exports = class Product_receipt {
       ...defaults,
       ...filters,
     };
+
     const conditions = [];
 
     if (date > 2000) {

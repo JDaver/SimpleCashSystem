@@ -2,18 +2,18 @@ const format = require("pg-format");
 const pool = require("../db/db");
 
 module.exports = class User {
-  constructor(username, email) {
+  constructor(username, email, avatar) {
     this.username = username;
     this.email = email?.trim() || null;
-
     this.schema_name = `${username}_schema`;
+    this.avatar = avatar;
   }
 
   async createUser() {
     try {
       const { rows } = await pool.query(
-        "SELECT public.add_user($1,$2,$3) as resultQuery",
-        [this.username, this.schema_name, this.email ?? null]
+        "SELECT public.add_user($1,$2,$3,$4) as resultQuery",
+        [this.username, this.schema_name, this.email ?? null, this.avatar]
       );
 
       const result = rows[0].resultquery;
@@ -31,11 +31,12 @@ module.exports = class User {
   async updateUser(oldUsername) {
     try {
       const query = format(
-        "SELECT update_user (%L,%L,%L,%L) as resultQuery",
+        "SELECT update_user (%L,%L,%L,%L,%L) as resultQuery",
         oldUsername,
         this.username,
         this.schema_name,
-        this.email
+        this.email,
+        this.avatar
       );
       const result = await pool.query(query);
       return { ok: result.rows[0].resultQuery };

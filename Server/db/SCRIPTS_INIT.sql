@@ -4,7 +4,8 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE OR REPLACE FUNCTION add_user(
         new_username TEXT,
         new_schema TEXT,
-        new_mail TEXT
+        new_mail TEXT,
+        new_avatar TEXT
     ) RETURNS JSON AS $$
     DECLARE
         max_users INT:= 5;
@@ -19,8 +20,8 @@ CREATE OR REPLACE FUNCTION add_user(
         
         EXECUTE FORMAT('CREATE SCHEMA IF NOT EXISTS %I',new_schema);
         
-        INSERT INTO app_users(username,schema_name,email,token, token_expires)
-        VALUES (new_username, new_schema, new_mail, gen_random_uuid(), NOW() + INTERVAL '16 hours')  RETURNING * INTO new_user;
+        INSERT INTO app_users(username,schema_name,email,token, token_expires, avatar)
+        VALUES (new_username, new_schema, new_mail, gen_random_uuid(), NOW() + INTERVAL '16 hours', new_avatar)  RETURNING * INTO new_user;
 
     EXECUTE FORMAT('
     CREATE TABLE IF NOT EXISTS %I.product (
@@ -52,15 +53,16 @@ CREATE OR REPLACE FUNCTION add_user(
 
     EXECUTE FORMAT('
         CREATE TABLE IF NOT EXISTS %I.product_receipt (
-            product_id INT REFERENCES %I.product(id),
-            receipt_id INT REFERENCES %I.receipt(id),
-            quantity NUMERIC
+            product_id INT REFERENCES %I.product(id) ON DELETE CASCADE,
+            receipt_id INT REFERENCES %I.receipt(id) ON DELETE CASCADE,
+            quantity NUMERIC,
+            PRIMARY KEY(product_id, receipt_id)
         )
     ', new_schema, new_schema, new_schema);
 
     EXECUTE FORMAT('
         CREATE TABLE IF NOT EXISTS %I.product_party (
-            product_id INT REFERENCES %I.product(id),
+            product_id INT REFERENCES %I.product(id) ON DELETE CASCADE,
             party_id INT REFERENCES %I.party(id),
             CONSTRAINT unique_product_party UNIQUE (product_id, party_id)
         )
@@ -102,7 +104,8 @@ CREATE OR REPLACE FUNCTION update_user(
     old_username TEXT,
     new_username TEXT,
     new_schema_name TEXT,
-    new_email TEXT
+    new_email TEXT,
+    new_avatar TEXT
 
 ) RETURNS TEXT AS $$
 DECLARE
@@ -125,7 +128,8 @@ BEGIN
     UPDATE app_users
     SET username = new_username,
         schema_name = new_schema_name,
-        email = new_email
+        email = new_email,
+        avatar = new_avatar
     WHERE username = old_username;
 
     RETURN FORMAT(
@@ -146,6 +150,7 @@ CREATE TABLE IF NOT EXISTS public.app_users
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     token uuid DEFAULT gen_random_uuid(),
     token_expires timestamp with time zone,
+    avatar NOT NULL DEFAULT '/avatar/account.png',
     CONSTRAINT app_users_pkey PRIMARY KEY (id),
     CONSTRAINT app_users_email_key UNIQUE (email),
     CONSTRAINT app_users_username_key UNIQUE (username)

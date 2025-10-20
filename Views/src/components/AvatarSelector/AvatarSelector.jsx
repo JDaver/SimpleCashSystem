@@ -1,27 +1,19 @@
 import './AvatarSelector.css';
-
-const avatars = [
-  { id: 1, name: 'A' },
-  { id: 2, name: 'B' },
-  { id: 3, name: 'C' },
-  { id: 4, name: 'D' },
-  { id: 5, name: 'E' },
-  { id: 6, name: 'F' },
-  { id: 7, name: 'G' },
-  { id: 8, name: 'H' },
-];
+import { avatars } from '@utils/constants/avatars';
 
 function AvatarSelector({ selected, onSelect }) {
   return (
     <div className="avatar-selector">
-      {avatars.map(a => (
+      {Array.from(avatars.entries()).map(([id, url]) => (
         <button
-          key={a.id}
+          key={id}
           type="button"
-          className={`avatar-option ${selected === a.id ? 'selected' : ''}`}
-          onClick={() => onSelect(a.id)}
+          className={`avatar-option ${selected === url ? 'selected' : ''}`}
+          onClick={() => onSelect(url)}
         >
-          <div className="avatar-circle">{a.name}</div>
+          <div className="avatar-circle">
+            <img src={url} alt={url} />
+          </div>
         </button>
       ))}
     </div>

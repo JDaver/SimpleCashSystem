@@ -20,11 +20,12 @@ async function logInAuth(req, res) {
       [token, expires, user.rows[0].id]
     );
 
-    res.json({
+    res.status(200).json({
       username: row.username,
       currentEmail: row.email,
       currentToken: token,
       expiresAt: expires,
+      avatar: row.avatar,
     });
   } catch (err) {
     res.status(500).json({ error: err });

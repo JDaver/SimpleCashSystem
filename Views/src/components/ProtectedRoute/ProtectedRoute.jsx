@@ -3,7 +3,6 @@ import { useAuthContext } from '../../contexts/Auth';
 
 function ProtectedRoute() {
   const { session } = useAuthContext();
-
   return session ? <Outlet /> : <Navigate to="/login" replace />;
 }
 

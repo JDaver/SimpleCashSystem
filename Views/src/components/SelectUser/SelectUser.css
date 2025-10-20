@@ -22,3 +22,8 @@
   width: 300px;
   padding-inline: 1rem;
 }
+
+.select-user__card.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

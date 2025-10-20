@@ -15,6 +15,7 @@ function SelectUser() {
         const res = await fetch('http://localhost:4444/users');
         const data = await res.json();
         setUsers(data || []);
+        console.log(data);
       } catch (err) {
         console.error('Errore nel fetch utenti:', err);
         setUsers([]);
@@ -46,12 +47,17 @@ function SelectUser() {
                 className="select-user__card"
                 onClick={() => handler(user.id, user.username)}
               >
-                <span>Avatar</span>
+                <span>
+                  <img src={user.avatar} alt="avatar" height={60} width={60} />
+                </span>
                 <span>{user.username}</span>
               </div>
             );
           })}
-          <div className="select-user__card" onClick={toggleModal}>
+          <div
+            className={`select-user__card ${users.length > 4 ? 'disabled' : ''}`}
+            onClick={toggleModal}
+          >
             <span>
               <PlusCircleIcon width={40} height={30} />
             </span>

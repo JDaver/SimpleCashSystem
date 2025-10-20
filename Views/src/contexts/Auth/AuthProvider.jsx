@@ -3,6 +3,7 @@ import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { login, signin } from '../../utils/userService';
 import { useQueryClient } from '@tanstack/react-query';
+import { avatars } from '../../utils/constants/avatars';
 
 export const AuthProvider = ({ children }) => {
   const getInitialSession = () => {
@@ -30,24 +31,33 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  // ------------------- AUTH HANDLERS -------------------
+
   const handleSignin = useCallback(
     async sessionData => {
-      const { new_username, new_email } = sessionData || {};
+      try {
+        const { new_username, new_email, new_avatar } = sessionData || {};
+        const result = await signin(new_username, new_email, new_avatar);
+        const { currentToken, username, currentEmail, expiresAt, avatar } = result;
 
-      const result = await signin(new_username, new_email);
-      const { currentToken, username, currentEmail, expiresAt } = result;
+        if (!result?.currentToken) {
+          throw new Error('Login fallito: token mancante');
+        }
+        const sessionToken = {
+          token: currentToken,
+          username,
+          email: currentEmail,
+          token_expires: new Date(expiresAt).getTime(),
+          avatar: avatar,
+        };
+        queryClient.invalidateQueries();
+        sessionStorage.setItem('session', JSON.stringify(sessionToken));
+        setSession(sessionToken);
 
-      const sessionToken = {
-        token: currentToken,
-        username,
-        email: currentEmail,
-        token_expires: new Date(expiresAt).getTime(),
-      };
-      queryClient.invalidateQueries();
-      sessionStorage.setItem('session', JSON.stringify(sessionToken));
-      setSession(sessionToken);
-
-      navigate('/');
+        navigate('/');
+      } catch (err) {
+        throw new Error(err);
+      }
     },
     [navigate]
   );
@@ -55,21 +65,28 @@ export const AuthProvider = ({ children }) => {
   const handleLogin = useCallback(
     async sessionData => {
       const { id, name } = sessionData;
+      try {
+        const result = await login(name);
+        console.log('login', result);
+        if (!result?.currentToken) {
+          throw new Error('Login fallito: token mancante');
+        }
+        const { currentToken, username, currentEmail, expiresAt, avatar } = result;
 
-      const result = await login(name);
-      console.log('login', result);
-      const { currentToken, username, currentEmail, expiresAt } = result;
-
-      const sessionToken = {
-        token: currentToken,
-        username,
-        email: currentEmail,
-        token_expires: new Date(expiresAt).getTime(),
-      };
-      queryClient.invalidateQueries();
-      sessionStorage.setItem('session', JSON.stringify(sessionToken));
-      setSession(sessionToken);
-      navigate('/');
+        const sessionToken = {
+          token: currentToken,
+          username,
+          email: currentEmail,
+          token_expires: new Date(expiresAt).getTime(),
+          avatar: avatar,
+        };
+        queryClient.invalidateQueries();
+        sessionStorage.setItem('session', JSON.stringify(sessionToken));
+        setSession(sessionToken);
+        navigate('/');
+      } catch (err) {
+        console.log(err);
+      }
     },
     [navigate]
   );

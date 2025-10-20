@@ -4,6 +4,7 @@ import { useAuthContext } from '@contexts/Auth';
 import { UserIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import './LoginForm.css';
 import AvatarSelector from '../AvatarSelector/AvatarSelector';
+import { avatars } from '@utils/constants/avatars';
 
 function LoginForm({ isModal }) {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function LoginForm({ isModal }) {
   const [errorUser, setErrorUser] = useState('');
   const [inputEmail, setInputEmail] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
-  const [selectedAvatar, setSelectedAvatar] = useState(1);
+  const [selectedAvatar, setSelectedAvatar] = useState(avatars.get(0));
 
   const handleUserChange = e => {
     const value = e.target.value;
@@ -46,8 +47,10 @@ function LoginForm({ isModal }) {
     const session = {
       new_username: inputUser,
       new_email: inputEmail,
-      avatarId: selectedAvatar,
+      new_avatar: selectedAvatar,
     };
+
+    console.log(session);
 
     handleSignin(session);
     // navigate('/');

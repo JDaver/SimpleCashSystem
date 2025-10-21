@@ -141,6 +141,13 @@ $$ LANGUAGE plpgsql;
 
 
 --CREATE APP_USERS--
+-- EXTENSION--
+CREATE EXTENSION IF NOT EXISTS "pgcrypto"; --To use gen_uui(), run before creating table useer
+
+-- Table: public.app_users
+
+-- DROP TABLE IF EXISTS public.app_users;
+
 CREATE TABLE IF NOT EXISTS public.app_users
 (
     id integer NOT NULL DEFAULT nextval('app_users_id_seq'::regclass),
@@ -150,7 +157,7 @@ CREATE TABLE IF NOT EXISTS public.app_users
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     token uuid DEFAULT gen_random_uuid(),
     token_expires timestamp with time zone,
-    avatar NOT NULL DEFAULT '/avatar/account.png',
+    avatar text COLLATE pg_catalog."default" NOT NULL DEFAULT '/avatar/account.png'::text,
     CONSTRAINT app_users_pkey PRIMARY KEY (id),
     CONSTRAINT app_users_email_key UNIQUE (email),
     CONSTRAINT app_users_username_key UNIQUE (username)

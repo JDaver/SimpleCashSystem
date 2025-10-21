@@ -5,7 +5,6 @@ import { useProductsContext } from '../../../contexts/ManageItem/ProductsContext
 
 export function useInsertItem() {
   const { selectedItem, shouldResetForm, setShouldResetForm } = useEditingContext();
-  // const { products } = useProductsContext();
   const partyNames = usePartyNames();
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
@@ -26,6 +25,7 @@ export function useInsertItem() {
       setIsGlobal(false);
       setPartiesRelated([]);
       setProductId(null);
+      setShouldResetForm(false);
     } else if (selectedItem) {
       setUpdateMode(true);
       setName(selectedItem.name || '');

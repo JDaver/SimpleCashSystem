@@ -1,10 +1,45 @@
-import { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { UserIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '@contexts/Auth';
-import { UserIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
-import './LoginForm.css';
-import AvatarSelector from '../AvatarSelector/AvatarSelector';
 import { avatars } from '@utils/constants/avatars';
+import AvatarSelector from '@components/AvatarSelector';
+import './LoginForm.css';
+
+const MemoUserIcon = React.memo(UserIcon);
+const MemoEnvelopeIcon = React.memo(EnvelopeIcon);
+
+const Input = React.memo(function Input({
+  id,
+  Icon,
+  label,
+  type = 'text',
+  value,
+  onChange,
+  placeholder,
+  error,
+  autoComplete,
+  isModal,
+}) {
+  return (
+    <div className={`login__input-wrapper ${isModal ? 'login__input-wrapper--modal' : ''}`}>
+      <label htmlFor={id} className="login__input-label">
+        <Icon width={30} height={20} />
+        {label}
+      </label>
+      <input
+        className={`login__input ${isModal ? 'login__input--modal' : ''}`}
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        autoComplete={isModal ? 'off' : autoComplete}
+        value={value}
+        onChange={onChange}
+      />
+      {error && <p className="login__input-error">{error}</p>}
+    </div>
+  );
+});
 
 function LoginForm({ isModal }) {
   const navigate = useNavigate();
@@ -15,7 +50,7 @@ function LoginForm({ isModal }) {
   const [errorEmail, setErrorEmail] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState(avatars.get(0));
 
-  const handleUserChange = e => {
+  const handleUserChange = useCallback(e => {
     const value = e.target.value;
     setInputUser(value);
 
@@ -26,9 +61,9 @@ function LoginForm({ isModal }) {
     } else {
       setErrorUser('');
     }
-  };
+  }, []);
 
-  const handleEmailChange = e => {
+  const handleEmailChange = useCallback(e => {
     const value = e.target.value;
     setInputEmail(value);
 
@@ -37,9 +72,9 @@ function LoginForm({ isModal }) {
     } else {
       setErrorEmail('');
     }
-  };
+  }, []);
 
-  const handleSubmit = e => {
+  const handleSubmit = useCallback(e => {
     e.preventDefault();
 
     if (errorUser || errorEmail) return;
@@ -52,9 +87,9 @@ function LoginForm({ isModal }) {
 
     console.log(session);
 
-    handleSignin(session);
-    // navigate('/');
-  };
+    handleLogin(session);
+    navigate('/');
+  }, []);
   return (
     <form
       className={`login__form ${isModal ? 'login__form--modal' : ''}`}
@@ -62,37 +97,27 @@ function LoginForm({ isModal }) {
       noValidate
     >
       <div className={`login__input-list ${isModal ? 'login__input-list--modal' : ''}`}>
-        <div className={`login__input-wrapper ${isModal ? 'login__input-wrapper--modal' : ''}`}>
-          <label htmlFor="username" className="login__input-label">
-            <UserIcon width={30} height={20} />
-            Utente
-          </label>
-          <input
-            className={`login__input ${isModal ? 'login__input--modal' : ''}`}
-            id="username"
-            type="text"
-            autoComplete="username"
-            value={inputUser}
-            onChange={handleUserChange}
-          />
-          {errorUser && <p className="login__input-error">{errorUser}</p>}
-        </div>
-        <div className={`login__input-wrapper ${isModal ? 'login__input-wrapper--modal' : ''}`}>
-          <label htmlFor="email" className="login__input-label">
-            <EnvelopeIcon width={30} height={20} />
-            Email
-          </label>
-          <input
-            className={`login__input ${isModal ? 'login__input--modal' : ''}`}
-            id="email"
-            type="email"
-            autoComplete="email"
-            value={inputEmail}
-            placeholder="Facoltativa"
-            onChange={handleEmailChange}
-          />
-          {errorEmail && <p className="login__input-error">{errorEmail}</p>}
-        </div>
+        <Input
+          id="username"
+          isModal={isModal}
+          Icon={MemoUserIcon}
+          label="Utente"
+          autoComplete="username"
+          value={inputUser}
+          onChange={handleUserChange}
+          error={errorUser}
+        />
+        <Input
+          id="email"
+          isModal={isModal}
+          Icon={MemoEnvelopeIcon}
+          label="Email"
+          type="email"
+          autoComplete="email"
+          value={inputEmail}
+          onChange={handleEmailChange}
+          error={errorEmail}
+        />
       </div>
       <AvatarSelector selected={selectedAvatar} onSelect={setSelectedAvatar} />
       <button
@@ -106,4 +131,4 @@ function LoginForm({ isModal }) {
   );
 }
 
-export default LoginForm;
+export default React.memo(LoginForm);

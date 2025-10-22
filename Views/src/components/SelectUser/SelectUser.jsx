@@ -1,8 +1,10 @@
-import { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { useAuthContext } from '@contexts/Auth/AuthContext';
 import NewUserModal from '@components/NewUserModal';
 import './SelectUser.css';
+
+const MemoPlusCircleIcon = React.memo(PlusCircleIcon);
 
 function SelectUser() {
   const { handleLogin } = useAuthContext();
@@ -59,7 +61,7 @@ function SelectUser() {
             onClick={toggleModal}
           >
             <span>
-              <PlusCircleIcon width={40} height={30} />
+              <MemoPlusCircleIcon width={40} height={30} />
             </span>
             <span>Crea nuovo utente</span>
           </div>

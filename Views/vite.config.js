@@ -6,7 +6,14 @@ import svgr from 'vite-plugin-svgr';
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
-  plugins: [react(), svgr()],
+  plugins: [
+    react({
+      babel: {
+        plugins: ['babel-plugin-react-compiler'],
+      },
+    }),
+    svgr(),
+  ],
   resolve: {
     alias: {
       '@hooks': path.resolve(__dirname, 'src/Hooks'),

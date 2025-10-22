@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useViewTransition } from '@hooks/useViewTransition';
 import { ManageItemProvider } from '@contexts/ManageItem';
-import Login from '../../pages/Login';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import Layout from '../Layout/Layout';
+import Login from '@pages/Login';
+import ProtectedRoute from '@components/ProtectedRoute';
+import Layout from '@components/Layout';
 import SessionExpiredModal from '@components/SessionExpiredModal';
 
 const Home = React.lazy(() => import('@pages/Home'));

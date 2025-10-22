@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuthContext } from '../../contexts/Auth';
+import { useAuthContext } from '@contexts/Auth';
 
 function ProtectedRoute() {
   const { session } = useAuthContext();

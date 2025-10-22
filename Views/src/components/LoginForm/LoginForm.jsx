@@ -74,22 +74,23 @@ function LoginForm({ isModal }) {
     }
   }, []);
 
-  const handleSubmit = useCallback(e => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    e => {
+      e.preventDefault();
 
-    if (errorUser || errorEmail) return;
+      if (errorUser || errorEmail) return;
 
-    const session = {
-      new_username: inputUser,
-      new_email: inputEmail,
-      new_avatar: selectedAvatar,
-    };
+      const session = {
+        new_username: inputUser,
+        new_email: inputEmail,
+        new_avatar: selectedAvatar,
+      };
+      console.log(session);
 
-    console.log(session);
-
-    handleLogin(session);
-    navigate('/');
-  }, []);
+      handleSignin(session);
+    },
+    [inputUser, inputEmail, selectedAvatar, errorUser, errorEmail, handleSignin]
+  );
   return (
     <form
       className={`login__form ${isModal ? 'login__form--modal' : ''}`}

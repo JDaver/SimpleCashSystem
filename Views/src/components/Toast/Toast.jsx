@@ -13,50 +13,81 @@ import {
 
 const ANIMATION_DURATION = 300;
 
+const POSITION_STYLES = {
+  'top-left': { top: 16, left: 16 },
+  'top-right': { top: 16, right: 16 },
+  'bottom-left': { bottom: 16, left: 16 },
+  'bottom-right': { bottom: 16, right: 16 },
+  'top-center': { top: 16, left: '50%', transform: 'translateX(-50%)' },
+  'bottom-center': { bottom: 16, left: '50%', transform: 'translateX(-50%)' },
+};
+
+const baseContainerStyle = {
+  position: 'fixed',
+  maxWidth: '90vw',
+  width: 320,
+  pointerEvents: 'none',
+  overflow: 'visible',
+  zIndex: 9999,
+};
+
 const ToastContext = createContext(null);
 
-export const ToastProvider = ({ children }) => {
+export const ToastProvider = ({ children, position = 'bottom-right' }) => {
   const [toasts, dispatch] = useReducer(toastReducer, []);
 
   const timersRef = useRef({});
 
-  const clearTimer = id => {
+  const clearTimer = useCallback(id => {
     const timerData = timersRef.current[id];
     if (timerData) {
       clearTimeout(timerData.timerId);
       delete timersRef.current[id];
     }
-  };
+  }, []);
 
-  const startCloseTimer = (id, duration) => {
-    const start = Date.now();
-    const timerId = setTimeout(() => {
+  const startCloseTimer = useCallback(
+    (id, duration) => {
+      const start = Date.now();
+      const timerId = setTimeout(() => {
+        dispatch({ type: 'CLOSE', id });
+        delete timersRef.current[id];
+      }, duration);
+
+      timersRef.current[id] = { timerId, start, remaining: duration };
+    },
+    [dispatch]
+  );
+
+  const addToast = useCallback(
+    toast => {
+      const id = Math.random().toString(36).substring(2, 9);
+      const duration = toast.duration ?? 5000;
+      const position = toast.position ?? 'bottom-right';
+
+      dispatch({ type: 'ADD', toast: { ...toast, id, isOpen: false, position } });
+      requestAnimationFrame(() => {
+        dispatch({ type: 'OPEN', id });
+        startCloseTimer(id, duration);
+      });
+    },
+    [dispatch, startCloseTimer]
+  );
+
+  const closeToast = useCallback(
+    id => {
+      clearTimer(id);
       dispatch({ type: 'CLOSE', id });
-      delete timersRef.current[id];
-    }, duration);
+    },
+    [dispatch, clearTimer]
+  );
 
-    timersRef.current[id] = { timerId, start, remaining: duration };
-  };
-
-  const addToast = useCallback(toast => {
-    const id = Math.random().toString(36).substring(2, 9);
-    const duration = toast.duration ?? 5000;
-
-    dispatch({ type: 'ADD', toast: { ...toast, id, isOpen: true } });
-    requestAnimationFrame(() => {
-      dispatch({ type: 'OPEN', id });
-      startCloseTimer(id, duration);
-    });
-  }, []);
-
-  const closeToast = useCallback(id => {
-    clearTimer(id);
-    dispatch({ type: 'CLOSE', id });
-  }, []);
-
-  const removeToast = useCallback(id => {
-    dispatch({ type: 'REMOVE', id });
-  }, []);
+  const removeToast = useCallback(
+    id => {
+      dispatch({ type: 'REMOVE', id });
+    },
+    [dispatch]
+  );
 
   const pauseTimer = useCallback(id => {
     const timerData = timersRef.current[id];
@@ -104,8 +135,9 @@ export const ToastProvider = ({ children }) => {
       removeToast,
       pauseTimer,
       resumeTimer,
+      position,
     }),
-    [toasts, addToast, closeToast, removeToast, pauseTimer, resumeTimer]
+    [toasts, addToast, closeToast, removeToast, pauseTimer, resumeTimer, position]
   );
 
   return <ToastContext.Provider value={contextValue}>{children}</ToastContext.Provider>;
@@ -121,8 +153,19 @@ export function useToast() {
   return context;
 }
 
-const Toast = ({ id, content, isOpen = true, onClose, onPause, onResume, isExiting = false }) => {
+const Toast = ({
+  id,
+  content,
+  isOpen = true,
+  onClose,
+  onPause,
+  onResume,
+  isExiting = false,
+  position: propPosition,
+}) => {
+  const { position: providerPosition } = useToast();
   const [isVisible, setIsVisible] = useState(false);
+  const position = propPosition ?? providerPosition;
 
   useEffect(() => {
     if (isOpen) {
@@ -133,6 +176,34 @@ const Toast = ({ id, content, isOpen = true, onClose, onPause, onResume, isExiti
     }
   }, [isOpen]);
 
+  const isLeft = position.includes('left');
+  const isRight = position.includes('right');
+  const isTop = position.includes('top');
+  const isBottom = position.includes('bottom');
+
+  const initialTransform = (() => {
+    if (isLeft) {
+      return 'translateX(-100%)';
+    }
+    if (isRight) {
+      return 'translateX(100%)';
+    }
+    if (isTop) {
+      return 'translateY(-100%)';
+    }
+    if (isBottom) {
+      return 'translateY(100%)';
+    }
+    return 'translateY(-100%)';
+  })();
+
+  const style = {
+    opacity: isVisible && !isExiting ? 1 : 0,
+    transform: isVisible && !isExiting ? 'translateX(0) translateY(0)' : initialTransform,
+    transition: `opacity ${ANIMATION_DURATION}ms ease, transform ${ANIMATION_DURATION}ms ease`,
+    pointerEvents: isVisible ? 'auto' : 'none',
+  };
+
   return (
     <div
       role="alert"
@@ -142,19 +213,11 @@ const Toast = ({ id, content, isOpen = true, onClose, onPause, onResume, isExiti
       onTouchStart={onPause}
       onTouchEnd={onResume}
       onTouchCancel={onResume}
-      style={{
-        opacity: isVisible && !isExiting ? 1 : 0,
-        transform:
-          isVisible && !isExiting
-            ? 'translateX(0)'
-            : isExiting
-              ? 'translateX(100%)'
-              : 'translateX(100%)',
-        transition: `opacity ${ANIMATION_DURATION}ms ease, transform ${ANIMATION_DURATION}ms ease`,
-        pointerEvents: isVisible ? 'auto' : 'none',
-      }}
+      style={style}
     >
-      {typeof content === 'function' ? content({ id, onClose, onPause, onResume }) : content}
+      {typeof content === 'function'
+        ? content({ id, position: position, onClose, onPause, onResume })
+        : content}
     </div>
   );
 };
@@ -175,51 +238,86 @@ const ToastPortal = ({ children, ...props }) => {
 ToastPortal.displayName = 'ToastPortal';
 
 const ToastContainer = () => {
-  const { toasts, pauseTimer, resumeTimer } = useToast();
+  const { toasts, pauseTimer, resumeTimer, position: defaultPosition } = useToast();
   const [positions, setPositions] = useState({});
+  const containerRefs = useRef({
+    'top-left': null,
+    'top-right': null,
+    'bottom-left': null,
+    'bottom-right': null,
+    'top-center': null,
+    'bottom-center': null,
+  });
 
-  const containerRef = useRef(null);
   const toastHeights = useRef({});
   const isUserInteracting = useRef(false);
+
+  const toastByPosition = toasts.reduce(
+    (acc, toast) => {
+      const pos = toast.position ?? defaultPosition;
+      if (!acc[pos]) acc[pos] = [];
+      acc[pos].push(toast);
+      return acc;
+    },
+    {
+      'top-left': [],
+      'top-right': [],
+      'bottom-left': [],
+      'bottom-right': [],
+      'top-center': [],
+      'bottom-center': [],
+    }
+  );
+
+  const orderToasts = (group, pos) => (pos.includes('top') ? [...group].reverse() : group);
 
   const measureHeightsAndSetPositions = useCallback(() => {
     if (isUserInteracting.current) return;
 
     requestAnimationFrame(() => {
-      const container = containerRef.current;
-      if (!container) return;
-
       const newHeights = {};
-      container.childNodes.forEach(node => {
-        const el = node;
-        if (el.dataset.id) {
-          newHeights[el.dataset.id] = el.offsetHeight + 12;
+      Object.values(containerRefs.current).forEach(container => {
+        if (!container) return;
+        container.childNodes.forEach(node => {
+          const el = node;
+          if (el.dataset.id) newHeights[el.dataset.id] = el.offsetHeight + 12;
+        });
+      });
+      toastHeights.current = newHeights;
+
+      const newPositions = {};
+      Object.entries(toastByPosition).forEach(([pos, group]) => {
+        const isTop = pos.includes('top');
+        const ordered = isTop ? [...group].reverse() : [...group];
+        let offset = 0;
+
+        if (isTop) {
+          for (const toast of ordered) {
+            newPositions[toast.id] = offset;
+            offset += newHeights[toast.id] || 0;
+          }
+        } else {
+          for (let i = ordered.length - 1; i >= 0; i--) {
+            const toast = ordered[i];
+            newPositions[toast.id] = offset;
+            offset += newHeights[toast.id] || 0;
+          }
         }
       });
 
-      toastHeights.current = newHeights;
-      const newPositions = {};
-      let offset = 0;
-
-      for (let i = toasts.length - 1; i >= 0; i--) {
-        const toast = toasts[i];
-        newPositions[toast.id] = offset;
-        offset += newHeights[toast.id] || 0;
-      }
-
       setPositions(newPositions);
     });
-  }, [toasts]);
+  }, [toastByPosition]);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const observer = new ResizeObserver(() => {
       if (!isUserInteracting.current) measureHeightsAndSetPositions();
     });
 
-    container.childNodes.forEach(node => observer.observe(node));
+    Object.values(containerRefs.current).forEach(container => {
+      if (!container) return;
+      container.childNodes.forEach(node => observer.observe(node));
+    });
 
     return () => observer.disconnect();
   }, [measureHeightsAndSetPositions, toasts.length]);
@@ -241,35 +339,43 @@ const ToastContainer = () => {
 
   return (
     <ToastPortal>
-      <div
-        ref={containerRef}
-        aria-live="polite"
-        style={{
-          position: 'fixed',
-          bottom: 16,
-          right: 16,
-          maxWidth: '90vw',
-          width: 320,
-          pointerEvents: 'none',
-          overflow: 'visible',
-          zIndex: 9999,
-        }}
-      >
-        {toasts.map(toast => (
-          <ToastFrame
-            key={toast.id}
-            toast={toast}
-            bottomOffset={positions[toast.id] ?? 0}
-            onInteractionStart={freezeInteraction}
-            onInteractionEnd={unfreezeInteraction}
-          />
-        ))}
-      </div>
+      {Object.entries(toastByPosition).map(([pos, group]) => {
+        if (!group.length) return null;
+
+        const orderedToasts = orderToasts(group, pos);
+
+        const positionStyles = {
+          ...baseContainerStyle,
+          ...(POSITION_STYLES[pos] ?? { bottom: 16, right: 16 }),
+        };
+
+        return (
+          <div
+            key={pos}
+            ref={el => (containerRefs.current[pos] = el)}
+            aria-live="polite"
+            style={positionStyles}
+          >
+            {orderedToasts.map(toast => (
+              <ToastFrame
+                key={toast.id}
+                toast={toast}
+                offset={positions[toast.id] ?? 0}
+                onInteractionStart={freezeInteraction}
+                onInteractionEnd={unfreezeInteraction}
+              />
+            ))}
+          </div>
+        );
+      })}
     </ToastPortal>
   );
 };
 
-const ToastFrame = ({ toast, bottomOffset, onInteractionStart, onInteractionEnd }) => {
+Toast.Container = ToastContainer;
+ToastContainer.displayName = 'ToastContainer';
+
+const ToastFrame = ({ toast, offset, onInteractionStart, onInteractionEnd }) => {
   const { closeToast, removeToast, pauseTimer, resumeTimer } = useToast();
   const { id, isOpen } = toast;
 
@@ -294,18 +400,19 @@ const ToastFrame = ({ toast, bottomOffset, onInteractionStart, onInteractionEnd 
     }
   }, [isOpen, removeToast, id, onInteractionEnd]);
 
+  const isTopPosition = toast.position?.includes('top');
+
   return (
     <div
       data-id={id}
       style={{
         position: 'absolute',
         right: 0,
-        bottom: 0,
         width: '100%',
         pointerEvents: 'auto',
-        transform: `translateY(-${bottomOffset}px)`,
-        transition: `transform ${ANIMATION_DURATION}ms ease`,
-        willChange: 'transform',
+        transition: `top ${ANIMATION_DURATION}ms ease, bottom ${ANIMATION_DURATION}ms ease`,
+        willChange: 'top, bottom',
+        ...(isTopPosition ? { top: offset } : { bottom: offset }),
       }}
       onMouseEnter={() => onInteractionStart()}
       onMouseLeave={() => onInteractionEnd(80)}
@@ -324,8 +431,5 @@ const ToastFrame = ({ toast, bottomOffset, onInteractionStart, onInteractionEnd 
     </div>
   );
 };
-
-Toast.Container = ToastContainer;
-ToastContainer.displayName = 'ToastContainer';
 
 export default Toast;

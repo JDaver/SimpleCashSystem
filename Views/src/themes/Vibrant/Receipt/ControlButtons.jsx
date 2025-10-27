@@ -1,18 +1,43 @@
 import ArrowUpCircleIcon from '@heroicons/react/24/outline/ArrowUpCircleIcon';
 import { useReceipt } from '@contexts/receiptHandlerContext';
 import { createReceipt } from '@utils/receiptService';
+import { useToast } from '../../../components/Toast/Toast';
+import { ArrowUturnDownIcon } from '@heroicons/react/24/outline';
 
 export default function ControlButtons() {
   const { clearReceipt, receipt, totalOfReceipt } = useReceipt();
   const filteredReceipt = JSON.stringify(receipt.map(({ id, quantity }) => ({ id, quantity })));
   console.log(receipt); //Debug
+  const { addToast } = useToast();
 
   async function handleSubmit(event) {
     event.preventDefault();
 
     createReceipt(event)
-      .then(() => clearReceipt())
-      .catch(err => console.log(err));
+      .then(data => {
+        clearReceipt();
+        addToast({
+          content: () => (
+            <div className="vibrant-toast success">
+              <span>{data}</span>
+            </div>
+          ),
+          duration: 5000,
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        addToast({
+          content: () => (
+            <div className="vibrant-toast error">
+              <span>
+                <p>{err.message || `Qualcosa e' andato storto`}</p>
+              </span>
+            </div>
+          ),
+          duration: 5000,
+        });
+      });
   }
 
   return (

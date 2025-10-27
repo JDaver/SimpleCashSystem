@@ -11,6 +11,7 @@ export const ProductsProvider = ({ children }) => {
     setOrders,
     orderValues,
     deleteProduct,
+    undoDelete,
     insertProduct,
     editProduct,
   } = useFetchAll();
@@ -27,6 +28,7 @@ export const ProductsProvider = ({ children }) => {
       setOrders,
       orderValues,
       deleteProduct,
+      undoDelete,
       insertProduct,
       editProduct,
     }),
@@ -38,6 +40,7 @@ export const ProductsProvider = ({ children }) => {
       setOrders,
       orderValues,
       deleteProduct,
+      undoDelete,
       insertProduct,
       editProduct,
     ]

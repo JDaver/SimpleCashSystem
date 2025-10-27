@@ -23,9 +23,13 @@ export async function createReceipt(event) {
   return apiFetch('http://localhost:4444/api/create_receipt', {
     method: 'POST',
     body: JSON.stringify(data),
-  }).then(data => {
-    console.log('scontrino emesso correttamente! ', data);
-  });
+  })
+    .then(data => {
+      return 'Scontrino emesso correttamente';
+    })
+    .catch(err => {
+      throw new Error('Errore nell`emissione dello scontrino');
+    });
 }
 
 export async function queryReceipts({

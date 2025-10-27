@@ -45,7 +45,7 @@ export async function insertItem(formData) {
     return dataRes;
   } catch (err) {
     console.error("Errore nell'insertItem:", err);
-    throw err;
+    throw new Error(`Errore della rete`);
   }
 }
 
@@ -68,7 +68,7 @@ export async function modifyItem(formData) {
     return dataRes;
   } catch (err) {
     console.error('Errore in modifyItem:', err);
-    throw err;
+    throw new Error('Errore della rete: Impossibile modificare l`artiolo.');
   }
 }
 
@@ -85,7 +85,7 @@ export async function deleteItem(id) {
     return dataRes;
   } catch (err) {
     console.error('Impossibile eliminare articolo:', err);
-    throw err;
+    throw new Error('Impossibile eliminare articolo');
   }
 }
 

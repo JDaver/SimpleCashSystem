@@ -1,11 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
-import { fetchAllProducts, getPartys } from '@utils/productService';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import {
+  fetchAllProducts,
+  getPartys,
+  deleteItem,
+  insertItem,
+  modifyItem,
+} from '@utils/productService';
 import { queryItems } from '@utils/productService';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteItem, insertItem, modifyItem } from '../utils/productService';
 
 export function useFetchAll() {
   const queryClient = useQueryClient();
+  const [lastContext, setLastContext] = useState(null);
 
   const [filters, setFiltersState] = useState(
     queryClient.getQueryData({ queryKey: ['filters'] }) ?? { isBeverage: undefined }
@@ -20,7 +26,7 @@ export function useFetchAll() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['products', filters, orderValues],
+    queryKey: ['allProducts', filters, orderValues],
     queryFn: () => fetchAllProducts(orderValues, filters, []),
     staleTime: 1000 * 60 * 5,
     select: data => {
@@ -34,12 +40,12 @@ export function useFetchAll() {
     mutationFn: insertItem,
     onSuccess: () => {
       queryClient.invalidateQueries(['allProducts', filters, orderValues]);
-      // queryClient.invalidateQueries(['currentProduts']);
     },
     onError: err => {
       console.error("Errore nell' inserimento", err);
     },
   });
+
   const { mutate: editProduct } = useMutation({
     mutationFn: modifyItem,
     onSuccess: () => {
@@ -51,10 +57,9 @@ export function useFetchAll() {
   });
 
   const { mutate: deleteProduct } = useMutation({
-    mutationFn: deleteItem,
+    mutationFn: async () => {},
     onMutate: async id => {
       const ids = Array.isArray(id) ? id : [id];
-      console.log(ids);
 
       await queryClient.cancelQueries(['allProducts', filters, orderValues]);
 
@@ -68,16 +73,22 @@ export function useFetchAll() {
         };
       });
 
-      return { previousData };
+      const timeoutDelete = setTimeout(() => {
+        deleteItem(ids)
+          .then(() => {
+            queryClient.invalidateQueries(['allProducts', filters, orderValues]);
+          })
+          .catch(err => {
+            queryClient.setQueryData(['allProducts', filters, orderValues], previousData);
+          });
+      }, 5000);
+
+      return { previousData, timeoutDelete };
     },
     onError: (err, id, context) => {
       if (context?.previousData) {
         queryClient.setQueryData(['allProducts', filters, orderValues], context.previousData);
       }
-    },
-
-    onSuccess: () => {
-      queryClient.invalidateQueries(['allProducts', filters, orderValues]);
     },
   });
 
@@ -91,6 +102,13 @@ export function useFetchAll() {
     queryClient.setQueryData({ queryKey: ['orderValues'], data: newOrders });
   };
 
+  const undoDelete = () => {
+    console.log(lastContext);
+    clearTimeout(lastContext.timeoutDelete);
+    queryClient.setQueryData(['allProducts', filters, orderValues], restored);
+    setLastContext(null);
+  };
+
   const products = productsMap ?? new Map();
 
   return {
@@ -98,6 +116,7 @@ export function useFetchAll() {
     loading: isLoading,
     error,
     deleteProduct,
+    undoDelete,
     setFilters,
     filters,
     setOrders,

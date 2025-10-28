@@ -51,14 +51,19 @@ export const ToastProvider = ({ children, position = 'bottom-right' }) => {
       const start = Date.now();
       const timerId = setTimeout(() => {
         dispatch({ type: 'CLOSE', id });
-        delete timersRef.current[id];
+
+        const removeTimer = setTimeout(() => {
+          dispatch({ type: 'REMOVE', id });
+          delete timersRef.current[id];
+        }, ANIMATION_DURATION);
+
+        timersRef.current[id].removeTimerId = removeTimer;
       }, duration);
 
-      timersRef.current[id] = { timerId, start, remaining: duration };
+      timersRef.current[id] = { timerId, start, remaining: duration, removeTimerId: null };
     },
     [dispatch]
   );
-
   const addToast = useCallback(
     toast => {
       const id = Math.random().toString(36).substring(2, 9);
@@ -93,6 +98,7 @@ export const ToastProvider = ({ children, position = 'bottom-right' }) => {
     const timerData = timersRef.current[id];
     if (timerData) {
       clearTimeout(timerData.timerId);
+      if (timerData.removeTimerId) clearTimeout(timerData.removeTimerId);
       const elapsed = Date.now() - timerData.start;
       const remaining = timerData.remaining - elapsed;
       timersRef.current[id] = {
@@ -107,19 +113,33 @@ export const ToastProvider = ({ children, position = 'bottom-right' }) => {
       const timerData = timersRef.current[id];
       if (!timerData) return;
       if (timerData.timerId) clearTimeout(timerData.timerId);
-      const safeRemaining = Math.max(timerData.remaining, 1000);
+      if (timerData.removeTimerId) clearTimeout(timerData.removeTimerId);
+
+      const safeRemaining = Math.max(timerData.remaining, 0);
+      if (safeRemaining <= 0) {
+        dispatch({ type: 'CLOSE', id });
+        const removeTimer = setTimeout(() => {
+          dispatch({ type: 'REMOVE', id });
+          delete timersRef.current[id];
+        }, ANIMATION_DURATION);
+        timersRef.current[id].removeTimerId = removeTimer;
+        return;
+      }
 
       const start = Date.now();
       const timerId = setTimeout(() => {
         dispatch({ type: 'CLOSE', id });
-        delete timersRef.current[id];
+        const removeTimer = setTimeout(() => {
+          dispatch({ type: 'REMOVE', id });
+          delete timersRef.current[id];
+        }, ANIMATION_DURATION);
+        timersRef.current[id].removeTimerId = removeTimer;
       }, safeRemaining);
 
-      timersRef.current[id] = { timerId, start, remaining: safeRemaining };
+      timersRef.current[id] = { timerId, start, remaining: safeRemaining, removeTimerId: null };
     },
     [dispatch]
   );
-
   useEffect(() => {
     return () => {
       Object.values(timersRef.current).forEach(t => clearTimeout(t.timerId));
@@ -376,29 +396,20 @@ Toast.Container = ToastContainer;
 ToastContainer.displayName = 'ToastContainer';
 
 const ToastFrame = ({ toast, offset, onInteractionStart, onInteractionEnd }) => {
-  const { closeToast, removeToast, pauseTimer, resumeTimer } = useToast();
+  const { closeToast, removeToast } = useToast();
   const { id, isOpen } = toast;
 
   const [isExiting, setIsExiting] = useState(false);
 
-  const handleTouchStart = useCallback(() => {
-    onInteractionStart();
-  }, [onInteractionStart]);
-
-  const handleTouchEnd = useCallback(() => {
-    onInteractionEnd(800);
-  }, [onInteractionEnd]);
-
   useEffect(() => {
     if (!isOpen) {
-      onInteractionEnd(0);
       setIsExiting(true);
       const timer = setTimeout(() => removeToast(id), ANIMATION_DURATION);
       return () => clearTimeout(timer);
     } else {
       setIsExiting(false);
     }
-  }, [isOpen, removeToast, id, onInteractionEnd]);
+  }, [isOpen, removeToast, id]);
 
   const isTopPosition = toast.position?.includes('top');
 
@@ -414,18 +425,18 @@ const ToastFrame = ({ toast, offset, onInteractionStart, onInteractionEnd }) => 
         willChange: 'top, bottom',
         ...(isTopPosition ? { top: offset } : { bottom: offset }),
       }}
-      onMouseEnter={() => onInteractionStart()}
-      onMouseLeave={() => onInteractionEnd(80)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onTouchCancel={() => onInteractionEnd(150)}
+      onMouseEnter={onInteractionStart}
+      onMouseLeave={() => onInteractionEnd()}
+      onTouchStart={onInteractionStart}
+      onTouchEnd={() => onInteractionEnd()}
+      onTouchCancel={() => onInteractionEnd()}
     >
       <Toast
         {...toast}
         isOpen={!isExiting}
         onClose={() => closeToast(id)}
-        onPause={() => pauseTimer(id)}
-        onResume={() => resumeTimer(id)}
+        onPause={() => {}}
+        onResume={() => {}}
         isExiting={isExiting}
       />
     </div>

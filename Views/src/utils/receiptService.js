@@ -10,6 +10,7 @@ async function productsConstructor(formData) {
     receiptOBJ: receiptJSON ? JSON.parse(receiptJSON) : [],
     date: Date.now(),
   };
+  console.log(data);
   return data;
 }
 
@@ -18,7 +19,7 @@ export async function createReceipt(event) {
   const data = await productsConstructor(formData);
 
   if (data.receiptOBJ.length === 0)
-    throw new Error('Impossibile emettere scontrino, devi selezionare almeno un ogggetto.');
+    throw new Error('Impossibile emettere scontrino, devi selezionare almeno un oggetto.');
 
   return apiFetch('http://localhost:4444/api/create_receipt', {
     method: 'POST',

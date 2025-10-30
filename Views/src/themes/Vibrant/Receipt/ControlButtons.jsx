@@ -6,7 +6,9 @@ import { ArrowUturnDownIcon } from '@heroicons/react/24/outline';
 
 export default function ControlButtons() {
   const { clearReceipt, receipt, totalOfReceipt } = useReceipt();
-  const filteredReceipt = JSON.stringify(receipt.map(({ id, quantity }) => ({ id, quantity })));
+  const filteredReceipt = JSON.stringify(
+    receipt.map(({ id, quantity, name }) => ({ id, quantity, name }))
+  );
   console.log(receipt); //Debug
   const { addToast } = useToast();
 
@@ -22,6 +24,7 @@ export default function ControlButtons() {
               <span>{data}</span>
             </div>
           ),
+          position: 'bottom-left',
           duration: 5000,
         });
       })
@@ -35,6 +38,7 @@ export default function ControlButtons() {
               </span>
             </div>
           ),
+          position: 'bottom-left',
           duration: 5000,
         });
       });

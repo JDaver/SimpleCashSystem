@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useEditingContext } from '@contexts/ManageItem';
 import { usePartyNames } from '@hooks/productsHook';
 import { useProductsContext } from '../../../contexts/ManageItem/ProductsContext';
@@ -13,7 +13,7 @@ export function useInsertItem() {
   const [isBeverage, setIsBeverage] = useState(false);
   const [isGlobal, setIsGlobal] = useState(false);
   const [partiesRelated, setPartiesRelated] = useState([]);
-  const [productID, setProductId] = useState(null);
+  const productID = useRef(null);
 
   useEffect(() => {
     if (shouldResetForm) {
@@ -24,7 +24,6 @@ export function useInsertItem() {
       setIsBeverage(false);
       setIsGlobal(false);
       setPartiesRelated([]);
-      setProductId(null);
       setShouldResetForm(false);
     } else if (selectedItem) {
       setUpdateMode(true);
@@ -40,7 +39,7 @@ export function useInsertItem() {
       setIsBeverage(selectedItem.isBeverage);
       setIsGlobal(selectedItem.isGlobal);
       setPartiesRelated(selectedItem.parties.map(p => p.party_id));
-      setProductId(selectedItem.id);
+      productID.current = selectedItem.id;
     }
   }, [shouldResetForm, selectedItem]);
   const inputPrice = useCallback(

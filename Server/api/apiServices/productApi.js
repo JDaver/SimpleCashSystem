@@ -39,7 +39,6 @@ exports.updateProduct = async (req, res) => {
 
   try {
     const productRes = await productController.updateProduct(productData);
-    console.log(productRes);
     const product_id = productRes.id;
     if (productRes.isglobal === true) {
       relationRes = await product_partyController.modifyProduct_party(

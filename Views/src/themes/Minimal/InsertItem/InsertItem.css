@@ -1,10 +1,11 @@
 .form {
   display: grid;
-  gap: var(--space-8);
-  grid-template-columns: auto auto 1fr;
-  grid-template-rows: auto 1fr;
-  height: 100%;
+  grid-template-columns: 1.5fr auto 1.5fr;
+  gap: 5rem;
+  max-width: 1600px;
+  margin: 0 auto;
   padding-block: 4rem;
+  align-items: start;
 }
 
 .form__columns {
@@ -14,7 +15,6 @@
 
 .form__column {
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: var(--space-4);
 }
@@ -32,9 +32,11 @@
 
 .form__button-wrapper {
   display: flex;
+  justify-content: center;
   gap: var(--space-6);
-  grid-column: 3;
-  grid-row: 2;
+  grid-row: 3;
+  grid-column: 1 / -1;
+  margin-left: 0;
 }
 
 .form__button {
@@ -43,6 +45,12 @@
   color: var(--neutral-300);
   padding-block: 1rem;
   padding-inline: 2rem;
+}
+
+.form__button[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 .check-icon-wrapper {

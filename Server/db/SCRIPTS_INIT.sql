@@ -47,7 +47,8 @@ CREATE OR REPLACE FUNCTION add_user(
             id SERIAL PRIMARY KEY,
             tot_price NUMERIC(10,2) NOT NULL,
             id_party INT REFERENCES %I.party(id),
-            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            cart JSONB
         )
     ', new_schema, new_schema);
 

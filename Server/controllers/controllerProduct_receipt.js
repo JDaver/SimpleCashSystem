@@ -58,9 +58,9 @@ exports.fetchReceipts = async (req, res) => {
       id: row.receipt_id,
       date: formatDate(row.receipt_date),
       total: row.total_receipt,
-      items: row.items_in_receipt.split(",").map((item) => item.trim()),
+      items: row.items_in_receipt,
     }));
-
+    console.log(formattedData);
     res.status(200).json(formattedData);
   } catch (err) {
     console.error(`controller cathced an error -> ${err}`);

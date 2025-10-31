@@ -1,96 +1,86 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import Keypad from '@themes/Minimal/Keypad';
-import { insertItem } from '../../../utils/productService';
-import './InsertItem.css';
-import { useEditingContext } from '@contexts/ManageItem';
+import React, { useCallback } from 'react';
+import { useInsertItem } from './useInsertItem';
 import AllergensDropdown from '@themes/Minimal/AllergensDropdown';
+import PartiesDropdown from '../PartiesDropdown';
+import InputWithKeypad from './InputWithKeypad';
+import Checkbox from './Checkbox';
+import './InsertItem.css';
 
 function InsertItem() {
-  const [price, setPrice] = useState('');
-  const [name, setName] = useState('');
-  const [allergens, setAllergens] = useState([]);
-  const { selectedItem, shouldResetForm } = useEditingContext();
+  const {
+    name,
+    price,
+    allergens,
+    isBeverage,
+    isGlobal,
+    partiesRelated,
+    selectedItem,
+    setAllergens,
+    setIsBeverage,
+    setIsGlobal,
+    setPartiesRelated,
+    handleNameInput,
+    handleNameDelete,
+    handlePriceInput,
+    handlePriceDelete,
+    handleSubmit,
+  } = useInsertItem();
 
-  useEffect(() => {
-    if (shouldResetForm) {
-      setName('');
-      setPrice('');
-      setAllergens([]);
-    } else if (selectedItem) {
-      setName(selectedItem.name || '');
-      setPrice(selectedItem.price?.toString() || '');
-      setAllergens(selectedItem.allergens || []);
-    }
-  }, [shouldResetForm, selectedItem]);
-
-  const handleNameInput = useCallback(key => {
-    setName(prev => prev + key);
+  const handleBeverageChange = useCallback(e => {
+    setIsBeverage(e.target.checked);
   }, []);
 
-  const handleNameDelete = useCallback(() => {
-    setName(prev => prev.slice(0, -1));
+  const handleGlobalChange = useCallback(e => {
+    setIsGlobal(e.target.checked);
   }, []);
 
-  const handlePriceInput = useCallback(
-    key => {
-      if (key === ',' && price.includes(',')) return;
-      setPrice(prev => prev + key);
-    },
-    [price]
-  );
-
-  const handlePriceDelete = useCallback(() => {
-    setPrice(prev => prev.slice(0, -1));
-  }, []);
+  const buttonDisabled = !name || !price || (!isGlobal && partiesRelated.length < 1);
 
   return (
-    <form className="form insert-item" onSubmit={insertItem} method="POST">
+    <form className="form insert-item" onSubmit={handleSubmit}>
       <div className="form__columns">
+        <InputWithKeypad
+          id="name"
+          label="Nome"
+          value={name}
+          preset="alphabet"
+          onInput={handleNameInput}
+          onDelete={handleNameDelete}
+        />
+        <InputWithKeypad
+          id="price"
+          label="Prezzo"
+          value={price}
+          preset="numeric"
+          inputMode="decimal"
+          pattern="[0-9]*"
+          onInput={handlePriceInput}
+          onDelete={handlePriceDelete}
+        />
         <div className="form__column">
-          <div className="form__field">
-            <label className="form__label" htmlFor="name">
-              Nome
-            </label>
-            <input
-              id="name"
-              name="product_name"
-              className="form__input"
-              type="text"
-              value={name}
-              readOnly
-              autoComplete="off"
-            />
-            <Keypad preset={'alphabet'} onInput={handleNameInput} onDelete={handleNameDelete} />
-          </div>
-        </div>
-        <div className="form__column">
-          <div className="form__field">
-            <label className="form__label" htmlFor="price">
-              Prezzo
-            </label>
-            <input
-              id="price"
-              name="price"
-              className="form__input"
-              type="text"
-              inputMode="decimal"
-              pattern="[0-9]*"
-              value={price}
-              readOnly
-              autoComplete="off"
-            />
-            <Keypad preset={'numeric'} onInput={handlePriceInput} onDelete={handlePriceDelete} />
-          </div>
-        </div>
-        <div className="form__column">
-          <div className="form__field">
-            <AllergensDropdown allergens={allergens} setAllergens={setAllergens} />
-          </div>
+          <AllergensDropdown allergens={allergens} setAllergens={setAllergens} />
+          <Checkbox
+            id="beverage"
+            label="Bevanda"
+            checked={isBeverage}
+            onChange={handleBeverageChange}
+          />
+          <Checkbox
+            id="global"
+            label="Disponibile in tutte le feste"
+            checked={isGlobal}
+            onChange={handleGlobalChange}
+          />
+          <PartiesDropdown
+            disabled={isGlobal}
+            parties={partiesRelated}
+            setParties={setPartiesRelated}
+          />
         </div>
       </div>
       <div className="form__button-wrapper">
-        <button className="form__button" disabled={!name || !price}>
-          {`${selectedItem ? 'Modifica' : 'Inserisci'} Prodotto`}
+        <button type="submit" className="form__button" disabled={buttonDisabled}>
+          {selectedItem ? 'Modifica Prodotto' : 'Inserisci Prodotto'}
         </button>
       </div>
     </form>

@@ -1,7 +1,7 @@
 import { apiFetch } from './fetchWrapper';
 
 //privateHelper
-async function productsConstructor(formData) {
+async function receiptConstructor(formData) {
   const receiptJSON = formData.get('receipt');
   // const now = now - 365 * 24 * 60 * 60 * 1000;
   const data = {
@@ -16,7 +16,7 @@ async function productsConstructor(formData) {
 
 export async function createReceipt(event) {
   const formData = new FormData(event.target);
-  const data = await productsConstructor(formData);
+  const data = await receiptConstructor(formData);
 
   if (data.receiptOBJ.length === 0)
     throw new Error('Impossibile emettere scontrino, devi selezionare almeno un oggetto.');

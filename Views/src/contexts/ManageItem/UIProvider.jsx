@@ -12,7 +12,6 @@ export const UIProvider = ({ children }) => {
   const { products, deleteProduct, filters, orderValues } = useProductsContext();
   const { theme } = useTheme();
   const queryClient = useQueryClient();
-  // const { undoDelete } = useFetchAll();
   const { clearSelection, selectedIds } = useSelectionContext();
   const { setShouldResetForm, setSelectedItem } = useEditingContext();
   const { addToast, closeToast } = useToast();

@@ -3,7 +3,6 @@ import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { login, signin } from '../../utils/userService';
 import { useQueryClient } from '@tanstack/react-query';
-import { avatars } from '../../utils/constants/avatars';
 
 export const AuthProvider = ({ children }) => {
   const getInitialSession = () => {

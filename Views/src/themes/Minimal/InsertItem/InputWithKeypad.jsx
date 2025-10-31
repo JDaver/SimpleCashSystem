@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Keypad from '@themes/Minimal/Keypad';
 import './InsertItem.css';
 
@@ -22,4 +23,4 @@ function InputWithKeypad({ id, name, label, value, onInput, onDelete, preset, ..
   );
 }
 
-export default InputWithKeypad;
+export default memo(InputWithKeypad);

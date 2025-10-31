@@ -1,11 +1,14 @@
 import './Receipt.css';
-import TableReceipt from "./TableReceipt"
-import ControlButtons from "./ControlButtons"
-export default function Receipt(){
-    return(
+import TableReceipt from './TableReceipt';
+import ControlButtons from './ControlButtons';
+import { useReceipt } from '@contexts/receiptHandlerContext';
+
+export default function Receipt() {
+  const { receipt, totalOfReceipt } = useReceipt();
+  return (
     <div className="receipt_wrapper">
-        <TableReceipt/>
-        <ControlButtons/>
-        </div>
-    )
+      <TableReceipt receipt={receipt} totalOfReceipt={totalOfReceipt} />
+      <ControlButtons />
+    </div>
+  );
 }

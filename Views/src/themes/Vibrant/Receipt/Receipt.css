@@ -1,5 +1,5 @@
 /* Receipt styling */
-.receipt_wrapper{
+.receipt_wrapper {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -12,21 +12,27 @@
   background-size: 100% auto;
   font-family: var(--font-family-receipt);
   min-height: 620px;
-  padding-top: 7.875rem;
+  padding-top: 7.25rem;
   padding-inline: var(--space-5);
   position: relative;
   width: 400px;
   min-width: 30px;
-  filter:drop-shadow(16px 16px 20px rgb(83, 83, 83));
+  filter: drop-shadow(16px 16px 20px rgb(83, 83, 83));
 }
 
 .receipt__table-wrapper {
-  height: calc(100% - 300px);
+  height: calc(100% - 280px - var(--title-height, 0px));
   margin-left: var(--space-2);
   margin-right: var(--space-5);
   position: absolute;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+.receipt_title {
+  text-align: center;
+  top: 0;
+  z-index: 10;
+  /* position: sticky; */
 }
 
 .receipt__content {
@@ -61,7 +67,7 @@
   padding-inline: var(--space-5);
   text-align: left;
 }
- tr:nth-of-type(even){
+tr:nth-of-type(even) {
   background-color: var(--gray-velvet);
 }
 
@@ -69,18 +75,17 @@
   font-size: var(--font-size-md);
 }
 
-.empty-table{
-  color: brown;;
+.empty-table {
+  color: brown;
 }
 
-
-.control-area{
-  width:100%;
+.control-area {
+  width: 100%;
   display: flex;
   position: relative;
-  }
- .control-btn-clear{
-  background-image:var(--red-btn);
+}
+.control-btn-clear {
+  background-image: var(--red-btn);
   border-radius: 10px;
   box-shadow: 0px 0px 5px var(--neutral-600);
   color: var(--neutral-100);
@@ -90,11 +95,11 @@
   text-align: center;
   text-decoration: none;
   width: fit-content;
-  cursor: pointer; 
+  cursor: pointer;
   margin: var(--space-4);
- }
- .control-btn-submit{
-  background-image:var(--green-btn);
+}
+.control-btn-submit {
+  background-image: var(--green-btn);
   border-radius: 10px;
   box-shadow: 0px 0px 5px var(--neutral-600);
   color: var(--neutral-100);
@@ -104,10 +109,16 @@
   text-align: center;
   text-decoration: none;
   width: fit-content;
-  cursor: pointer; 
+  cursor: pointer;
   margin: var(--space-4);
- }
+}
+.receipt__item-name,
+.receipt__item-quantity,
+.receipt__item-price {
+  text-align: center;
+  vertical-align: middle;
+}
 
- /*.control-btn-clear:active, .control-btn-submit:active{
+/*.control-btn-clear:active, .control-btn-submit:active{
   Animation
  }*/

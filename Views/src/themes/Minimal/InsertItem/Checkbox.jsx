@@ -1,10 +1,14 @@
+import { memo } from 'react';
+import './InsertItem.css';
+
 function Checkbox({ id, label, checked, onChange }) {
   return (
-    <label htmlFor={id}>
+    <label className="checkbox__wrapper" htmlFor={id}>
       <input id={id} type="checkbox" checked={checked} onChange={onChange} />
-      {label}
+      <span className="checkbox__custom" />
+      <span>{label}</span>
     </label>
   );
 }
 
-export default Checkbox;
+export default memo(Checkbox);

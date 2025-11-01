@@ -6,6 +6,7 @@ import Toolbar from '@components/Toolbar';
 import Dropdown from '@components/Dropdown';
 import { loadThemedComponent } from '@utils/LoadThemedComponent';
 import { useUIContext } from '@contexts/ManageItem';
+import ReceiptModal from '../themes/Vibrant/ReceiptModal/ReceiptModal';
 
 const orderByArr = ['Nome', 'Prezzo', 'Più venduto'];
 
@@ -61,6 +62,7 @@ function Collection() {
           </Table.Item>
         );
       })}
+      <ReceiptModal />
     </Table>
   );
 }

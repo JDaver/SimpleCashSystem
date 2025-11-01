@@ -30,6 +30,8 @@ export function getComponentProps(topic, record, infoData) {
           width: 50,
           height: 50,
         },
+        firstValue: record.name,
+        secondValue: record.price + '€',
       };
     case 'manage':
       return {
@@ -40,6 +42,8 @@ export function getComponentProps(topic, record, infoData) {
           width: 50,
           height: 50,
         },
+        firstValue: record.name,
+        secondValue: record.price + '€',
       };
     case 'item':
       return {
@@ -50,23 +54,30 @@ export function getComponentProps(topic, record, infoData) {
           width: 40,
           height: 40,
         },
+        firstValue: record.name,
+        secondValue: record.quantity,
       };
     case 'receipt':
       return {
         actionProps: {},
         infoProps: {
           Data: dataToShow,
+          title: record.id + ' ~ ' + record.date,
           active: dataToShow.length > 0 ? true : false,
           width: 40,
           height: 40,
         },
+        firstValue: record.id + ' ~ ' + record.date,
+        secondValue: record.total + '€',
       };
     case 'delete':
       return {
         actionProps: { product: record },
         infoProps: { record },
+        firstValue: record.name,
+        secondValue: record.price + '€',
       };
     default:
-      return { actionProps: {}, infoProps: {} };
+      return { actionProps: {}, infoProps: {}, firstValue, secondValue };
   }
 }

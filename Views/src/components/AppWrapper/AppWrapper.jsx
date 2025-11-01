@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useViewTransition } from '@hooks/useViewTransition';
 import { ManageItemProvider } from '@contexts/ManageItem';
+import { CollectionProvider } from '@contexts/CollectionItem/collectionContext';
 import Login from '@pages/Login';
 import ProtectedRoute from '@components/ProtectedRoute';
 import Layout from '@components/Layout/Layout';
@@ -36,7 +37,9 @@ function AppWrapper() {
               path="collection"
               element={
                 <ManageItemProvider>
-                  <Collection />
+                  <CollectionProvider>
+                    <Collection />
+                  </CollectionProvider>
                 </ManageItemProvider>
               }
             />

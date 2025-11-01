@@ -1,15 +1,15 @@
 import ArrowUpCircleIcon from '@heroicons/react/24/outline/ArrowUpCircleIcon';
+import React from 'react';
 import { useReceipt } from '@contexts/receiptHandlerContext';
 import { createReceipt } from '@utils/receiptService';
 import { useToast } from '../../../components/Toast/Toast';
-import { ArrowUturnDownIcon } from '@heroicons/react/24/outline';
 
-export default function ControlButtons() {
+function ControlButtons() {
   const { clearReceipt, receipt, totalOfReceipt } = useReceipt();
   const filteredReceipt = JSON.stringify(
-    receipt.map(({ id, quantity, name }) => ({ id, quantity, name }))
+    receipt.map(({ id, quantity, name, price }) => ({ id, quantity, name, price }))
   );
-  console.log(receipt); //Debug
+
   const { addToast } = useToast();
 
   async function handleSubmit(event) {
@@ -66,3 +66,5 @@ export default function ControlButtons() {
     </form>
   );
 }
+
+export default React.memo(ControlButtons);

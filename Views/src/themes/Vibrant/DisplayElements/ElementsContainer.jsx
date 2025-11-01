@@ -1,6 +1,7 @@
 import SingleItem from '../Components/SingleItem';
 import { useUIContext } from '@contexts/ManageItem/UIContext';
 import { useProps } from './useDisplayElements';
+
 export default function ElementContainer({ currentValues, topic }) {
   const { records, hasMoreNext, bottomLoaderRef } = currentValues || {};
   const { activeDelMode } = useUIContext();

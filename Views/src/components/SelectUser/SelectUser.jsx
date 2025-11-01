@@ -17,7 +17,6 @@ function SelectUser() {
         const res = await fetch('http://localhost:4444/users');
         const data = await res.json();
         setUsers(data || []);
-        console.log(data);
       } catch (err) {
         console.error('Errore nel fetch utenti:', err);
         setUsers([]);

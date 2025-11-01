@@ -11,18 +11,22 @@ function SingleItem({
 }) {
   const { allergens, items, inHowManyReceipts, name, price, id, total, date, quantity } = Record;
   const infoData = { allergens, items, inHowManyReceipts };
-  const { actionProps, infoProps } = getComponentProps(mode, Record, infoData);
+  const { actionProps, infoProps, firstValue, secondValue } = getComponentProps(
+    mode,
+    Record,
+    infoData
+  );
+
+  const showRecord = Record && Object.keys(Record).length > 0;
 
   return (
     <li className="sngl-item">
-      {InfoComponent && <InfoComponent {...infoProps} />}
+      {InfoComponent && infoProps.active && <InfoComponent {...infoProps} />}
 
-      {Record && (
+      {showRecord && (
         <>
-          <span className="first-record">{name ? name : date ? id + ' ~ ' + date : ''}</span>
-          <span className="second-record">
-            {price ? price + ' €' : total ? total + ' €' : quantity}{' '}
-          </span>
+          <span className="first-record">{firstValue}</span>
+          <span className="second-record">{secondValue}</span>
         </>
       )}
 
@@ -44,4 +48,4 @@ function SingleItem({
   );
 }
 
-export default SingleItem;
+export default React.memo(SingleItem);

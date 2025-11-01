@@ -1,69 +1,87 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback, useMemo } from 'react';
 
 const ReceiptContext = createContext();
 
-export function ReceiptProvider({children}){
-    const [receipt,setReceipt] = useState([]);
+export function ReceiptProvider({ children }) {
+  const [receipt, setReceipt] = useState([]);
 
+  // filter product helper
+  const filterProduct = useCallback(product => {
+    const { allergens, ...filtered } = product;
+    return filtered;
+  }, []);
 
-    //filtering dell'oggetto product
-    const filterProduct = (product) => {
-        const { allergens, ...filtered } = product;
-        return filtered;
-    }
-    
-    //check del prodotto
-    const productIsOnReceipt =((productId) => {
-        return receipt.some((item) => item.id === productId);
-    })
+  // check if product is on receipt
+  const productIsOnReceipt = useCallback(
+    productId => receipt.some(item => item.id === productId),
+    [receipt]
+  );
 
-    //adding items
-    const addToReceipt = (product) => {
-        product = filterProduct(product);
-        setReceipt ((prevReceipt) => {
-            const exist = productIsOnReceipt(product.id);
-            if(exist){
-                return prevReceipt.map((item)=>
-                    item.id === product.id ? {id: item.id, name:item.name, price:item.price, quantity: item.quantity + 1} : item);
-            }else{
-                return [...prevReceipt, {...product, quantity: 1}]
-            }
-        });
-    };
+  // add items
+  const addToReceipt = useCallback(
+    product => {
+      product = filterProduct(product);
+      setReceipt(prevReceipt => {
+        const exist = prevReceipt.some(item => item.id === product.id);
+        if (exist) {
+          return prevReceipt.map(item =>
+            item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          );
+        } else {
+          return [...prevReceipt, { ...product, quantity: 1 }];
+        }
+      });
+    },
+    [filterProduct]
+  );
 
-    //update
-  const decrementQuantityInReceipt = (id) => {
-    setReceipt((prevReceipt) => {
-        return prevReceipt
-        .map((item) => {
-            if (item.id === id) {
-            const newQty = item.quantity - 1;
-            return { ...item, quantity: newQty };
-            }
-            return item;
-        })
-        .filter((item) => item.quantity > 0); // rimuove articoli con qty 0
-  });
-};
-
-
-    //removing
-    const removeFromReceipt = (id) => {
-       setReceipt((prevReceipt) => prevReceipt.filter((item) => item.id !== id));
-    };
-
-    //clear
-    const clearReceipt = () => setReceipt([]);
-
-    const totalOfReceipt = receipt.reduce((sum,item) => sum + item.price * item.quantity, 0);
-
-    return (
-        <ReceiptContext.Provider value ={{receipt, productIsOnReceipt, addToReceipt, decrementQuantityInReceipt, removeFromReceipt, clearReceipt, totalOfReceipt}}>
-            {children}
-        </ReceiptContext.Provider>
+  // decrement quantity
+  const decrementQuantityInReceipt = useCallback(id => {
+    setReceipt(prevReceipt =>
+      prevReceipt
+        .map(item => (item.id === id ? { ...item, quantity: item.quantity - 1 } : item))
+        .filter(item => item.quantity > 0)
     );
+  }, []);
+
+  // remove
+  const removeFromReceipt = useCallback(id => {
+    setReceipt(prevReceipt => prevReceipt.filter(item => item.id !== id));
+  }, []);
+
+  // clear
+  const clearReceipt = useCallback(() => setReceipt([]), []);
+
+  // total
+  const totalOfReceipt = useMemo(
+    () => receipt.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    [receipt]
+  );
+
+  const value = useMemo(
+    () => ({
+      receipt,
+      productIsOnReceipt,
+      addToReceipt,
+      decrementQuantityInReceipt,
+      removeFromReceipt,
+      clearReceipt,
+      totalOfReceipt,
+    }),
+    [
+      receipt,
+      productIsOnReceipt,
+      addToReceipt,
+      decrementQuantityInReceipt,
+      removeFromReceipt,
+      clearReceipt,
+      totalOfReceipt,
+    ]
+  );
+
+  return <ReceiptContext.Provider value={value}>{children}</ReceiptContext.Provider>;
 }
 
 export function useReceipt() {
-    return useContext(ReceiptContext);
+  return useContext(ReceiptContext);
 }

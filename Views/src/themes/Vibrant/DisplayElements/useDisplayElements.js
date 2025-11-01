@@ -1,6 +1,7 @@
 import { useFetchReceipts } from '@hooks/receiptHook';
 import { useFetchItems } from '@hooks/productsHook';
 import InfoButton from '../Components/InfoButton';
+import LensButton from '../Components/LensButton';
 import CheckButton from '../Components/CheckButton';
 import SlideButton from '../Components/SlideButton';
 import TrashCanButton from '../Components/TrashCanButton';
@@ -44,7 +45,7 @@ function useReceiptProps() {
   return {
     labels,
     actionComponent: null,
-    sideEffectsComponent: InfoButton,
+    sideEffectsComponent: LensButton,
     mode: 'receipt',
   };
 }

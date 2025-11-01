@@ -8,6 +8,7 @@ module.exports = class Product_receipt {
 
   async createProduct_receipt() {
     const values = [];
+    console.log(this.products);
 
     const placeholders = this.products
       .map((p, i) => {
@@ -129,16 +130,8 @@ module.exports = class Product_receipt {
                         r.id AS receipt_id,
                         r.date AS receipt_date,
                         r.tot_price AS total_receipt,
-                          COALESCE(
-                                STRING_AGG( 
-                                    p.name || ' x' || pr.quantity,
-                                    ', ' ORDER BY p.name
-                                    ),
-                                '[PRODOTTI ELIMINATI DAL DATABASE]'
-                        ) AS items_in_receipt
-                    FROM receipt r
-                    LEFT JOIN product_receipt pr ON r.id = pr.receipt_id
-                    LEFT JOIN product p ON p.id = pr.product_id`;
+                        r.cart AS items_in_receipt
+                    FROM receipt r`;
 
       if (conditions.length > 0)
         queryConstructed += " WHERE " + conditions.join(" AND ");

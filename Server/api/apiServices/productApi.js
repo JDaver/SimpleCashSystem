@@ -8,8 +8,13 @@ exports.createProduct = async (req, res) => {
   const { product } = req.body || {};
   let { partyIDs = [], ...productData } = product || {};
   partyIDs = Array.isArray(partyIDs) ? partyIDs : [partyIDs];
+
   let relationRes = "nessuna relazione con feste";
   try {
+    if (product.isglobal && partyIDs.length > 0)
+      throw new Error(
+        "invalid match: product entity can not be Global and related to parties simultaneously"
+      );
     const productRes = await productController.createProduct(productData);
 
     if (Array.isArray(partyIDs) && partyIDs.length > 0) {
@@ -38,6 +43,10 @@ exports.updateProduct = async (req, res) => {
   let relationRes = "Relazioni con feste non modificate";
 
   try {
+    if (product.isglobal && partyIDs.length > 0)
+      throw new Error(
+        "invalid match: product entity can not be Global and related to parties simultaneously"
+      );
     const productRes = await productController.updateProduct(productData);
     const product_id = productRes.id;
     if (productRes.isglobal === true) {

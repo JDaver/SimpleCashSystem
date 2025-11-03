@@ -3,6 +3,12 @@
   width: fit-content;
 }
 
+.dropdown__trigger[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 .dropdown__trigger {
   align-items: center;
   background-color: transparent;

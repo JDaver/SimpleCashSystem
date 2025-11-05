@@ -5,7 +5,6 @@ import './DisplayElements.css';
 import { useRecords } from './useDisplayElements';
 function DisplayElements({ topic = 'manage' }) {
   const { records, bottomLoaderRef, hasMoreNext } = useRecords(topic);
-  console.log(records);
 
   return (
     <div className="elements-container">

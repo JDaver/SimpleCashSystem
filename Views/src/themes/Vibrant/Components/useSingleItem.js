@@ -1,3 +1,4 @@
+import { dotToCommaNumberConverter } from '@utils/helpers';
 //PRIVATE HELPERS
 function thereIsDataToShow(infoData) {
   const { allergens, items, inHowManyReceipts } = infoData || {};
@@ -31,7 +32,7 @@ export function getComponentProps(topic, record, infoData) {
           height: 50,
         },
         firstValue: record.name,
-        secondValue: record.price + '€',
+        secondValue: dotToCommaNumberConverter(record.price) + ' €',
       };
     case 'manage':
       return {
@@ -43,7 +44,7 @@ export function getComponentProps(topic, record, infoData) {
           height: 50,
         },
         firstValue: record.name,
-        secondValue: record.price + '€',
+        secondValue: dotToCommaNumberConverter(record.price) + ' €',
       };
     case 'item':
       return {
@@ -68,14 +69,14 @@ export function getComponentProps(topic, record, infoData) {
           height: 40,
         },
         firstValue: record.id + ' ~ ' + record.date,
-        secondValue: record.total + '€',
+        secondValue: dotToCommaNumberConverter(record.total) + ' €',
       };
     case 'delete':
       return {
         actionProps: { product: record },
         infoProps: { record },
         firstValue: record.name,
-        secondValue: record.price + '€',
+        secondValue: dotToCommaNumberConverter(record.price) + ' €',
       };
     default:
       return { actionProps: {}, infoProps: {}, firstValue, secondValue };

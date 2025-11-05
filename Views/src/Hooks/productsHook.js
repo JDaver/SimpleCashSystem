@@ -174,7 +174,6 @@ export function useFetchCashier() {
     cacheTime: 1000 * 60 * 10,
   });
   const products = data?.formattedData ?? [];
-  console.log(products);
 
   return { products, isLoading, error };
 }

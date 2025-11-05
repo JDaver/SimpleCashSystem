@@ -10,3 +10,19 @@ export function formatPrice(price) {
 
   return `${integer},${decimal}`;
 }
+
+export function commaToDotNumberConverter(price) {
+  if (!/[0-9,]+$/.test(price)) return;
+  if (!price || price.length < 3) return price;
+
+  const dottedValue = price.replace(',', '.');
+  return dottedValue;
+}
+
+export function dotToCommaNumberConverter(price) {
+  if (typeof price != String) String(price);
+  if (!/[0-9.]+$/.test(price)) return undefined;
+
+  const commaValue = price.replace('.', ',');
+  return commaValue;
+}

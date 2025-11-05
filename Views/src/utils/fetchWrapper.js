@@ -1,6 +1,6 @@
 export async function apiFetch(url, bodyOpt = {}) {
   const storedSession = sessionStorage.getItem('session');
-  console.log('Check race:', storedSession);
+
   let sessionToken;
   try {
     sessionToken = storedSession ? JSON.parse(storedSession) : null;

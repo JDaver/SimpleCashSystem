@@ -1,8 +1,5 @@
-import { forwardRef } from 'react';
+import { dotToCommaNumberConverter } from '@utils/helpers';
 function TableReceipt({ receipt, totalOfReceipt, title }) {
-  // const { receipt, totalOfReceipt } = useReceipt();
-
-  //const itemsInReceipt = Receipt;
   return (
     <div className="receipt">
       <div className="receipt__table-wrapper">
@@ -31,7 +28,9 @@ function TableReceipt({ receipt, totalOfReceipt, title }) {
                   <tr key={id} className="receipt__item">
                     <td className="receipt__item-name">{item.name}</td>
                     <td className="receipt__item-quantity">{item.quantity}</td>
-                    <td className="receipt__item-price">{item.price} €</td>
+                    <td className="receipt__item-price">
+                      {dotToCommaNumberConverter(item.price)} €
+                    </td>
                   </tr>
                 );
               })
@@ -47,7 +46,7 @@ function TableReceipt({ receipt, totalOfReceipt, title }) {
           <tfoot>
             <tr className="receipt__total">
               <td colSpan="1">TOTALE</td>
-              <td colSpan={2}>{totalOfReceipt} €</td>
+              <td colSpan={2}>{dotToCommaNumberConverter(totalOfReceipt)} €</td>
             </tr>
           </tfoot>
         </table>

@@ -47,12 +47,12 @@ function ControlButtons() {
   return (
     <form onSubmit={handleSubmit} method="POST">
       <input type="hidden" name="receipt" value={filteredReceipt} />
-      <input type="hidden" name="id_party" value={null} />{' '}
+      <input type="hidden" name="id_party" value={''} />{' '}
       {/* TO FIX: change due to party selcted in options */}
       <input
         type="hidden"
         name="tot_price"
-        value={totalOfReceipt > 0 ? totalOfReceipt : ''}
+        value={totalOfReceipt >= 0 ? totalOfReceipt : ''}
         required
       />
       <div className="control-area">

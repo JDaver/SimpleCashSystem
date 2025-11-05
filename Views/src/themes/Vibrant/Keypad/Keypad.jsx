@@ -4,7 +4,7 @@ import './Keypad.css';
 import { useLongPress } from '@hooks/useLongPress';
 
 const PRESET_KEYS = {
-  numeric: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0'],
+  numeric: ['1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '0'],
   alphabet: [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],

@@ -44,8 +44,15 @@ export function useInsertItem() {
   }, [shouldResetForm, selectedItem]);
   const inputPrice = useCallback(
     key => {
-      if (key === '.' && (price.includes('.') || price.length == 0)) return;
-      if (key === '0' && price.at(0) === '0') return;
+      if (!/[0-9,]/.test(key)) return;
+      if (key === '0' && price.at(0) === '0' && price.length === 1) return;
+
+      if (key === ',') {
+        if (price.includes(',')) return;
+        if (price === '') return setPrice('0,');
+      }
+      if (price.at(-3) === ',') return;
+
       setPrice(prev => prev + key);
     },
     [price]

@@ -1,5 +1,5 @@
 import { apiFetch } from './fetchWrapper';
-
+import { commaToDotNumberConverter } from '@utils/helpers';
 //private helper
 async function productConstructor(formData) {
   const data = {};
@@ -9,6 +9,7 @@ async function productConstructor(formData) {
   }
   data.isbeverage = formData.get('isbeverage') === 'on';
   data.isglobal = formData.get('isglobal') === 'on';
+  data.price = data.price ? commaToDotNumberConverter(data.price) : null;
 
   return data;
 }

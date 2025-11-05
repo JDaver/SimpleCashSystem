@@ -53,10 +53,9 @@ export function ReceiptProvider({ children }) {
   const clearReceipt = useCallback(() => setReceipt([]), []);
 
   // total
-  const totalOfReceipt = useMemo(
-    () => receipt.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    [receipt]
-  );
+  const totalOfReceipt = useMemo(() => {
+    return receipt.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
+  }, [receipt]);
 
   const value = useMemo(
     () => ({

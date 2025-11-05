@@ -31,7 +31,7 @@ function InsertItem() {
     e => {
       e.preventDefault();
       const formData = new FormData(e.target);
-
+      console.log(e.target.name);
       const action = updateMode ? editProduct : insertProduct;
       const message = updateMode
         ? `L'Articolo "${formData.get('product_name')}" è stato modificato correttamente!`
@@ -107,7 +107,7 @@ function InsertItem() {
               id="price"
               name="price"
               className="form__input"
-              type="number"
+              type="text"
               value={price}
               readOnly
               autoComplete="off"

@@ -4,6 +4,17 @@ import { useLongPress } from '@hooks/useLongPress';
 import { useSelectionContext, useUIContext } from '@contexts/ManageItem';
 
 export function useProductItemLogic(id, isInteractive, selectionMode) {
+  if (!isInteractive) {
+    return {
+      swipeProgress: 0,
+      isSwiping: false,
+      setPendingDelete: () => {},
+      handleClick: () => {},
+      handleTouchStart: () => {},
+      handleTouchMove: () => {},
+      handleTouchEnd: () => {},
+    };
+  }
   const { toggleItem } = useSelectionContext();
   const { setPendingDelete, handleSwipeLeft } = useUIContext();
   const [deltaX, setDeltaX] = useState(0);

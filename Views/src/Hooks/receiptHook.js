@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { queryReceipts } from "../utils/receiptService";
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { queryReceipts } from '../utils/receiptService';
 
 export function useFetchReceipts() {
   const [receipts, setReceipts] = useState([]);
@@ -7,26 +7,33 @@ export function useFetchReceipts() {
   const isFetchingNext = useRef(false);
   const didFetch = useRef(false);
   const [hasMoreNext, setHasMoreNext] = useState(true);
-  const maxItems = 20; //ideally to set at 50/100
-  
+  const maxItems = 10; //ideally to set at 50/100
 
-  const fetchNext = async () => {
+  const fetchNext = useCallback(async () => {
     if (isFetchingNext.current || !hasMoreNext) return;
     isFetchingNext.current = true;
 
     try {
-      const data = await queryReceipts({page:pageRef.current, limit:maxItems});
-      if (!data || data.length < maxItems) {
+      const data = await queryReceipts({ page: pageRef.current, limit: maxItems });
+
+      if (!Array.isArray(data) || data.length === 0) {
         setHasMoreNext(false);
+        return;
       }
-      setReceipts(prev => prev = [...prev, ...data]);
-      pageRef.current += 1;
+
+      setReceipts(prev => [...prev, ...data]);
+
+      if (data.length < maxItems) {
+        setHasMoreNext(false);
+      } else {
+        pageRef.current += 1;
+      }
     } catch (err) {
-      console.error("Error fetching next receipts:", err);
+      console.error('Error fetching next receipts:', err);
     } finally {
       isFetchingNext.current = false;
     }
-  };
+  }, [hasMoreNext, maxItems]);
 
   useEffect(() => {
     if (didFetch.current) return;
@@ -40,5 +47,3 @@ export function useFetchReceipts() {
     hasMoreNext,
   };
 }
-
-

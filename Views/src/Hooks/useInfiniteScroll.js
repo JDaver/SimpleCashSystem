@@ -1,23 +1,20 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from 'react';
 export function useInfiniteScroll(fetchNext, hasMoreNext) {
   const bottomLoaderRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
-  const isLoadingRef = useRef(false);
 
   useEffect(() => {
     if (!bottomLoaderRef.current || !hasMoreNext) return;
 
     const bottomObserver = new IntersectionObserver(
       async entries => {
-        if (entries[0].isIntersecting && !isLoadingRef.current) {
-          isLoadingRef.current = true;
+        if (entries[0].isIntersecting && !isLoading) {
           setIsLoading(true);
           await fetchNext();
           setIsLoading(false);
-          isLoadingRef.current = false;
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
 
     bottomObserver.observe(bottomLoaderRef.current);
@@ -26,5 +23,3 @@ export function useInfiniteScroll(fetchNext, hasMoreNext) {
 
   return { bottomLoaderRef, isLoading };
 }
-
-

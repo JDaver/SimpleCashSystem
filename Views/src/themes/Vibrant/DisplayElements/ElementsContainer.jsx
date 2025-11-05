@@ -6,6 +6,7 @@ export default function ElementContainer({ currentValues, topic }) {
   const { records, hasMoreNext, bottomLoaderRef } = currentValues || {};
   const { activeDelMode } = useUIContext();
   const { actionComponent, sideEffectsComponent, mode } = useProps(topic, activeDelMode);
+
   return (
     <div className={activeDelMode ? 'display-element-DelMode' : 'display-element'}>
       <ul>
@@ -20,7 +21,9 @@ export default function ElementContainer({ currentValues, topic }) {
             />
           );
         })}
-        {topic === 'receipt' && hasMoreNext && <div ref={bottomLoaderRef}></div>}
+        {topic === 'receipt' && hasMoreNext && (
+          <div ref={bottomLoaderRef} style={{ minHeight: '1px' }}></div>
+        )}
       </ul>
     </div>
   );

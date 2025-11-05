@@ -4,13 +4,14 @@ import { useProductItemLogic } from './useProductItemLogic';
 import AllergensToggle from './AllergensToggle';
 import AllergensList from './AllergensList';
 import AllergensModal from './AllergensModal';
-import ActionButtons from './ActionButtons';
 import './ProductItem.css';
 
 const MAX_VISIBLE_ALLERGENS = 3;
 
-function ProductItem({ id, name, price, allergens, isInteractive }) {
-  const { isItemSelected, selectionMode } = useSelectionContext();
+function ProductItem({ id, name, price, allergens, isInteractive, renderActions }) {
+  const selectionContext = useSelectionContext();
+  const isItemSelected = isInteractive ? selectionContext.isItemSelected : () => false;
+  const selectionMode = isInteractive ? selectionContext.selectionMode : false;
   const {
     swipeProgress,
     isSwiping,
@@ -45,7 +46,6 @@ function ProductItem({ id, name, price, allergens, isInteractive }) {
   }, [normalizedAllergens]);
 
   const showAllergensToggle = !selectionMode && hasAllergens;
-  const showActions = !selectionMode && isInteractive;
 
   const isSelected = useMemo(() => isItemSelected(id), [id, isItemSelected]);
   const swipeStyles = useMemo(() => ({ '--swipe-progress': swipeProgress }), [swipeProgress]);
@@ -93,9 +93,7 @@ function ProductItem({ id, name, price, allergens, isInteractive }) {
           />
         )}
       </div>
-      <div className="item__actions">
-        {showActions && <ActionButtons onDelete={handleDelete} />}
-      </div>
+      <div className="item__actions">{renderActions?.({ handleDelete })}</div>
     </div>
   );
 }

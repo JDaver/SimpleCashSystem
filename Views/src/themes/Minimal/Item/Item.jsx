@@ -1,20 +1,15 @@
+import { memo } from 'react';
 import './Item.css';
-import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 
-function Item({ name }) {
+function Item({ className, renderInfo, renderActions, children, ...props }) {
+  const combinedClassName = ['item', className].filter(Boolean).join(' ');
   return (
-    <li className="cashier-screen-item">
-      <p className="cashier-screen-item__name">{name}</p>
-      <div className="cashier-screen-item__btns-container">
-        <button type="button" className="cashier-screen-item__plus-btn">
-          <PlusIcon />
-        </button>
-        <button type="button" className="cashier-screen-item__minus-btn">
-          <MinusIcon />
-        </button>
-      </div>
-    </li>
+    <div className={combinedClassName} {...props}>
+      {children}
+      <div className="item__info">{renderInfo?.()}</div>
+      <div className="item__actions">{renderActions?.()}</div>
+    </div>
   );
 }
 
-export default Item;
+export default memo(Item);

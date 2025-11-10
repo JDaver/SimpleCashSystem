@@ -50,7 +50,7 @@ export function getComponentProps(topic, record, infoData) {
       return {
         actionProps: {},
         infoProps: {
-          Data: dataToShow,
+          Data: 'compare in ' + dataToShow + ' scontrini',
           active: dataToShow.length > 0 ? true : false,
           width: 40,
           height: 40,

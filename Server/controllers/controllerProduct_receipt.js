@@ -28,7 +28,7 @@ exports.fetchItems = async (req, res) => {
       id: row.id,
       name: row.name,
       quantity: row.total_sell,
-      inHowManyReceipts: "compare in " + row.times_in_receipts + " scontrini",
+      inHowManyReceipts: row.times_in_receipts,
     }));
 
     res.status(200).json(formattedData);

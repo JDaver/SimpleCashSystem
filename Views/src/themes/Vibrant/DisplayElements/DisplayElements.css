@@ -1,20 +1,19 @@
-.elements-container{
+.elements-container {
   padding-top: 1rem;
   height: 100%;
-  
 }
 
-.display-element-DelMode,.display-element{
+.display-element-DelMode,
+.display-element {
   position: relative;
   min-height: 500px;
   flex: 1;
-  height:450px;
+  height: 600px;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-.display-element-DelMode .sngl-item > *{
-    animation: vibrateDel 400ms infinite linear;
-    will-change: transform;
+.display-element-DelMode .sngl-item > * {
+  animation: vibrateDel 400ms infinite linear;
+  will-change: transform;
 }
-

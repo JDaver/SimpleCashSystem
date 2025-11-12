@@ -74,7 +74,10 @@ export function getComponentProps(topic, record, infoData) {
     case 'delete':
       return {
         actionProps: { product: record },
-        infoProps: { record },
+        infoProps: {
+          record: record,
+          active: true,
+        },
         firstValue: record.name,
         secondValue: dotToCommaNumberConverter(record.price) + ' €',
       };

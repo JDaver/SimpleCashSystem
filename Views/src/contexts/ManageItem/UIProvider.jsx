@@ -24,15 +24,17 @@ export const UIProvider = ({ children }) => {
   const handleDeleteConfirmed = useCallback(() => {
     const currentFilters = filters;
     const currentOrderValues = orderValues;
+    const messageConferm =
+      pendingDelete.items.length > 1 ? 'articoli eliminati ' : 'articolo eliminato ';
     deleteProduct(pendingDelete.items, {
       onSuccess: (_data, _variables, context) => {
         clearSelection();
         setPendingDelete({ items: [] });
         setActiveDeleteMode(false);
-        const toastId = addToast({
+        addToast({
           content: ({ onClose }) => (
             <div className={`${theme}-toast warning`}>
-              <span>L'articolo e' stato eliminato</span>
+              <span>{messageConferm} </span>
               <button
                 onTouchStart={() => {
                   clearTimeout(context.timeoutDelete);
@@ -48,6 +50,7 @@ export const UIProvider = ({ children }) => {
             </div>
           ),
           duration: 5000,
+          position: 'bottom-left',
         });
       },
       onError: error => {
@@ -58,6 +61,7 @@ export const UIProvider = ({ children }) => {
             </div>
           ),
           duration: 5000,
+          position: 'bottom-left',
         });
       },
     });

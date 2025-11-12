@@ -28,8 +28,6 @@
 .item__info {
   align-items: center;
   display: grid;
-  gap: 6rem;
-  grid-template-columns: 300px 80px 1fr;
   overflow-y: visible;
   width: 100%;
 }

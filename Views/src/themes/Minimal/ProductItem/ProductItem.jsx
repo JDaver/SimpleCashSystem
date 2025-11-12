@@ -1,12 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useSelectionContext } from '@contexts/ManageItem/SelectionContext';
 import { useProductItemLogic } from './useProductItemLogic';
+import Item from '@themes/Minimal/Item';
 import AllergensToggle from './AllergensToggle';
 import AllergensList from './AllergensList';
 import AllergensModal from './AllergensModal';
 import './ProductItem.css';
-
-const MAX_VISIBLE_ALLERGENS = 3;
 
 function ProductItem({ id, name, price, allergens, isInteractive, renderActions }) {
   const selectionContext = useSelectionContext();
@@ -21,6 +20,7 @@ function ProductItem({ id, name, price, allergens, isInteractive, renderActions 
     handleTouchMove,
     handleTouchEnd,
   } = useProductItemLogic(id, isInteractive, selectionMode);
+
   const [showAllergens, setShowAllergens] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -29,26 +29,6 @@ function ProductItem({ id, name, price, allergens, isInteractive, renderActions 
     if (typeof allergens === 'string') return allergens ? [allergens] : [];
     return [];
   }, [allergens]);
-
-  const visibleAllergens = useMemo(
-    () => normalizedAllergens.slice(0, MAX_VISIBLE_ALLERGENS),
-    [normalizedAllergens]
-  );
-
-  const { hasAllergens, hiddenAllergenCount, hasHiddenAllergens } = useMemo(() => {
-    const len = normalizedAllergens.length;
-    const hiddenCount = Math.max(len - MAX_VISIBLE_ALLERGENS, 0);
-    return {
-      hasAllergens: len > 0,
-      hiddenAllergenCount: hiddenCount,
-      hasHiddenAllergens: hiddenCount > 0,
-    };
-  }, [normalizedAllergens]);
-
-  const showAllergensToggle = !selectionMode && hasAllergens;
-
-  const isSelected = useMemo(() => isItemSelected(id), [id, isItemSelected]);
-  const swipeStyles = useMemo(() => ({ '--swipe-progress': swipeProgress }), [swipeProgress]);
 
   const toggleAllergens = useCallback(() => {
     setShowAllergens(prev => !prev);
@@ -60,41 +40,50 @@ function ProductItem({ id, name, price, allergens, isInteractive, renderActions 
 
   const handleDelete = useCallback(() => setPendingDelete({ items: [id] }), [setPendingDelete, id]);
 
+  const showAllergensToggle = !selectionMode && normalizedAllergens.length > 0;
+  const showActions = !selectionMode && isInteractive;
+  const isSelected = useMemo(() => isItemSelected(id), [id, isItemSelected]);
+  const swipeStyles = useMemo(() => ({ '--swipe-progress': swipeProgress }), [swipeProgress]);
+
   return (
-    <div
-      className={`item ${isSelected ? 'selected' : ''}`}
+    <Item
+      className={`${isSelected ? 'selected' : ''}`}
       onClick={handleClick}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      renderInfo={() => {
+        return (
+          <div className="product-item__info">
+            <span>{name}</span>
+            <span>{price}</span>
+            <div className="allergens__wrapper">
+              {showAllergensToggle && (
+                <AllergensToggle showAllergens={showAllergens} onToggle={toggleAllergens} />
+              )}
+              {showAllergens && !selectionMode && (
+                <AllergensList allergens={normalizedAllergens} onToggle={toggleModal} />
+              )}
+            </div>
+            {showModal && (
+              <AllergensModal
+                name={name}
+                allergens={normalizedAllergens}
+                showModal={showModal}
+                onClose={toggleModal}
+              />
+            )}
+          </div>
+        );
+      }}
+      renderActions={() => {
+        return renderActions?.({ showActions, handleDelete });
+      }}
     >
       {isInteractive && (
         <div className={`item__swipe-progress ${isSwiping ? 'visible' : ''}`} style={swipeStyles} />
       )}
-      <div className="item__info">
-        <span>{name}</span>
-        <span>{price}</span>
-        {showAllergensToggle && (
-          <AllergensToggle showAllergens={showAllergens} onToggle={toggleAllergens} />
-        )}
-        {showAllergens && (
-          <AllergensList
-            visibleAllergens={visibleAllergens}
-            hiddenAllergenCount={hiddenAllergenCount}
-            hasHiddenAllergens={hasHiddenAllergens}
-            onToggle={toggleModal}
-          />
-        )}
-        {showModal && (
-          <AllergensModal
-            allergens={normalizedAllergens}
-            showModal={showModal}
-            onClose={toggleModal}
-          />
-        )}
-      </div>
-      <div className="item__actions">{renderActions?.({ handleDelete })}</div>
-    </div>
+    </Item>
   );
 }
 

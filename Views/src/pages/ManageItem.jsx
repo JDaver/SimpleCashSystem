@@ -15,8 +15,8 @@ function ManageItem() {
   const { activeTable, handleTableChange } = useUIContext();
   const { selectedItem } = useEditingContext();
 
+  const EditItem = useMemo(() => loadThemedComponent(theme, 'EditItem'), [theme]);
   const InsertItem = useMemo(() => loadThemedComponent(theme, 'InsertItem'), [theme]);
-  const DisplayElements = useMemo(() => loadThemedComponent(theme, 'DisplayElements'), [theme]);
 
   const pencilIcon = <PencilIcon width={30} height={20} />;
   const plusIcon = <PlusIcon width={30} height={20} />;
@@ -27,7 +27,7 @@ function ManageItem() {
         id: 'box1',
         title: 'Modifica Articoli',
         icon: pencilIcon,
-        content: <DisplayElements isInteractive />,
+        content: <EditItem />,
       },
       {
         id: 'box2',
@@ -36,7 +36,7 @@ function ManageItem() {
         content: <InsertItem />,
       },
     ],
-    [DisplayElements, InsertItem, selectedItem]
+    [EditItem, InsertItem, selectedItem]
   );
 
   return (

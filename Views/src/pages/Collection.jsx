@@ -1,18 +1,19 @@
+import { useMemo, useState } from 'react';
 import { QueueListIcon, ReceiptPercentIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { useTheme } from '@contexts/Theme/ThemeContext';
-import { useMemo, useState } from 'react';
+import { loadThemedComponent } from '@utils/LoadThemedComponent';
 import Table from '@components/Table';
 import Toolbar from '@components/Toolbar';
 import Dropdown from '@components/Dropdown';
-import { loadThemedComponent } from '@utils/LoadThemedComponent';
 import { useUIContext } from '@contexts/ManageItem';
-import ReceiptModal from '../themes/Vibrant/ReceiptModal/ReceiptModal';
+import ReceiptModal from '@themes/Vibrant/ReceiptModal/ReceiptModal';
 
 const orderByArr = ['Nome', 'Prezzo', 'Più venduto'];
 
 function Collection() {
   const { theme } = useTheme();
-  const DisplayElements = useMemo(() => loadThemedComponent(theme, 'DisplayElements'), [theme]);
+  const SalesHistory = useMemo(() => loadThemedComponent(theme, 'SalesHistory'), [theme]);
+  const ReceiptsHistory = useMemo(() => loadThemedComponent(theme, 'ReceiptsHistory'), [theme]);
   const [orderBy, setOrderBy] = useState('');
   const { activeTable, handleTableChange } = useUIContext();
   const tables = useMemo(() => {
@@ -20,17 +21,17 @@ function Collection() {
       {
         id: 'box1',
         title: 'Storico Venduti',
-        content: <DisplayElements topic="item" />,
+        content: <SalesHistory />,
         icon: <QueueListIcon width={30} height={20} />,
       },
       {
         id: 'box2',
         title: 'Scontrini',
-        content: <DisplayElements topic="receipt" />,
+        content: <ReceiptsHistory />,
         icon: <ReceiptPercentIcon width={30} height={20} />,
       },
     ];
-  }, [DisplayElements]);
+  }, [ReceiptsHistory, SalesHistory]);
 
   return (
     <Table activeId={activeTable} defaultActive={'box2'} onChange={handleTableChange}>

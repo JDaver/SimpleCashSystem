@@ -5,34 +5,42 @@
 }
 
 .display-elements__wrapper {
+  contain: layout paint;
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%;
 }
 
 .display-elements__list {
+  backface-visibility: hidden;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   display: flex;
+  contain: paint;
   flex-direction: column;
-  height: 450px;
   overflow-y: auto;
   overflow-x: hidden;
+  transform: translateZ(0);
   touch-action: pan-y;
-  will-change: scroll-position;
   -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
 }
 
 .display-elements__labels {
-  background-color: var(--neutral-500);
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  color: var(--neutral-100);
+  backface-visibility: hidden;
   display: grid;
-  gap: 1rem;
-  grid-template-columns: 300px 80px 100px;
-  margin-top: 1rem;
-  padding-block: 0.725rem;
-  padding-inline: 1rem;
+  position: relative;
+  transform: translateZ(0);
+  will-change: transform;
+  z-index: 2;
+}
+
+.display-elements__labels-left {
+  display: grid;
+  gap: 6rem;
+}
+
+.display-elements__labels-right {
+  display: grid;
+  gap: 2rem;
 }

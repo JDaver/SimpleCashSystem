@@ -4,14 +4,14 @@ import Modal from '@components/Modal';
 
 const MemoXMarkIcon = React.memo(XMarkIcon);
 
-function AllergensModal({ showModal, onClose, allergens }) {
+function AllergensModal({ showModal, onClose, allergens, name }) {
   return (
     <Modal isOpen={showModal} onClose={onClose}>
       <Modal.Portal>
         <Modal.Overlay closeOnClickOutside />
-        <Modal.Content>
+        <Modal.Content className="allergens-modal__content">
           <Modal.Header className="allergens-modal__header">
-            <Modal.Title className="allergens-modal__title">Allergeni</Modal.Title>
+            <Modal.Title className="allergens-modal__title">Allergeni in {name}</Modal.Title>
             <Modal.Close>
               <button>
                 <MemoXMarkIcon width={30} height={20} />

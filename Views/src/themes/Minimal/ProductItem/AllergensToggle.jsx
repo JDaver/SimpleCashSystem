@@ -6,7 +6,7 @@ const MemoMinusIcon = React.memo(MinusIcon);
 
 function AllergensToggle({ showAllergens, onToggle }) {
   return (
-    <button className="allergens__toggle" onClick={onToggle}>
+    <button data-open={showAllergens} className="allergens__toggle" onClick={onToggle}>
       Allergeni
       <span className="icon-wrapper">
         {showAllergens ? <MemoMinusIcon className="icon" /> : <MemoPlusIcon className="icon" />}

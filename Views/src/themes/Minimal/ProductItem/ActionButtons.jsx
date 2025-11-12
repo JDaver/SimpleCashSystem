@@ -8,11 +8,11 @@ function ActionButtons({ onDelete }) {
   return (
     <>
       <span className="item__swipe-hint">
-        <MemoChevronLeftIcon width={20} height={10} />
+        <MemoChevronLeftIcon width={30} height={20} />
         Scorri per modificare
       </span>
       <button data-ignore-gesture type="button" onClick={onDelete}>
-        <MemoTrashIcon width={30} height={20} />
+        <MemoTrashIcon width={30} height={30} />
       </button>
     </>
   );

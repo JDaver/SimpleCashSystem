@@ -18,6 +18,7 @@ function Dropdown({
   side,
   selected,
   multiple = false,
+  disabled = false,
   isOpen: controlledIsOpen,
   onChange,
   onOpenChange,
@@ -53,12 +54,13 @@ function Dropdown({
   }, [selected, multiple]);
 
   const handleClick = useCallback(() => {
+    if (disabled) return;
     handleOpenChange(!isOpen);
-  }, [isOpen, handleOpenChange]);
+  }, [isOpen, disabled, handleOpenChange]);
 
   const handleToggle = useCallback(
     option => {
-      if (!onChange) return;
+      if (disabled || !onChange) return;
 
       if (multiple) {
         if (normalizedSelected.includes(option)) {
@@ -71,7 +73,7 @@ function Dropdown({
         handleOpenChange(false);
       }
     },
-    [multiple, normalizedSelected, onChange]
+    [multiple, disabled, normalizedSelected, onChange]
   );
 
   useEffect(() => {
@@ -89,13 +91,14 @@ function Dropdown({
     () => ({
       selected: normalizedSelected,
       multiple,
+      disabled,
       side,
       baseId,
       isOpen,
       handleClick,
       handleToggle,
     }),
-    [normalizedSelected, multiple, side, baseId, isOpen, handleClick, handleToggle]
+    [normalizedSelected, multiple, disabled, side, baseId, isOpen, handleClick, handleToggle]
   );
 
   return (
@@ -121,11 +124,12 @@ function useDropdownContext() {
 // --------------- Trigger Component
 
 function DropdownTrigger({ children, ...props }) {
-  const { handleClick, isOpen, baseId } = useDropdownContext();
+  const { handleClick, isOpen, baseId, disabled } = useDropdownContext();
   return (
     <button
       type="button"
       data-state={isOpen ? 'open' : 'closed'}
+      disabled={disabled}
       id={`dropdown-button-${baseId}`}
       aria-haspopup="menu"
       aria-expanded={isOpen}

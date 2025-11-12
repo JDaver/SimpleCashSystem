@@ -1,0 +1,57 @@
+.footer {
+  height: 6rem;
+  background: black;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background: var(--dynamic-bg3);
+  background-size: 200% 200%;
+  animation: gradientFlow 8s ease infinite;
+
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  pointer-events: none;
+}
+
+.footer.vibrant::before {
+  opacity: 1;
+}
+
+.footer > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.footer.minimal {
+  background-color: var(--neutral-700);
+  background-size: 1000%;
+}
+
+.footer.vibrant {
+  background: var(--dynamic-bg);
+  background-size: 200% 200%;
+}
+
+#footer-transition {
+  view-transition-name: footer;
+}

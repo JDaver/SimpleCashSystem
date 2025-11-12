@@ -1,33 +1,62 @@
-.cashier-screen {
+.cashier-screen__container {
   display: flex;
   border-radius: 10px;
-  padding: 0.875rem;
   width: 80%;
-  height: 600px;
-  background-color: var(--neutral-500);
+  height: fit-content;
 }
-.cashier-screen__wrapper {
+.cashier-screen__content {
   background-color: var(--neutral-300);
   border-radius: 7px;
   display: flex;
   flex-direction: column;
-  padding: var(--space-4);
   width: 100%;
 }
 
-.cashier-screen__content {
-  display: flex;
-  flex-direction: column;
-  margin-block: var(--space-4);
-  padding-inline: var(--space-6);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
-  width: 100%;
-  will-change: scroll-position;
-}
-
-.cashier-screen__header {
+.cashier-screen__tabs {
   color: var(--neutral-800);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   text-align: center;
+  width: 100%;
+}
+
+.cashier-screen__tab {
+  background-color: var(--neutral-200);
+  width: 100%;
+  height: 4rem;
+}
+
+.cashier-screen__tab:first-of-type {
+  border-top-left-radius: 8px;
+}
+
+.cashier-screen__tab:last-of-type {
+  border-top-right-radius: 8px;
+}
+
+.cashier-screen-item__btns-container {
+  align-items: center;
+  display: flex;
+  gap: var(--space-6);
+}
+
+.cashier-screen-item__plus-btn,
+.cashier-screen-item__minus-btn {
+  background-color: var(--neutral-200);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  height: var(--space-7);
+  width: var(--space-7);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.active {
+  background-color: var(--neutral-500);
+  color: var(--neutral-100);
 }

@@ -4,8 +4,10 @@ const componentMap = {
   minimal: {
     CashierScreen: () => import('@themes/Minimal/CashierScreen'),
     Receipt: () => import('@themes/Minimal/Receipt'),
+    EditItem: () => import('@themes/Minimal/EditItem'),
     InsertItem: () => import('@themes/Minimal/InsertItem'),
-    DisplayElements: () => import('@themes/Minimal/DisplayElements'),
+    SalesHistory: () => import('@themes/Minimal/SalesHistory'),
+    ReceiptsHistory: () => import('@themes/Minimal/ReceiptsHistory'),
     Settings: () => import('@themes/Minimal/Settings'),
   },
   vibrant: {

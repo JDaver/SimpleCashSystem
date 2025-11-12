@@ -1,7 +1,9 @@
 .form {
+  color: var(--neutral-800);
   display: grid;
   grid-template-columns: 1.5fr auto 1.5fr;
-  gap: 5rem;
+  row-gap: 2rem;
+  column-gap: 5rem;
   max-width: 1600px;
   margin: 0 auto;
   padding-block: 4rem;

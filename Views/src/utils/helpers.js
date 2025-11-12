@@ -1,4 +1,4 @@
-export function formatPrice(price) {
+export function formatPrice(price, currency = '€') {
   if (price == null || price === '') return '';
 
   const str = String(price).replace(/\./g, ',');
@@ -8,5 +8,14 @@ export function formatPrice(price) {
 
   const decimal = decPart.replace(/\D/g, '').padEnd(2, '0').slice(0, 2);
 
-  return `${integer},${decimal}`;
+  return `${integer},${decimal} ${currency}`;
+}
+
+export function formatDate(dateString) {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('it-IT', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(date);
 }

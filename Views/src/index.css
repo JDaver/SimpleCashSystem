@@ -147,6 +147,7 @@ body,
   overflow: hidden;
   font-family: var(--font-family-base);
   font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-lg);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

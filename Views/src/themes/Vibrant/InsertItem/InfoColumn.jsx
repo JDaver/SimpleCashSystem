@@ -64,26 +64,10 @@ function InfoColumn() {
         return <input key={allergen} type="hidden" name="allergens" value={allergen} />;
       })}
 
-      <ModeSwitcher
-        action={e => setIsBeverage(e.target.checked)}
-        checked={isBeverage}
-        label={'Bevanda'}
-        name="isbeverage"
-      />
-
-      <label className="label-form">
-        <ModeSwitcher
-          action={handleGlobalProductCleaner}
-          checked={isGlobal}
-          label={'Prodotto Globale'}
-          name="isglobal"
-        />
-      </label>
-
       <div style={isGlobal ? { opacity: 0.4, pointerEvents: 'none' } : {}}>
         <Dropdown side={'left'} selected={partiesRelated} onChange={setPartiesRelated} multiple>
           <Dropdown.Trigger>
-            <p> seleziona le feste di appartenenza</p>
+            <p>Feste di appartenenza</p>
             <ChevronRightIcon className="rotate" width={20} height={15} />
           </Dropdown.Trigger>
           <Dropdown.Content>
@@ -105,6 +89,21 @@ function InfoColumn() {
           return <input key={party} type="hidden" name="partyIDs" value={String(party)} />;
         })}
       </div>
+
+      <label className="label-form">
+        <ModeSwitcher
+          action={handleGlobalProductCleaner}
+          checked={isGlobal}
+          label={'Prodotto Globale'}
+          name="isglobal"
+        />
+      </label>
+      <ModeSwitcher
+        action={e => setIsBeverage(e.target.checked)}
+        checked={isBeverage}
+        label={'Bevanda'}
+        name="isbeverage"
+      />
     </div>
   );
 }

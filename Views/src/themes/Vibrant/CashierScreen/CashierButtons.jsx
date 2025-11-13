@@ -7,7 +7,7 @@ function CashierButtons({ product }) {
   const { addToReceipt, productIsOnReceipt, decrementQuantityInReceipt } = useReceipt();
 
   return (
-    <div>
+    <div className="action-record">
       <button className="plus-btn" onTouchEnd={() => addToReceipt(product)}>
         <img src={addImg} />
       </button>

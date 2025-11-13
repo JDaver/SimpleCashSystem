@@ -1,6 +1,6 @@
 .form {
   display: grid;
-  gap: var(--space-8);
+  gap: var(--space-5);
   grid-template-columns: 2fr 1fr 1fr;
   grid-template-rows: 1fr;
   white-space: nowrap;
@@ -22,7 +22,7 @@
 .form__field {
   display: flex;
   padding: 1rem;
-  padding-top: 4rem;
+  padding-top: 2rem;
   align-items: center;
   flex-direction: column;
   gap: var(--space-1);
@@ -99,11 +99,10 @@
   align-items: flex-start;
   justify-content: center;
   gap: 5rem;
-  font-size: 1.3rem;
 }
 
 .checkBox {
-  transform: scale(2.8);
+  transform: scale(2.5);
   margin-left: 12px;
 }
 
@@ -111,7 +110,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.5rem 1rem;
+  /* padding: 0.5rem 1rem; */
   color: var(--neutral-700);
 }
 
@@ -165,7 +164,7 @@ input:checked + .mode-switcher__slider::before {
 
 .mode-switcher__label {
   font-size: 1.4rem;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: capitalize;
   user-select: none;
 }

@@ -8,7 +8,7 @@ import './CashierScreen.css';
 
 function CashierScreen({ products }) {
   const { mode, switchMode } = useMode();
-  const label = ['Allergeni', 'Articolo', 'prezzo', 'Aggiungi e Rimuovi'];
+  const label = ['Allergeni', 'Articolo', 'prezzo'];
   const filteredProducts = products.filter(product => product.isBeverage === mode.params);
 
   // const loading = isLoading ? 'Caricamento...' : '';

@@ -13,7 +13,10 @@ const componentMap = {
   vibrant: {
     CashierScreen: () => import('@themes/Vibrant/CashierScreen'),
     Receipt: () => import('@themes/Vibrant/Receipt'),
+    EditItem: () => import('@themes/Vibrant/WrapperPages/EditItem'),
     InsertItem: () => import('@themes/Vibrant/InsertItem'),
+    SalesHistory: () => import('@themes/Vibrant/WrapperPages/SalesHistory'),
+    ReceiptsHistory: () => import('@themes/Vibrant/WrapperPages/ReceiptsHistory'),
     DisplayElements: () => import('@themes/Vibrant/DisplayElements'),
     Settings: () => import('@themes/Vibrant/Settings'),
   },

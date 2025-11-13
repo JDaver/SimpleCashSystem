@@ -15,7 +15,7 @@
   padding-top: 7.25rem;
   padding-inline: var(--space-5);
   position: relative;
-  width: 400px;
+  width: 420px;
   min-width: 30px;
   filter: drop-shadow(16px 16px 20px rgb(83, 83, 83));
 }
@@ -32,12 +32,12 @@
   text-align: center;
   top: 0;
   z-index: 10;
-  /* position: sticky; */
+  font-size: medium;
 }
 
 .receipt__content {
   border-collapse: collapse;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   table-layout: fixed;
   width: 100%;
 }
@@ -72,7 +72,7 @@ tr:nth-of-type(even) {
 }
 
 .receipt__total {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
 }
 
 .empty-table {
@@ -117,6 +117,10 @@ tr:nth-of-type(even) {
 .receipt__item-price {
   text-align: center;
   vertical-align: middle;
+}
+.receipt__item-price {
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 /*.control-btn-clear:active, .control-btn-submit:active{

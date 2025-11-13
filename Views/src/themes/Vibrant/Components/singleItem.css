@@ -3,7 +3,7 @@
   height: 100%;
   padding: 0.5rem;
   display: grid;
-  grid-template-columns: 150px 1fr 1fr;
+  grid-template-columns: 150px 1fr 1fr 100px;
   align-items: center;
   position: relative;
 }
@@ -40,7 +40,7 @@
 }
 
 .sngl-item > span {
-  font-size: 1.75em;
+  font-size: 1.2em;
   font-weight: 400;
 }
 
@@ -63,6 +63,13 @@
 .label-4 {
   grid-column: 4;
   justify-self: end;
+}
+.action-record {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem; /* spazio tra i due bottoni */
+  flex-wrap: nowrap; /* evita che vadano a capo */
 }
 
 .red-cross {

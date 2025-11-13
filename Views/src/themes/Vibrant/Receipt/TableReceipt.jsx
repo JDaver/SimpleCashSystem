@@ -11,14 +11,14 @@ function TableReceipt({ receipt, totalOfReceipt, title }) {
         <table className="receipt__content">
           <colgroup>
             <col style={{ width: '40%' }} />
-            <col style={{ width: '30%' }} />
             <col style={{ width: '35%' }} />
+            <col style={{ width: '40%' }} />
           </colgroup>
           <thead>
             <tr>
               <th>Articolo</th>
               <th>Quantita</th>
-              <th>Prezzo</th>
+              <th>Prezzo </th>
             </tr>
           </thead>
           <tbody>

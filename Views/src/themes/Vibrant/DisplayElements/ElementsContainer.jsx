@@ -21,9 +21,7 @@ export default function ElementContainer({ currentValues, topic }) {
             />
           );
         })}
-        {topic === 'receipt' && hasMoreNext && (
-          <div ref={bottomLoaderRef} style={{ minHeight: '1px' }}></div>
-        )}
+        {hasMoreNext && <div ref={bottomLoaderRef} style={{ minHeight: '1px' }}></div>}
       </ul>
     </div>
   );

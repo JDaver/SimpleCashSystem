@@ -9,6 +9,7 @@ import {
 import { queryItems } from '@utils/productService';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
+//------------------------------ EditItem
 export function useFetchAll() {
   const queryClient = useQueryClient();
   const [lastContext, setLastContext] = useState(null);
@@ -126,45 +127,8 @@ export function useFetchAll() {
   };
 }
 
-/**
- *
- * @returns
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
+//------------------------------ CashierScreen
+
 export function useFetchCashier() {
   const queryClient = useQueryClient();
   const { data, isLoading, error } = useQuery({
@@ -178,69 +142,74 @@ export function useFetchCashier() {
   return { products, isLoading, error };
 }
 
+//------------------------------ SalesHistory
+
 export function useFetchItems() {
   const [records, setRecords] = useState([]);
+  const [hasMoreNext, setHasMoreNext] = useState(true);
+
+  const pageRef = useRef(1);
+  const isFetchingNext = useRef(false);
+  const arraySourceRef = useRef([]);
+  const didFirstFetch = useRef(false);
+
+  const maxItemsBuffer = 10;
 
   useEffect(() => {
+    let mounted = true;
+
     queryItems()
       .then(data => {
-        setRecords(data);
+        if (mounted && Array.isArray(data)) {
+          arraySourceRef.current = data;
+          setRecords(data.slice(0, maxItemsBuffer));
+          pageRef.current += 1;
+        }
+        if (data.length <= maxItemsBuffer) setHasMoreNext(false);
+
+        didFirstFetch.current = true;
       })
-      .catch(err => {
-        console.log('error in hooks -> ', err);
-      });
+      .catch(err => console.error('Errore queryItems:', err));
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  return { records };
-}
-
-export function useFetchReceipts() {
-  const [receipts, setReceipts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMoreNext, setHasMoreNext] = useState(true);
-  const maxItems = 10;
-  const isFetchingNext = useRef(false);
-  const didFetch = useRef(false);
-
-  const fetchNext = async () => {
+  const fetchNext = useCallback(async () => {
+    if (!didFirstFetch.current) return;
     if (isFetchingNext.current || !hasMoreNext) return;
+
+    const rightIndex = maxItemsBuffer * pageRef.current;
+    const leftIndex = rightIndex - maxItemsBuffer;
+    const arraySource = arraySourceRef.current;
+
     isFetchingNext.current = true;
 
-    try {
-      const data = await queryReceipts({ page });
+    const data = arraySource.slice(leftIndex, rightIndex);
 
-      console.log(page, ' **** ', data);
-
-      if (!data || data.length < maxItems) {
-        setHasMoreNext(false);
-      }
-
-      setReceipts(prev => (prev = [...prev, ...data]));
-
-      setPage(prev => prev + 1);
-    } catch (err) {
-      console.error('Error fetching next receipts:', err);
-    } finally {
-      isFetchingNext.current = false;
+    if (!Array.isArray(data) || data.length === 0) {
+      setHasMoreNext(false);
+      return;
     }
-  };
 
-  useEffect(() => {
-    if (didFetch.current) return;
-    didFetch.current = true;
-    fetchNext();
-  }, []);
+    if (data.length < maxItemsBuffer) {
+      setHasMoreNext(false);
+    } else {
+      pageRef.current += 1;
+    }
+    setRecords(prev => [...prev, ...data]);
 
-  return {
-    receipts,
-    fetchNext,
-    hasMoreNext,
-  };
+    isFetchingNext.current = false;
+  }, [hasMoreNext, maxItemsBuffer]);
+
+  return { records, fetchNext, hasMoreNext };
 }
+
+//------------------------------ getParty
 
 export function usePartyNames() {
   const [partyNames, setPartyNames] = useState([]);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     getPartys()

@@ -9,6 +9,7 @@ import {
 import { queryItems } from '@utils/productService';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
+//------------------------------ EditItem
 export function useFetchAll() {
   const queryClient = useQueryClient();
   const [lastContext, setLastContext] = useState(null);
@@ -21,19 +22,10 @@ export function useFetchAll() {
     queryClient.getQueryData({ queryKey: ['orderValues'] }) ?? { column: 'name', order: 'ASC' }
   );
 
-  const {
-    data: productsMap,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['allProducts', filters, orderValues],
     queryFn: () => fetchAllProducts(orderValues, filters, []),
     staleTime: 1000 * 60 * 5,
-    select: data => {
-      const map = new Map();
-      (data?.formattedData ?? []).forEach(p => map.set(p.id, p));
-      return map;
-    },
   });
 
   const { mutate: insertProduct } = useMutation({
@@ -103,16 +95,22 @@ export function useFetchAll() {
   };
 
   const undoDelete = () => {
-    console.log(lastContext);
     clearTimeout(lastContext.timeoutDelete);
     queryClient.setQueryData(['allProducts', filters, orderValues], restored);
     setLastContext(null);
   };
 
-  const products = productsMap ?? new Map();
+  const dataArray = Array.isArray(data?.formattedData) ? data.formattedData : [];
+  const { records, hasMoreNext, fetchNext } = useDataVirtualizer(dataArray, 10);
+
+  const allProductsIds = useMemo(() => {
+    return dataArray.map(p => p.id);
+  }, [dataArray]);
 
   return {
-    products,
+    records,
+    hasMoreNext,
+    fetchNext,
     loading: isLoading,
     error,
     deleteProduct,
@@ -123,134 +121,97 @@ export function useFetchAll() {
     orderValues,
     insertProduct,
     editProduct,
+    allProductsIds,
   };
 }
 
-/**
- *
- * @returns
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
-export function useFetchCashier() {
+//------------------------------ CashierScreen
+
+export function useFetchCashier(filtersParam = null) {
   const queryClient = useQueryClient();
+  const initialFilters = queryClient.getQueryData(['filters']) ??
+    filtersParam ?? { isBeverage: undefined };
   const { data, isLoading, error } = useQuery({
-    queryKey: ['currentProducts'],
-    queryFn: () => fetchAllProducts(null, null, []),
+    queryKey: ['currentProducts', filtersParam],
+    queryFn: () => fetchAllProducts(null, filtersParam, []),
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 10,
   });
-  const products = data?.formattedData ?? [];
 
-  return { products, isLoading, error };
-}
+  const dataArray = Array.isArray(data?.formattedData) ? data.formattedData : [];
+  const { records, hasMoreNext, fetchNext } = useDataVirtualizer(dataArray, 10);
 
-export function useFetchItems() {
-  const [records, setRecords] = useState([]);
-
-  useEffect(() => {
-    queryItems()
-      .then(data => {
-        setRecords(data);
-      })
-      .catch(err => {
-        console.log('error in hooks -> ', err);
-      });
-  }, []);
-
-  return { records };
-}
-
-export function useFetchReceipts() {
-  const [receipts, setReceipts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMoreNext, setHasMoreNext] = useState(true);
-  const maxItems = 10;
-  const isFetchingNext = useRef(false);
-  const didFetch = useRef(false);
-
-  const fetchNext = async () => {
-    if (isFetchingNext.current || !hasMoreNext) return;
-    isFetchingNext.current = true;
-
-    try {
-      const data = await queryReceipts({ page });
-
-      console.log(page, ' **** ', data);
-
-      if (!data || data.length < maxItems) {
-        setHasMoreNext(false);
-      }
-
-      setReceipts(prev => (prev = [...prev, ...data]));
-
-      setPage(prev => prev + 1);
-    } catch (err) {
-      console.error('Error fetching next receipts:', err);
-    } finally {
-      isFetchingNext.current = false;
-    }
-  };
-
-  useEffect(() => {
-    if (didFetch.current) return;
-    didFetch.current = true;
-    fetchNext();
-  }, []);
+  const products = records ?? [];
 
   return {
-    receipts,
-    fetchNext,
+    products,
     hasMoreNext,
+    fetchNext,
+    isLoading,
+    error,
   };
 }
 
-export function usePartyNames() {
-  const [partyNames, setPartyNames] = useState([]);
-  const [error, setError] = useState(null);
+//------------------------------ SalesHistory
 
-  useEffect(() => {
-    getPartys()
-      .then(data => {
-        setPartyNames(data);
-      })
-      .catch(err => {
-        console.log('error in hooks -> ', err);
-      });
-  }, []);
+export function useFetchItems() {
+  const queryClient = useQueryClient();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['itemsHistory'],
+    queryFn: () => queryItems(),
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+  });
+
+  const dataArray = Array.isArray(data) ? data : [];
+  const { records, hasMoreNext, fetchNext } = useDataVirtualizer(dataArray, 10);
+  return { records, fetchNext, hasMoreNext };
+}
+
+//------------------------------ getParty
+
+export function usePartyNames() {
+  const { data: partyNames = [] } = useQuery({
+    queryKey: ['partyNames'],
+    queryFn: () => getPartys(),
+    staleTime: 1000 * 60 * 5,
+  });
 
   return partyNames;
+}
+
+//VIRTUALIZER HELPER
+function useDataVirtualizer(data, maxItemsBuffer) {
+  const [records, setRecords] = useState([]);
+  const [hasMoreNext, setHasMoreNext] = useState(true);
+  const pageRef = useRef(1);
+  const isFetchingNext = useRef(false);
+  const arraySourceRef = useRef([]);
+
+  useEffect(() => {
+    if (!Array.isArray(data)) return;
+    arraySourceRef.current = data;
+    const firstPage = data.slice(0, maxItemsBuffer);
+    setRecords(firstPage);
+    setHasMoreNext(data.length > maxItemsBuffer);
+    pageRef.current = 1;
+  }, [data, maxItemsBuffer]);
+
+  const fetchNext = useCallback(() => {
+    if (isFetchingNext.current || !hasMoreNext) return;
+
+    const start = pageRef.current * maxItemsBuffer;
+    const nextSlice = arraySourceRef.current.slice(start, start + maxItemsBuffer);
+
+    if (!nextSlice.length) {
+      setHasMoreNext(false);
+      return;
+    }
+
+    setRecords(prev => [...prev, ...nextSlice]);
+    pageRef.current += 1;
+    if (nextSlice.length < maxItemsBuffer) setHasMoreNext(false);
+  }, [hasMoreNext, maxItemsBuffer]);
+
+  return { records, fetchNext, hasMoreNext };
 }

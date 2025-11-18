@@ -12,6 +12,7 @@ export async function apiFetch(url, bodyOpt = {}) {
     ...(bodyOpt.headers || {}),
     ...(sessionToken ? { 'x-session': sessionToken.token } : {}),
   };
+
   try {
     const res = await fetch(url, { ...bodyOpt, headers });
     if (!res.ok) throw new Error(`Errore API: ${res.status}`);

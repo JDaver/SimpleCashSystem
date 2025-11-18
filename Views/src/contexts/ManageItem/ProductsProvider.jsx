@@ -4,7 +4,9 @@ import { ProductsContext } from './ProductsContext';
 
 export const ProductsProvider = ({ children }) => {
   const {
-    products,
+    records,
+    hasMoreNext,
+    fetchNext,
     loading,
     filters,
     setFilters,
@@ -14,14 +16,20 @@ export const ProductsProvider = ({ children }) => {
     undoDelete,
     insertProduct,
     editProduct,
+    allProductsIds,
   } = useFetchAll();
-  const allProductsIds = useMemo(() => {
-    return Array.from(products.values()).map(p => p.id);
-  }, [products]);
+
+  const products = useMemo(() => {
+    const map = new Map();
+    (records ?? []).forEach(p => map.set(p.id, p));
+    return map;
+  }, [records]);
 
   const contextValue = useMemo(
     () => ({
       products,
+      hasMoreNext,
+      fetchNext,
       allProductsIds,
       setFilters,
       filters,
@@ -34,6 +42,8 @@ export const ProductsProvider = ({ children }) => {
     }),
     [
       products,
+      hasMoreNext,
+      fetchNext,
       allProductsIds,
       setFilters,
       filters,

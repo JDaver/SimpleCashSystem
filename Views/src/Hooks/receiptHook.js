@@ -33,7 +33,7 @@ export function useFetchReceipts() {
     } finally {
       isFetchingNext.current = false;
     }
-  }, [hasMoreNext, maxItems]);
+  }, [hasMoreNext, maxItems, queryReceipts]);
 
   useEffect(() => {
     if (didFetch.current) return;

@@ -2,7 +2,7 @@ import redCross from '@assets/redCross.png';
 import { useSelectionContext } from '@contexts/ManageItem/SelectionContext';
 import React, { useCallback } from 'react';
 
-export default function CheckButton({ record }) {
+function CheckButton({ record }) {
   const { toggleItem, isItemSelected } = useSelectionContext();
 
   const selectItem = useCallback(
@@ -22,4 +22,4 @@ export default function CheckButton({ record }) {
     </button>
   );
 }
-//  React.memo(CheckButton);
+export default React.memo(CheckButton);

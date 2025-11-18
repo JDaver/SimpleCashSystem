@@ -1,5 +1,5 @@
 import { PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useTheme } from '@contexts/Theme';
 import { useSelectionContext, useEditingContext, useUIContext } from '@contexts/ManageItem';
 import { loadThemedComponent } from '@utils/LoadThemedComponent';
@@ -7,8 +7,8 @@ import Table from '@components/Table';
 import Toolbar from '@components/Toolbar';
 import SelectionControls from '@themes/Minimal/SelectionControls';
 import OrderByDropdown from '@themes/Minimal/OrderByDropdown';
-import DeleteModal from '@themes/Minimal/DeleteModal';
-
+// import DeleteModal from '@themes/Minimal/DeleteModal';
+const DeleteModal = React.lazy(() => import('@themes/Minimal/DeleteModal'));
 function ManageItem() {
   const { theme } = useTheme();
   const { selectionMode } = useSelectionContext();

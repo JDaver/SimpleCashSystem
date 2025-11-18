@@ -92,8 +92,9 @@ export async function deleteItem(id) {
 
 export async function queryItems(name = null, price = null, date = null) {
   try {
-    const res = await apiFetch('http://localhost:4444/api/collection_fetch_items');
-    return res;
+    const data = await apiFetch('http://localhost:4444/api/collection_fetch_items');
+
+    return data;
   } catch (err) {
     throw new Error(`Errore nel recuperare i dati: ${err.message}`);
   }

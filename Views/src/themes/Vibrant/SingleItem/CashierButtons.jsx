@@ -3,7 +3,7 @@ import addImg from '@assets/plus.png';
 import remImg from '@assets/minus.png';
 import { useReceipt } from '@contexts/receiptHandlerContext';
 
-function CashierButtons({ product }) {
+function CashierButtons({ record: product }) {
   const { addToReceipt, productIsOnReceipt, decrementQuantityInReceipt } = useReceipt();
 
   return (

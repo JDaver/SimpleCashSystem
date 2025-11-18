@@ -137,12 +137,14 @@ module.exports = class Product_receipt {
         queryConstructed += " WHERE " + conditions.join(" AND ");
 
       queryConstructed += format(
-        " GROUP BY r.id, r.date, r.tot_price ORDER BY %I, r.id %s LIMIT %s OFFSET %s",
+        " GROUP BY r.id, r.date, r.tot_price ORDER BY %I %s LIMIT %s OFFSET %s",
         column,
         order,
         limit,
         startingIndex
       );
+
+      console.log(queryConstructed);
       const result = await pool.query(queryConstructed);
       return result.rows;
     } catch (err) {

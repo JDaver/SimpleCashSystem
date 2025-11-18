@@ -7,7 +7,7 @@
   position: relative;
   min-height: 450px;
   flex: 1;
-  height: 350px;
+  height: 500px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -15,4 +15,15 @@
 .display-element-DelMode .sngl-item > * {
   animation: vibrateDel 400ms infinite linear;
   will-change: transform;
+}
+
+.display-element > * {
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }

@@ -22,19 +22,10 @@ export function useFetchAll() {
     queryClient.getQueryData({ queryKey: ['orderValues'] }) ?? { column: 'name', order: 'ASC' }
   );
 
-  const {
-    data: productsMap,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['allProducts', filters, orderValues],
     queryFn: () => fetchAllProducts(orderValues, filters, []),
     staleTime: 1000 * 60 * 5,
-    select: data => {
-      const map = new Map();
-      (data?.formattedData ?? []).forEach(p => map.set(p.id, p));
-      return map;
-    },
   });
 
   const { mutate: insertProduct } = useMutation({
@@ -104,16 +95,22 @@ export function useFetchAll() {
   };
 
   const undoDelete = () => {
-    console.log(lastContext);
     clearTimeout(lastContext.timeoutDelete);
     queryClient.setQueryData(['allProducts', filters, orderValues], restored);
     setLastContext(null);
   };
 
-  const products = productsMap ?? new Map();
+  const dataArray = Array.isArray(data?.formattedData) ? data.formattedData : [];
+  const { records, hasMoreNext, fetchNext } = useDataVirtualizer(dataArray, 10);
+
+  const allProductsIds = useMemo(() => {
+    return dataArray.map(p => p.id);
+  }, [dataArray]);
 
   return {
-    products,
+    records,
+    hasMoreNext,
+    fetchNext,
     loading: isLoading,
     error,
     deleteProduct,
@@ -124,102 +121,97 @@ export function useFetchAll() {
     orderValues,
     insertProduct,
     editProduct,
+    allProductsIds,
   };
 }
 
 //------------------------------ CashierScreen
 
-export function useFetchCashier() {
+export function useFetchCashier(filtersParam = null) {
   const queryClient = useQueryClient();
+  const initialFilters = queryClient.getQueryData(['filters']) ??
+    filtersParam ?? { isBeverage: undefined };
   const { data, isLoading, error } = useQuery({
-    queryKey: ['currentProducts'],
-    queryFn: () => fetchAllProducts(null, null, []),
+    queryKey: ['currentProducts', filtersParam],
+    queryFn: () => fetchAllProducts(null, filtersParam, []),
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 10,
   });
-  const products = data?.formattedData ?? [];
 
-  return { products, isLoading, error };
+  const dataArray = Array.isArray(data?.formattedData) ? data.formattedData : [];
+  const { records, hasMoreNext, fetchNext } = useDataVirtualizer(dataArray, 10);
+
+  const products = records ?? [];
+
+  return {
+    products,
+    hasMoreNext,
+    fetchNext,
+    isLoading,
+    error,
+  };
 }
 
 //------------------------------ SalesHistory
 
 export function useFetchItems() {
-  const [records, setRecords] = useState([]);
-  const [hasMoreNext, setHasMoreNext] = useState(true);
+  const queryClient = useQueryClient();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['itemsHistory'],
+    queryFn: () => queryItems(),
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+  });
 
-  const pageRef = useRef(1);
-  const isFetchingNext = useRef(false);
-  const arraySourceRef = useRef([]);
-  const didFirstFetch = useRef(false);
-
-  const maxItemsBuffer = 10;
-
-  useEffect(() => {
-    let mounted = true;
-
-    queryItems()
-      .then(data => {
-        if (mounted && Array.isArray(data)) {
-          arraySourceRef.current = data;
-          setRecords(data.slice(0, maxItemsBuffer));
-          pageRef.current += 1;
-        }
-        if (data.length <= maxItemsBuffer) setHasMoreNext(false);
-
-        didFirstFetch.current = true;
-      })
-      .catch(err => console.error('Errore queryItems:', err));
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  const fetchNext = useCallback(async () => {
-    if (!didFirstFetch.current) return;
-    if (isFetchingNext.current || !hasMoreNext) return;
-
-    const rightIndex = maxItemsBuffer * pageRef.current;
-    const leftIndex = rightIndex - maxItemsBuffer;
-    const arraySource = arraySourceRef.current;
-
-    isFetchingNext.current = true;
-
-    const data = arraySource.slice(leftIndex, rightIndex);
-
-    if (!Array.isArray(data) || data.length === 0) {
-      setHasMoreNext(false);
-      return;
-    }
-
-    if (data.length < maxItemsBuffer) {
-      setHasMoreNext(false);
-    } else {
-      pageRef.current += 1;
-    }
-    setRecords(prev => [...prev, ...data]);
-
-    isFetchingNext.current = false;
-  }, [hasMoreNext, maxItemsBuffer]);
-
+  const dataArray = Array.isArray(data) ? data : [];
+  const { records, hasMoreNext, fetchNext } = useDataVirtualizer(dataArray, 10);
   return { records, fetchNext, hasMoreNext };
 }
 
 //------------------------------ getParty
 
 export function usePartyNames() {
-  const [partyNames, setPartyNames] = useState([]);
-
-  useEffect(() => {
-    getPartys()
-      .then(data => {
-        setPartyNames(data);
-      })
-      .catch(err => {
-        console.log('error in hooks -> ', err);
-      });
-  }, []);
+  const { data: partyNames = [] } = useQuery({
+    queryKey: ['partyNames'],
+    queryFn: () => getPartys(),
+    staleTime: 1000 * 60 * 5,
+  });
 
   return partyNames;
+}
+
+//VIRTUALIZER HELPER
+function useDataVirtualizer(data, maxItemsBuffer) {
+  const [records, setRecords] = useState([]);
+  const [hasMoreNext, setHasMoreNext] = useState(true);
+  const pageRef = useRef(1);
+  const isFetchingNext = useRef(false);
+  const arraySourceRef = useRef([]);
+
+  useEffect(() => {
+    if (!Array.isArray(data)) return;
+    arraySourceRef.current = data;
+    const firstPage = data.slice(0, maxItemsBuffer);
+    setRecords(firstPage);
+    setHasMoreNext(data.length > maxItemsBuffer);
+    pageRef.current = 1;
+  }, [data, maxItemsBuffer]);
+
+  const fetchNext = useCallback(() => {
+    if (isFetchingNext.current || !hasMoreNext) return;
+
+    const start = pageRef.current * maxItemsBuffer;
+    const nextSlice = arraySourceRef.current.slice(start, start + maxItemsBuffer);
+
+    if (!nextSlice.length) {
+      setHasMoreNext(false);
+      return;
+    }
+
+    setRecords(prev => [...prev, ...nextSlice]);
+    pageRef.current += 1;
+    if (nextSlice.length < maxItemsBuffer) setHasMoreNext(false);
+  }, [hasMoreNext, maxItemsBuffer]);
+
+  return { records, fetchNext, hasMoreNext };
 }

@@ -1,3 +1,11 @@
+import React from 'react';
+
+export function lazyWithPreload(factory) {
+  const Component = React.lazy(factory);
+  Component.preload = factory;
+  return Component;
+}
+
 export function formatPrice(price, currency = '€') {
   if (price == null || price === '') return '';
 

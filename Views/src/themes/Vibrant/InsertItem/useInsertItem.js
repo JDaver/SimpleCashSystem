@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useEditingContext } from '@contexts/ManageItem';
 import { usePartyNames } from '@hooks/productsHook';
-import { useProductsContext } from '../../../contexts/ManageItem/ProductsContext';
+import { dotToCommaNumberConverter } from '../../../utils/helpers';
 
 export function useInsertItem() {
   const { selectedItem, shouldResetForm, setShouldResetForm } = useEditingContext();
@@ -28,7 +28,7 @@ export function useInsertItem() {
     } else if (selectedItem) {
       setUpdateMode(true);
       setName(selectedItem.name || '');
-      setPrice(selectedItem.price?.toString() || '');
+      setPrice(dotToCommaNumberConverter(selectedItem.price?.toString() || ''));
       setAllergens(
         Array.isArray(selectedItem.allergens)
           ? selectedItem.allergens

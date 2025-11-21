@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import SingleItem from '../SingleItem/SingleItem';
 import { useUIContext } from '@contexts/ManageItem/UIContext';
 import { useProps } from './useDisplayElements';
@@ -6,6 +7,11 @@ export default function ElementContainer({ currentValues, topic }) {
   const { records, hasMoreNext, bottomLoaderRef } = currentValues || {};
   const { activeDelMode, actionComponent, sideEffectsComponent, mode, contentHeight } =
     useProps(topic);
+  useEffect(() => {
+    const el = document.querySelector('.display-element');
+    if (el) el.scrollTop = 0;
+  }, [topic]);
+
   return (
     <div
       className={activeDelMode ? 'display-element-DelMode' : 'display-element'}
@@ -28,3 +34,5 @@ export default function ElementContainer({ currentValues, topic }) {
     </div>
   );
 }
+
+(0).toExponential.apply.apply;

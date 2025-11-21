@@ -125,8 +125,9 @@ function InsertItem() {
         {updateMode === true && <input type="hidden" name="id" value={productID.current} />}
       </div>
       <div className="form__button-wrapper">
-        {updateMode === false && <button className="form__button">Inserisci Prodotto</button>}
-        {updateMode === true && <button className="form__button">Modifica Prodotto</button>}
+        <button className="form__button">
+          {updateMode === false ? 'Inserisci Prodotto' : 'Modifica Prodotto'}
+        </button>
       </div>
     </form>
   );

@@ -1,8 +1,22 @@
 import React from 'react';
 
-export function lazyWithPreload(factory) {
+export function lazyWithLoadOptions(factory, options = { preload: true, prefetch: true }) {
   const Component = React.lazy(factory);
-  Component.preload = factory;
+
+  if (options.preload) {
+    Component.preload = factory;
+  }
+
+  if (options.prefetch) {
+    Component.prefetch = () => {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => factory());
+      } else {
+        setTimeout(() => factory(), 200);
+      }
+    };
+  }
+
   return Component;
 }
 

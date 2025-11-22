@@ -68,11 +68,7 @@ function InsertItem() {
   );
 
   return (
-    <form
-      className="form insert-item"
-      onSubmit={handleSubmit}
-      method={updateMode === true ? 'PUT' : 'POST'}
-    >
+    <form className="form insert-item" onSubmit={handleSubmit}>
       <div className="form__columns">
         <div className="form__column">
           <div className="form__field">

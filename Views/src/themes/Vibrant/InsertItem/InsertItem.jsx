@@ -68,11 +68,7 @@ function InsertItem() {
   );
 
   return (
-    <form
-      className="form insert-item"
-      onSubmit={handleSubmit}
-      method={updateMode === true ? 'PUT' : 'POST'}
-    >
+    <form className="form insert-item" onSubmit={handleSubmit}>
       <div className="form__columns">
         <div className="form__column">
           <div className="form__field">
@@ -125,8 +121,9 @@ function InsertItem() {
         {updateMode === true && <input type="hidden" name="id" value={productID.current} />}
       </div>
       <div className="form__button-wrapper">
-        {updateMode === false && <button className="form__button">Inserisci Prodotto</button>}
-        {updateMode === true && <button className="form__button">Modifica Prodotto</button>}
+        <button className="form__button">
+          {updateMode === false ? 'Inserisci Prodotto' : 'Modifica Prodotto'}
+        </button>
       </div>
     </form>
   );

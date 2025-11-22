@@ -3,6 +3,7 @@ import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { login, signin } from '../../utils/userService';
 import { useQueryClient } from '@tanstack/react-query';
+import { sessionEvents } from '@utils/sessionEvents';
 
 export const AuthProvider = ({ children }) => {
   const getInitialSession = () => {
@@ -90,13 +91,25 @@ export const AuthProvider = ({ children }) => {
     [navigate]
   );
 
+  const [expiresAt, setExpiresAt] = useState(session?.token_expires || null);
+
+  // ------------------- UNAUTHORIZED HANDLERS -------------------
+
+  useEffect(() => {
+    const handler = () => {
+      if (isSessionExpired || !session) return;
+      setExpiresAt(Date.now() - 1000);
+    };
+
+    sessionEvents.addEventListener('session-expired', handler);
+    return () => sessionEvents.removeEventListener('session-expired', handler);
+  }, [isSessionExpired, session]);
+
   const handleLogout = useCallback(() => {
     queryClient.invalidateQueries();
     sessionStorage.removeItem('session');
     setSession(null);
   }, []);
-
-  const expiresAt = session?.token_expires;
 
   useEffect(() => {
     if (!expiresAt) return;
@@ -114,7 +127,7 @@ export const AuthProvider = ({ children }) => {
     }, timeLeft);
 
     return () => clearTimeout(timeout);
-  }, [expiresAt, handleLogout]);
+  }, [expiresAt]);
 
   const contextValue = useMemo(
     () => ({

@@ -15,7 +15,16 @@ function Collection() {
   const SalesHistory = useMemo(() => loadThemedComponent(theme, 'SalesHistory'), [theme]);
   const ReceiptsHistory = useMemo(() => loadThemedComponent(theme, 'ReceiptsHistory'), [theme]);
   const [orderBy, setOrderBy] = useState('');
-  const { activeTable, handleTableChange } = useUIContext();
+  const [activeTable, setActiveTable] = useState('box1');
+
+  const handleTableChange = useCallback(
+    nextId => {
+      console.log('Cambio box a:', nextId);
+      setActiveTable(nextId);
+    },
+    [setActiveTable]
+  );
+
   const tables = useMemo(() => {
     return [
       {

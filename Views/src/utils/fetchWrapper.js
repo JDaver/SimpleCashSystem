@@ -1,3 +1,4 @@
+import { sessionEvents } from './sessionEvents';
 export async function apiFetch(url, bodyOpt = {}) {
   const storedSession = sessionStorage.getItem('session');
 
@@ -15,6 +16,11 @@ export async function apiFetch(url, bodyOpt = {}) {
 
   try {
     const res = await fetch(url, { ...bodyOpt, headers });
+
+    if (res.status === 401) {
+      sessionEvents.dispatchEvent(new Event('session-expired'));
+    }
+
     if (!res.ok) throw new Error(`Errore API: ${res.status}`);
 
     const contentType = res.headers.get('content-type') || '';

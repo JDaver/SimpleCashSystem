@@ -1,8 +1,14 @@
-import LoginForm from '@components/LoginForm';
+import { useEffect } from 'react';
 import PageWrapper from '@components/PageWrapper';
-import SelectUser from '../components/SelectUser/SelectUser';
+import LoginForm from '@components/LoginForm';
+import SelectUser from '@components/SelectUser';
+import { Home } from '@components/AppWrapper';
 
 function Login() {
+  useEffect(() => {
+    Home.preload();
+  }, []);
+
   return (
     <PageWrapper className="login-page">
       {/* <LoginForm /> */}

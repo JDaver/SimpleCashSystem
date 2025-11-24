@@ -3,18 +3,7 @@ import { useSwipe } from '@hooks/useSwipe';
 import { useLongPress } from '@hooks/useLongPress';
 import { useSelectionContext, useUIContext } from '@contexts/ManageItem';
 
-export function useProductItemLogic(id, isInteractive, selectionMode) {
-  if (!isInteractive) {
-    return {
-      swipeProgress: 0,
-      isSwiping: false,
-      setPendingDelete: () => {},
-      handleClick: () => {},
-      handleTouchStart: () => {},
-      handleTouchMove: () => {},
-      handleTouchEnd: () => {},
-    };
-  }
+export function useInteractiveItemLogic(id, selectionMode) {
   const { toggleItem } = useSelectionContext();
   const { setPendingDelete, handleSwipeLeft } = useUIContext();
   const [deltaX, setDeltaX] = useState(0);
@@ -58,13 +47,13 @@ export function useProductItemLogic(id, isInteractive, selectionMode) {
   });
 
   const handleClick = useCallback(() => {
-    if (!isInteractive || !selectionMode || isSwiping) return;
+    if (!selectionMode || isSwiping) return;
     toggleItem(localRef.current);
-  }, [isInteractive, selectionMode, isSwiping, toggleItem]);
+  }, [selectionMode, isSwiping, toggleItem]);
 
   const handleTouchStart = useCallback(
     e => {
-      if (!isInteractive || selectionMode || isGestureIgnored(e)) return;
+      if (selectionMode || isGestureIgnored(e)) return;
 
       const touch = e.touches[0];
       startX.current = touch.clientX;
@@ -75,12 +64,12 @@ export function useProductItemLogic(id, isInteractive, selectionMode) {
       longPressHandlers.onTouchStart(e);
       setDeltaX(0);
     },
-    [isInteractive, selectionMode, swipeHandlers, longPressHandlers]
+    [, selectionMode, swipeHandlers, longPressHandlers]
   );
 
   const handleTouchMove = useCallback(
     e => {
-      if (!isInteractive || selectionMode || isGestureIgnored(e)) return;
+      if (selectionMode || isGestureIgnored(e)) return;
 
       const touch = e.touches[0];
       const deltaXAbs = Math.abs(touch.clientX - startX.current);
@@ -97,18 +86,18 @@ export function useProductItemLogic(id, isInteractive, selectionMode) {
 
       swipeHandlers.onTouchMove(e);
     },
-    [isInteractive, selectionMode, swipeHandlers, longPressHandlers]
+    [selectionMode, swipeHandlers, longPressHandlers]
   );
 
   const handleTouchEnd = useCallback(
     e => {
-      if (!isInteractive || selectionMode || isGestureIgnored(e)) return;
+      if (selectionMode || isGestureIgnored(e)) return;
       swipeHandlers.onTouchEnd(e);
       longPressHandlers.onTouchEnd(e);
       setDeltaX(0);
       isScrolling.current = false;
     },
-    [isInteractive, selectionMode, swipeHandlers, longPressHandlers]
+    [selectionMode, swipeHandlers, longPressHandlers]
   );
 
   const swipeProgress = Math.min(Math.abs(deltaX), 100) / 100;

@@ -1,4 +1,5 @@
 import React from 'react';
+import Info from '@themes/Minimal/Info';
 import './DisplayElements.css';
 
 function DisplayElements({
@@ -33,23 +34,17 @@ function DisplayElements({
           paddingInline,
         }}
       >
-        <div
-          className="display-elements__labels-left"
-          style={{ gap, gridTemplateColumns: infoGridColumns }}
-        >
+        <Info gap={gap} gridColumns={infoGridColumns}>
           {labels.map((label, i) => (
             <span key={i}>{label}</span>
           ))}
-        </div>
+        </Info>
         {hasActions && (
-          <div
-            className="display-elements__labels-right"
-            style={{ gridTemplateColumns: actionsGridColumns }}
-          >
+          <Info gap="2rem" gridColumns={actionsGridColumns}>
             {actionLabels.map((label, i) => (
               <span key={i}>{label}</span>
             ))}
-          </div>
+          </Info>
         )}
       </div>
       <div className="display-elements__list" style={{ height }}>

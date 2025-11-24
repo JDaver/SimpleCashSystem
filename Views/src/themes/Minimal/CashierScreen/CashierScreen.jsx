@@ -29,7 +29,7 @@ function CashierScreen() {
 
   return (
     <div className="cashier-screen__container">
-      <div className="cashier-screen__content">
+      <div className="cashier-screen__body">
         <div className="cashier-screen__tabs">
           {Object.entries(TABS).map(([key, { label }]) => (
             <button
@@ -42,12 +42,12 @@ function CashierScreen() {
           ))}
         </div>
         <DisplayElements
-          height="575px"
-          infoGridColumns="300px 150px 100px"
+          height="525px"
+          infoGridColumns="300px 150px 1fr"
           borderRadius="0"
           headerBgColor="var(--neutral-300)"
           headerTextColor="var(--neutral-800)"
-          labels={['Nome', 'Prezzo', 'Informazioni']}
+          labels={['Nome', 'Prezzo', 'Allergeni']}
         >
           {filteredProducts.map(product => {
             return (

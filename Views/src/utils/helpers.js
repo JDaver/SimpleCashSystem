@@ -1,3 +1,25 @@
+import React from 'react';
+
+export function lazyWithLoadOptions(factory, options = { preload: true, prefetch: true }) {
+  const Component = React.lazy(factory);
+
+  if (options.preload) {
+    Component.preload = factory;
+  }
+
+  if (options.prefetch) {
+    Component.prefetch = () => {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => factory());
+      } else {
+        setTimeout(() => factory(), 200);
+      }
+    };
+  }
+
+  return Component;
+}
+
 export function formatPrice(price, currency = '€') {
   if (price == null || price === '') return '';
 

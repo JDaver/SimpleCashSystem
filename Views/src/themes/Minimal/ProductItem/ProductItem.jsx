@@ -1,27 +1,24 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useSelectionContext } from '@contexts/ManageItem/SelectionContext';
-import { useProductItemLogic } from './useProductItemLogic';
+import React, { Suspense, useCallback, useMemo, useState } from 'react';
+import { lazyWithLoadOptions } from '@utils/helpers';
 import Item from '@themes/Minimal/Item';
-import AllergensToggle from './AllergensToggle';
+import Info from '@themes/Minimal/Info';
 import AllergensList from './AllergensList';
-import AllergensModal from './AllergensModal';
 import './ProductItem.css';
 
-function ProductItem({ id, name, price, allergens, isInteractive, renderActions }) {
-  const selectionContext = useSelectionContext();
-  const isItemSelected = isInteractive ? selectionContext.isItemSelected : () => false;
-  const selectionMode = isInteractive ? selectionContext.selectionMode : false;
-  const {
-    swipeProgress,
-    isSwiping,
-    setPendingDelete,
-    handleClick,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-  } = useProductItemLogic(id, isInteractive, selectionMode);
+const AllergensModal = lazyWithLoadOptions(() => import('./AllergensModal'), {
+  preload: false,
+  prefetch: true,
+});
 
-  const [showAllergens, setShowAllergens] = useState(false);
+function ProductItem({
+  name,
+  price,
+  allergens,
+  showAllergens = true,
+  renderActions,
+  children,
+  ...props
+}) {
   const [showModal, setShowModal] = useState(false);
 
   const normalizedAllergens = useMemo(() => {
@@ -30,59 +27,45 @@ function ProductItem({ id, name, price, allergens, isInteractive, renderActions 
     return [];
   }, [allergens]);
 
-  const toggleAllergens = useCallback(() => {
-    setShowAllergens(prev => !prev);
-  }, []);
-
   const toggleModal = useCallback(() => {
     setShowModal(prev => !prev);
   }, []);
 
-  const handleDelete = useCallback(() => setPendingDelete({ items: [id] }), [setPendingDelete, id]);
-
-  const showAllergensToggle = !selectionMode && normalizedAllergens.length > 0;
-  const showActions = !selectionMode && isInteractive;
-  const isSelected = useMemo(() => isItemSelected(id), [id, isItemSelected]);
-  const swipeStyles = useMemo(() => ({ '--swipe-progress': swipeProgress }), [swipeProgress]);
-
   return (
     <Item
-      className={`${isSelected ? 'selected' : ''}`}
-      onClick={handleClick}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
       renderInfo={() => {
         return (
-          <div className="product-item__info">
+          <Info gridColumns="300px 150px 300px">
             <span>{name}</span>
             <span>{price}</span>
             <div className="allergens__wrapper">
-              {showAllergensToggle && (
-                <AllergensToggle showAllergens={showAllergens} onToggle={toggleAllergens} />
-              )}
-              {showAllergens && !selectionMode && (
-                <AllergensList allergens={normalizedAllergens} onToggle={toggleModal} />
+              {showAllergens && (
+                <AllergensList
+                  allergens={normalizedAllergens}
+                  onToggle={toggleModal}
+                  prefetchModal={AllergensModal.prefetch}
+                />
               )}
             </div>
             {showModal && (
-              <AllergensModal
-                name={name}
-                allergens={normalizedAllergens}
-                showModal={showModal}
-                onClose={toggleModal}
-              />
+              <Suspense fallback="Loading modal...">
+                <AllergensModal
+                  name={name}
+                  allergens={normalizedAllergens}
+                  showModal={showModal}
+                  onClose={toggleModal}
+                />
+              </Suspense>
             )}
-          </div>
+          </Info>
         );
       }}
       renderActions={() => {
-        return renderActions?.({ showActions, handleDelete });
+        return renderActions?.();
       }}
+      {...props}
     >
-      {isInteractive && (
-        <div className={`item__swipe-progress ${isSwiping ? 'visible' : ''}`} style={swipeStyles} />
-      )}
+      {children}
     </Item>
   );
 }

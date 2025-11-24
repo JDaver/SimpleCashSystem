@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTheme } from '@contexts/Theme';
+import { Collection, ManageItem } from '../AppWrapper/AppWrapper';
 import './Navbar.css';
 
 const navLocations = [
@@ -23,6 +24,10 @@ function Navbar() {
               className={({ isActive }) => (isActive ? 'navbar__link active' : 'navbar__link')}
               to={location.to}
               end={location.id !== 'settings'}
+              onTouchStart={() => {
+                if (location.id === 'manage' && ManageItem.prefetch) ManageItem.prefetch();
+                if (location.id === 'collection' && Collection.prefetch) Collection.prefetch();
+              }}
             >
               {location.label}
             </NavLink>

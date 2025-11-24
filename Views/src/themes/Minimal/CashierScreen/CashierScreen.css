@@ -1,10 +1,11 @@
 .cashier-screen__container {
   display: flex;
   border-radius: 10px;
-  width: 80%;
+  width: 100%;
   height: fit-content;
 }
-.cashier-screen__content {
+
+.cashier-screen__body {
   background-color: var(--neutral-300);
   border-radius: 7px;
   display: flex;

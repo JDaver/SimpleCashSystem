@@ -6,7 +6,7 @@
   height: 800px;
 }
 .receipt {
-  background-image: url('@assets/receipt.png');
+  background-image: url('/assets/receipt.png');
   background-position: top;
   background-repeat: no-repeat;
   background-size: 100% auto;

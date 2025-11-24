@@ -34,13 +34,3 @@
   will-change: transform;
   z-index: 2;
 }
-
-.display-elements__labels-left {
-  display: grid;
-  gap: 6rem;
-}
-
-.display-elements__labels-right {
-  display: grid;
-  gap: 2rem;
-}

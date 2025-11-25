@@ -1,0 +1,30 @@
+.breadcrumb {
+  display: flex;
+  list-style: none;
+  min-height: 35px;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb__link {
+  color: var(--neutral-700);
+  text-decoration: none;
+}
+
+.breadcrumb__link.current {
+  font-weight: 600;
+  color: oklch(51.3% 0.09 199.5);
+}
+
+.breadcrumb__separator {
+  display: inline-block;
+  margin: 0 0.5rem;
+  user-select: none;
+  line-height: 1;
+}

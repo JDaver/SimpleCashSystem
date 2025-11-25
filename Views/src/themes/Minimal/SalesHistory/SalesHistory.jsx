@@ -1,6 +1,18 @@
+import { memo } from 'react';
 import { useFetchItems } from '@hooks/productsHook';
-import DisplayElements from '../DisplayElements/DisplayElements';
-import Item from '../Item/Item';
+import DisplayElements from '@themes/Minimal/DisplayElements';
+import Item from '@themes/Minimal/Item';
+import Info from '../Info';
+
+const SalesInfo = memo(function SalesInfo({ name, quantity, inHowManyReceipts }) {
+  return (
+    <Info>
+      <span>{name}</span>
+      <span>{quantity}</span>
+      <span>{inHowManyReceipts}</span>
+    </Info>
+  );
+});
 
 function SalesHistory() {
   const { records: products } = useFetchItems();
@@ -12,13 +24,11 @@ function SalesHistory() {
             key={product.id}
             renderInfo={() => {
               return (
-                <div
-                  style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 250px)', gap: '6rem' }}
-                >
-                  <span>{product.name}</span>
-                  <span>{product.quantity}</span>
-                  <span>{product.inHowManyReceipts}</span>
-                </div>
+                <SalesInfo
+                  name={product.name}
+                  quantity={product.quantity}
+                  inHowManyReceipts={product.inHowManyReceipts}
+                />
               );
             }}
           />
@@ -28,4 +38,4 @@ function SalesHistory() {
   );
 }
 
-export default SalesHistory;
+export default memo(SalesHistory);

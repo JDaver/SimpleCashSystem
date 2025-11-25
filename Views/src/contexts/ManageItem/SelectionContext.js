@@ -6,10 +6,7 @@ export const useSelectionContext = () => {
   const context = useContext(SelectionContext);
 
   if (!context) {
-    return {
-      isItemSelected: () => false,
-      selectionMode: false,
-    };
+    throw new Error('useSelectionContext must be used within a <SelectionProvider>');
   }
 
   return context;

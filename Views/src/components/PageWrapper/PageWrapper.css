@@ -20,5 +20,5 @@
 #page-transition {
   view-transition-name: page;
   background-color: var(--gradient-fallback);
-  background-image: var(--gradient-main);
+  background-image: var(--gradient);
 }

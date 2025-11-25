@@ -41,6 +41,15 @@ function SelectUser() {
     <>
       <div className="select-user">
         <div className="select-user__list">
+          <div
+            className={`select-user__card ${users.length > 4 ? 'disabled' : ''}`}
+            onClick={toggleModal}
+          >
+            <span>
+              <MemoPlusCircleIcon width={40} height={30} />
+            </span>
+            <span>Crea nuovo utente</span>
+          </div>
           {users.map(user => {
             return (
               <div
@@ -55,15 +64,6 @@ function SelectUser() {
               </div>
             );
           })}
-          <div
-            className={`select-user__card ${users.length > 4 ? 'disabled' : ''}`}
-            onClick={toggleModal}
-          >
-            <span>
-              <MemoPlusCircleIcon width={40} height={30} />
-            </span>
-            <span>Crea nuovo utente</span>
-          </div>
         </div>
       </div>
       <NewUserModal showModal={showModal} onClose={toggleModal} />

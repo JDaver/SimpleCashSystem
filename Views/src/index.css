@@ -14,7 +14,7 @@
   --gradient-fallback: oklch(88% 0 0);
   --gradient-start: oklch(90% 0 0);
   --gradient-end: oklch(85% 0 0);
-  --gradient: linear-gradient(to bottom, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  --gradient: linear-gradient(to right, var(--gradient-start) 0%, var(--gradient-end) 100%);
 
   /*Colors Vibrant*/
   --dynamic-bg3: linear-gradient(

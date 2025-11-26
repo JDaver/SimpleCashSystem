@@ -25,6 +25,10 @@ router.put("/update_party", party.updateNameParty);
 router.delete("/delete_party", party.deleteParty);
 router.get("/fetch_partyNames", party.fetchPartyNames);
 
+// user preferences
+router.get("/preferences", user.getPreferences);
+router.patch("/preferences", user.updatePreferences);
+
 //Other stuff
 router.get("/getYears", utils.getYear);
 router.get("/getPartys", party.fetchPartyNames);

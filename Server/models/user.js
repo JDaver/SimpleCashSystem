@@ -11,10 +11,12 @@ module.exports = class User {
 
   async createUser() {
     try {
-      const { rows } = await pool.query(
-        "SELECT public.add_user($1,$2,$3,$4) as resultQuery",
-        [this.username, this.schema_name, this.email ?? null, this.avatar]
-      );
+      const { rows } = await pool.query("SELECT public.add_user($1,$2,$3,$4) as resultQuery", [
+        this.username,
+        this.schema_name,
+        this.email ?? null,
+        this.avatar,
+      ]);
 
       const result = rows[0].resultquery;
       const userObj = typeof result === "string" ? JSON.parse(result) : result;
@@ -62,8 +64,7 @@ module.exports = class User {
         id
       );
       const recordExists = await pool.query(resultCheckQuery);
-      if (!recordExists.rows[0].user_exists)
-        throw new Error(" Utente inesistente");
+      if (!recordExists.rows[0].user_exists) throw new Error(" Utente inesistente");
 
       const newPathQuery = format("SET search_path TO %I", schema_name);
       await pool.query(newPathQuery);
@@ -83,6 +84,31 @@ module.exports = class User {
       const query = "SELECT * FROM public.app_users";
       const result = await pool.query(query);
       return result.rows;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getPreferences(userId) {
+    try {
+      const query = "SELECT preferences FROM public.app_users WHERE id = $1";
+      const result = await pool.query(query, [userId]);
+      return result.rows[0]?.preferences || {};
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async updatePreferences(userId, newPrefs) {
+    try {
+      const query = `
+      UPDATE public.app_users
+      SET preferences = COALESCE(preferences, '{}'::jsonb) || $1::jsonb
+      WHERE id = $2
+      RETURNING preferences
+    `;
+      const result = await pool.query(query, [newPrefs, userId]);
+      return result.rows[0].preferences;
     } catch (err) {
       throw err;
     }

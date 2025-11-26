@@ -28,3 +28,24 @@ exports.setPathUser = async (id, schema_name) => {
     throw new Error(err.message || JSON.stringify(err));
   }
 };
+
+exports.getPreferences = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const prefs = await User.getPreferences(userId);
+    res.status(200).json(prefs);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updatePreferences = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const newPrefs = req.body;
+    const updatedPrefs = await User.updatePreferences(userId, newPrefs);
+    res.status(200).json(updatedPrefs);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

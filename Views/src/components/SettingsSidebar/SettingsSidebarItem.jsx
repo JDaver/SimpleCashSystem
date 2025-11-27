@@ -1,9 +1,9 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useState, useCallback, memo, useMemo } from 'react';
-import './Settings.css';
+import './SettingsSidebar.css';
 
-function SidebarItem({ location }) {
+function SettingsSidebarItem({ location }) {
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
   const hasSubmenu = location?.submenu?.length > 0;
@@ -66,4 +66,4 @@ function SidebarItem({ location }) {
   );
 }
 
-export default memo(SidebarItem);
+export default memo(SettingsSidebarItem);

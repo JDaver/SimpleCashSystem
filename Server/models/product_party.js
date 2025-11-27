@@ -5,14 +5,13 @@ const { deleteProduct } = require("../controllers/controllerProduct");
 module.exports = class Product_party {
   constructor(product_id, relatedIDs = []) {
     this.product_id = parseInt(product_id, 10);
-    this.relatedIDs = (
-      Array.isArray(relatedIDs) ? relatedIDs : [relatedIDs]
-    ).map((id) => parseInt(id, 10));
+    this.relatedIDs = (Array.isArray(relatedIDs) ? relatedIDs : [relatedIDs]).map(id =>
+      parseInt(id, 10)
+    );
   }
 
   async createProduct_Party() {
-    if (!this.relatedIDs.length)
-      return { message: "Nessuna relazione da inserire" };
+    if (!this.relatedIDs.length) return { message: "Nessuna relazione da inserire" };
 
     const values = [];
     const placeholders = this.relatedIDs
@@ -36,24 +35,18 @@ module.exports = class Product_party {
   async ModifyProduct_Party() {
     try {
       if (!this.relatedIDs || this.relatedIDs.length === 0) {
-        await pool.query(`DELETE FROM product_party WHERE product_id = $1`, [
-          this.product_id,
-        ]);
+        await pool.query(`DELETE FROM product_party WHERE product_id = $1`, [this.product_id]);
         return { message: "Tutte le relazioni rimosse" };
       }
 
       await pool.query(
         `DELETE FROM product_party
                 WHERE product_id = $1
-                AND party_id NOT IN (${this.relatedIDs
-                  .map((_, i) => `$${i + 2}`)
-                  .join(",")})`,
+                AND party_id NOT IN (${this.relatedIDs.map((_, i) => `$${i + 2}`).join(",")})`,
         [this.product_id, ...this.relatedIDs]
       );
 
-      const values = this.relatedIDs
-        .map((partyId) => `( ${this.product_id}, ${partyId})`)
-        .join(",");
+      const values = this.relatedIDs.map(partyId => `( ${this.product_id}, ${partyId})`).join(",");
       const query = `
                 INSERT INTO product_party (product_id, party_id)
                 VALUES ${values}
@@ -69,7 +62,7 @@ module.exports = class Product_party {
   static async deleteProduct_party_relations(product_ids) {
     try {
       const ids = Array.isArray(product_ids)
-        ? product_ids.map((id) => parseInt(id, 10)).filter((id) => !isNaN(id))
+        ? product_ids.map(id => parseInt(id, 10)).filter(id => !isNaN(id))
         : [parseInt(product_ids, 10)];
 
       if (ids.length === 0) return [];
@@ -81,9 +74,7 @@ module.exports = class Product_party {
       );
       return result.rows;
     } catch (err) {
-      throw new Error(
-        `Error drom DB in deleteProduct_party_relations() -> ${err.message} `
-      );
+      throw new Error(`Error drom DB in deleteProduct_party_relations() -> ${err.message} `);
     }
   }
 
@@ -103,9 +94,7 @@ module.exports = class Product_party {
         ? format("p.isbeverage = %L", isBeverage)
         : "p.isbeverage IN (true, false)",
 
-      isGlobal !== undefined
-        ? format("p.isglobal = %L", isGlobal)
-        : "p.isglobal IN (true, false)",
+      isGlobal !== undefined ? format("p.isglobal = %L", isGlobal) : "p.isglobal IN (true, false)",
     ];
 
     try {
@@ -129,10 +118,8 @@ module.exports = class Product_party {
       const result = await pool.query(queryConstructed);
       return result.rows;
     } catch (err) {
-      console.log("error: ", err);
-      throw new Error(
-        `Error from DB in fetchProductsForParty(): ${err.message}`
-      );
+      console.error("error: ", err);
+      throw new Error(`Error from DB in fetchProductsForParty(): ${err.message}`);
     }
   }
 
@@ -148,7 +135,7 @@ module.exports = class Product_party {
 
       return partiesResult;
     } catch (err) {
-      console.log("error: ", err);
+      console.error("error: ", err);
       throw new Error(`Error from DB in partiesRelatedToIDs(): ${err.message}`);
     }
   }

@@ -1,6 +1,7 @@
 // const { v4: uuidv4 } = require("uuid");
 const { logInAuth } = require("./auth/logIn");
 const { signInAuth } = require("./auth/signIn");
+const { authMidlleware } = require("./auth/authMiddleware");
 const user = require("./controllers/controllerUser");
 const express = require("express");
 const path = require("path");
@@ -27,34 +28,7 @@ app.post("/auth/signin", signInAuth);
 app.post("/auth/login", logInAuth);
 
 //Middleware for authentication
-app.use(async (req, res, next) => {
-  const tokenSession = req.headers["x-session"];
-
-  if (!tokenSession) {
-    return res.status(401).json({ error: "Token mancante" });
-  }
-
-  try {
-    const { rows } = await pool.query(
-      `SELECT * FROM public.app_users WHERE token = $1 AND token_expires > NOW()`,
-      [tokenSession]
-    );
-
-    if (rows.length === 0) {
-      return res.status(401).json({ error: "Sessione non valida o scaduta" });
-    }
-
-    const currentUser = rows[0];
-    console.log(currentUser);
-    await user.setPathUser(currentUser.id, currentUser.schema_name);
-    req.user = currentUser;
-
-    next();
-  } catch (err) {
-    console.error("Errore autenticazione:", err);
-    res.status(500).json({ error: "Errore server durante l’autenticazione" });
-  }
-});
+app.use((req, res, next) => authMidlleware(req, res, next));
 
 //API handler middleware
 app.use("/api", apiCall);

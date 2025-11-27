@@ -21,12 +21,9 @@ module.exports = class User {
       const result = rows[0].resultquery;
       const userObj = typeof result === "string" ? JSON.parse(result) : result;
 
-      console.log("???", userObj);
-
       return userObj;
     } catch (err) {
-      console.error("Errore in createUser:", err);
-      throw err;
+      throw new Error("user model catched an error: ", err);
     }
   }
 
@@ -43,7 +40,7 @@ module.exports = class User {
       const result = await pool.query(query);
       return { ok: result.rows[0].resultQuery };
     } catch (err) {
-      throw err;
+      throw new Error("user model catched an error: ", err);
     }
   }
 
@@ -53,7 +50,7 @@ module.exports = class User {
       const result = await pool.query(query);
       return { ok: result.rows[0].resultQuery };
     } catch (err) {
-      throw err;
+      throw new Error("user model catched an error: ", err);
     }
   }
 
@@ -75,17 +72,17 @@ module.exports = class User {
       }
       return { ok: "Cambio utente riuscito!" };
     } catch (err) {
-      throw err;
+      throw new Error("user model catched an error: ", err);
     }
   }
 
   static async fetchallUsers() {
     try {
-      const query = "SELECT * FROM public.app_users";
+      const query = "SELECT * FROM public.app_users ORDER BY created_at ASC";
       const result = await pool.query(query);
       return result.rows;
     } catch (err) {
-      throw err;
+      throw new Error("user model catched an error: ", err);
     }
   }
 

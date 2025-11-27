@@ -8,7 +8,6 @@ module.exports = class Product_receipt {
 
   async createProduct_receipt() {
     const values = [];
-    console.log(this.products);
 
     const placeholders = this.products
       .map((p, i) => {
@@ -22,13 +21,10 @@ module.exports = class Product_receipt {
 
     try {
       const result = await pool.query(query, values);
-      console.log("reslt+ " + result);
       return result;
     } catch (err) {
-      console.log("error: ", err);
-      throw new Error(
-        `Error from DB in CreateProduct_receipt(): ${err.message}`
-      );
+      console.error("error: ", err);
+      throw new Error(`Error from DB in CreateProduct_receipt(): ${err.message}`);
     }
   }
 
@@ -56,10 +52,8 @@ module.exports = class Product_receipt {
     const validOrders = ["ASC", "DESC"];
 
     try {
-      if (!validColumns.includes(column))
-        throw new Error("Invalid sort column");
-      if (!validOrders.includes(order.toUpperCase()))
-        throw new Error("Invalid sort order");
+      if (!validColumns.includes(column)) throw new Error("Invalid sort column");
+      if (!validOrders.includes(order.toUpperCase())) throw new Error("Invalid sort order");
 
       let queryConstructed = `
             SELECT 
@@ -71,26 +65,21 @@ module.exports = class Product_receipt {
             INNER JOIN product_receipt rp ON p.id = rp.product_id
             INNER JOIN receipt r ON r.id = rp.receipt_id`;
 
-      if (conditions.length > 0)
-        queryConstructed += " WHERE " + conditions.join(" AND ");
+      if (conditions.length > 0) queryConstructed += " WHERE " + conditions.join(" AND ");
 
-      queryConstructed += format(
-        " GROUP BY p.id, p.name ORDER BY %I %s",
-        column,
-        order
-      );
+      queryConstructed += format(" GROUP BY p.id, p.name ORDER BY %I %s", column, order);
 
       const result = await pool.query(queryConstructed);
       return result.rows;
     } catch (err) {
-      console.log("error: ", err);
+      console.error("error: ", err);
       throw new Error(`Error from DB in selectItems(): ${err.message}`);
     }
   }
 
   static async selectReceipt(filters = {}) {
     const filteredParams = Object.fromEntries(
-      Object.entries(filters).filter(([_, v]) => v != null)
+      Object.entries(filters).filter(([_, v]) => v != null) //what is this? can't remember
     );
 
     const defaults = {
@@ -120,12 +109,9 @@ module.exports = class Product_receipt {
     const validColumns = ["total_receipt", "receipt_date"];
     const validOrders = ["ASC", "DESC"];
     try {
-      if (!validColumns.includes(column))
-        throw new Error("Invalid sort column");
-      if (!validOrders.includes(order.toUpperCase()))
-        throw new Error("Invalid sort order");
+      if (!validColumns.includes(column)) throw new Error("Invalid sort column");
+      if (!validOrders.includes(order.toUpperCase())) throw new Error("Invalid sort order");
 
-      //to improve edgecases: cases when one product of the list reeipt_product is removed it will display only p.name that exists
       let queryConstructed = `SELECT 
                         r.id AS receipt_id,
                         r.date AS receipt_date,
@@ -133,8 +119,7 @@ module.exports = class Product_receipt {
                         r.cart AS items_in_receipt
                     FROM receipt r`;
 
-      if (conditions.length > 0)
-        queryConstructed += " WHERE " + conditions.join(" AND ");
+      if (conditions.length > 0) queryConstructed += " WHERE " + conditions.join(" AND ");
 
       queryConstructed += format(
         " GROUP BY r.id, r.date, r.tot_price ORDER BY %I %s LIMIT %s OFFSET %s",
@@ -144,11 +129,10 @@ module.exports = class Product_receipt {
         startingIndex
       );
 
-      console.log(queryConstructed);
       const result = await pool.query(queryConstructed);
       return result.rows;
     } catch (err) {
-      console.log("error: ", err);
+      console.error("error: ", err);
       throw new Error(`Error from DB in selectReceipt(): ${err.message}`);
     }
   }

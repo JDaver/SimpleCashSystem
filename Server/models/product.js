@@ -33,14 +33,7 @@ module.exports = class Product {
                 isglobal = $5
                 where id = $6 
                 RETURNING *`,
-        [
-          this.name,
-          this.price,
-          this.allergens,
-          this.isBeverage,
-          this.isGlobal,
-          Number(id),
-        ]
+        [this.name, this.price, this.allergens, this.isBeverage, this.isGlobal, Number(id)]
       );
       return result.rows[0];
     } catch (err) {
@@ -51,13 +44,12 @@ module.exports = class Product {
   static async deleteProd(product_ids) {
     try {
       const ids = Array.isArray(product_ids)
-        ? product_ids.map((id) => parseInt(id, 10)).filter((id) => !isNaN(id))
+        ? product_ids.map(id => parseInt(id, 10)).filter(id => !isNaN(id))
         : [parseInt(product_ids, 10)];
 
-      const result = await pool.query(
-        "DELETE FROM product WHERE id = ANY($1::int[]) RETURNING *",
-        [ids]
-      );
+      const result = await pool.query("DELETE FROM product WHERE id = ANY($1::int[]) RETURNING *", [
+        ids,
+      ]);
       return result.rows;
     } catch (err) {
       throw new Error(`Error from DB in deleteProd(): ${err.message}`);
@@ -92,7 +84,7 @@ module.exports = class Product {
       const result = await pool.query(query);
       return result.rows;
     } catch (err) {
-      console.log("errore: ", err);
+      console.error("errore: ", err);
       throw new Error(`Error from DB during selectAllProd(): ${err.message}`);
     }
   }
@@ -114,9 +106,7 @@ module.exports = class Product {
         ? format("isbeverage = %L", isBeverage)
         : "isbeverage IN (true, false)",
 
-      isGlobal !== undefined
-        ? format("isglobal = %L", isGlobal)
-        : "isglobal IN (true, false)",
+      isGlobal !== undefined ? format("isglobal = %L", isGlobal) : "isglobal IN (true, false)",
     ];
 
     const query = format(
@@ -137,10 +127,8 @@ module.exports = class Product {
       const result = await pool.query(query);
       return result.rows;
     } catch (err) {
-      console.log("errore: ", err);
-      throw new Error(
-        `Error from DB during selectFilteredProd(): ${err.message}`
-      );
+      console.error("errore: ", err);
+      throw new Error(`Error from DB during selectFilteredProd(): ${err.message}`);
     }
   }
 };

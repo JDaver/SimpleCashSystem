@@ -8,20 +8,10 @@ async function signInAuth(req, res) {
     const result = await userToCreate.createUser();
 
     if (!result) {
-      return res
-        .status(500)
-        .json({ error: "createUser non ha restituito alcun valore" });
+      return res.status(500).json({ error: "createUser non ha restituito alcun valore" });
     }
 
     const { username, email, token, token_expires, avatar } = result;
-    console.log(
-      "valori della session: ",
-      token,
-      token_expires,
-      username,
-      avatar
-    );
-
     res.status(201).json({
       username,
       currentEmail: email,

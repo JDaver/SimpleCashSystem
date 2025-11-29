@@ -12,6 +12,18 @@
   width: 100%;
 }
 
+.settings__back-link {
+  background-color: transparent;
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  padding-inline: 1rem;
+  color: var(--neutral-900);
+  width: 100%;
+}
+
 .settings__link {
   background-color: oklch(78% 0 0);
 }

@@ -31,61 +31,6 @@
 .form__input {
   border: 1px solid black;
 }
-.checkbox__wrapper {
-  display: inline-flex;
-  align-items: center;
-  padding: 10px;
-  user-select: none;
-}
-
-.checkbox__wrapper input {
-  position: absolute;
-  width: 0;
-  height: 0;
-  opacity: 0;
-}
-
-.checkbox__custom {
-  align-items: center;
-  background-color: #fff;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  display: flex;
-  height: 32px;
-  justify-content: center;
-  margin-right: 10px;
-  transition: all 0.2s;
-  width: 32px;
-}
-
-.checkbox__custom::after {
-  content: '';
-  border: solid oklch(51.3% 0.09 199.5);
-  border-width: 0 3px 3px 0;
-  display: none;
-  height: 16px;
-  margin-bottom: 2px;
-  transform: rotate(45deg);
-  width: 12px;
-}
-
-.checkbox__wrapper input:checked + .checkbox__custom::after {
-  display: block;
-}
-
-.checkbox__wrapper:active .checkbox__custom {
-  background-color: #f0f0f0;
-  border-color: oklch(51.3% 0.09 199.5);
-  transform: scale(0.95);
-}
-
-.checkbox__wrapper input:checked + .checkbox__custom {
-  border-color: oklch(51.3% 0.09 199.5);
-}
-
-.checkbox__wrapper input:checked + .checkbox__custom + span {
-  color: oklch(51.3% 0.09 199.5);
-}
 
 .form__button-wrapper {
   display: flex;

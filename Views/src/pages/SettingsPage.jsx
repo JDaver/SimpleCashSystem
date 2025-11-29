@@ -1,13 +1,15 @@
-import { useMemo } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { lazy, useMemo } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { useTheme } from '@contexts/Theme';
 import { loadThemedComponent } from '@utils/LoadThemedComponent';
-import Preferences from '@themes/Minimal/Settings/Roots/Preferences';
-import Session from '@themes/Minimal/Settings/Roots/Session';
-import Users from '@themes/Minimal/Settings/Roots/Users';
-import PdfConfig from '@themes/Minimal/Settings/Roots/PdfConfig';
-import Format from '@themes/Minimal/Settings/Roots/Format';
-import Refund from '@themes/Minimal/Settings/Roots/Refund';
+
+const Preferences = lazy(() => import('@pages/settings/Preferences'));
+const Overview = lazy(() => import('@pages/settings/Overview'));
+const Session = lazy(() => import('@pages/settings/Session'));
+const Users = lazy(() => import('@pages/settings/Users'));
+const PdfConfig = lazy(() => import('@pages/settings/PdfConfig'));
+const Format = lazy(() => import('@pages/settings/Format'));
+const Refund = lazy(() => import('@pages/settings/Refund'));
 
 function SettingsPage() {
   const { theme } = useTheme();
@@ -16,7 +18,7 @@ function SettingsPage() {
   return (
     <Routes>
       <Route path="/" element={<Settings />}>
-        <Route index element={<Navigate to="general/preferences" replace />} />
+        <Route index element={<Overview />} />
         <Route path="general">
           <Route path="preferences" element={<Preferences />} />
           <Route path="session" element={<Session />} />

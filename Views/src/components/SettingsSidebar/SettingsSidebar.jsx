@@ -1,15 +1,16 @@
-import { useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import { memo } from 'react';
 import {
   ArrowDownTrayIcon,
+  ArrowLeftIcon,
   ReceiptPercentIcon,
   UsersIcon,
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline';
 import Sidebar from '@components/Sidebar';
 import SettingsSidebarItem from './SettingsSidebarItem';
-import './SettingsSidebar.css';
-import { memo } from 'react';
 import SettingsBreadcrumb from './SettingsBreadcrumb';
+import './SettingsSidebar.css';
 
 const SETTINGS_PAGES = [
   {
@@ -58,9 +59,13 @@ function SettingsSidebar() {
   const { pathname } = useLocation();
 
   function findBreadcrumbs(pathname, settings) {
-    const segments = pathname.split('/').filter(Boolean);
+    let segments = pathname.split('/').filter(Boolean);
 
     if (segments[0] === 'settings') segments.shift();
+
+    if (segments.length === 0) {
+      return [{ label: 'Riepilogo', url: '/settings' }];
+    }
 
     const crumbs = [];
     let currentLevel = settings;
@@ -95,6 +100,14 @@ function SettingsSidebar() {
               ))}
             </Sidebar.Section>
           </Sidebar.Content>
+          <Sidebar.Footer>
+            <NavLink className="settings__back-link" to="/settings">
+              <span className="settings__icon">
+                <ArrowLeftIcon width={30} height={30} />
+              </span>
+              Riepilogo
+            </NavLink>
+          </Sidebar.Footer>
         </Sidebar.Body>
       </Sidebar.Frame>
     </Sidebar>

@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useInsertItem } from './useInsertItem';
+import Checkbox from '@components/Checkbox';
 import AllergensDropdown from '@themes/Minimal/AllergensDropdown';
 import PartiesDropdown from '../PartiesDropdown';
 import InputWithKeypad from './InputWithKeypad';
-import Checkbox from './Checkbox';
 import './InsertItem.css';
 
 function InsertItem() {

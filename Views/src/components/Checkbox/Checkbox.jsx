@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import './InsertItem.css';
+import './Checkbox.css';
 
 function Checkbox({ id, label, checked, onChange }) {
   return (

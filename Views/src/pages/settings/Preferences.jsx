@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { usePreferences } from '@hooks/usePreferences';
-import Checkbox from '@themes/Minimal/InsertItem/Checkbox';
+import Checkbox from '@components/Checkbox';
 import DotsLoader from '@components/DotsLoader';
 
 const Preferences = () => {

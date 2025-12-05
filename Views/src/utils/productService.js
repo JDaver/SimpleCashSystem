@@ -99,12 +99,4 @@ export async function queryItems(name = null, price = null, date = null) {
     throw new Error(`Errore nel recuperare i dati: ${err.message}`);
   }
 }
-
-export async function getPartys() {
-  try {
-    const res = await apiFetch('http://localhost:4444/api/getPartys');
-    return res;
-  } catch (err) {
-    throw new Error(`errore nel recuperare dati sulle feste: ${err.message}`);
-  }
-}
+0;

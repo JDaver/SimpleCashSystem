@@ -23,15 +23,16 @@ router.get("/collection_fetch_receipts", item_receipt.fetchReceipts);
 router.post("/create_party", party.createNewParty);
 router.put("/update_party", party.updateNameParty);
 router.delete("/delete_party", party.deleteParty);
-router.get("/fetch_partyNames", party.fetchPartyNames);
+router.get("/getParties", party.fetchParty);
 
 // user preferences
 router.get("/preferences", user.getPreferences);
 router.patch("/preferences", user.updatePreferences);
 
+//parties manage
+
 //Other stuff
 router.get("/getYears", utils.getYear);
-router.get("/getPartys", party.fetchPartyNames);
 router.get("/users", user.fetchAllUsers);
 module.exports = router;
 

@@ -9,7 +9,7 @@ module.exports = class Party {
   async createParty() {
     try {
       const result = await pool.query(
-        "INSERT INTO party (name_party) VALUES ($1)",
+        "INSERT INTO party (name_party) VALUES ($1) RETURNING name_party",
         [this.name]
       );
       return result.rows[0];
@@ -23,7 +23,7 @@ module.exports = class Party {
       const result = await pool.query(
         `UPDATE party SET
                 name_party = ($1) 
-                WHERE id = $2 RETRUNING *`,
+                WHERE id = $2 RETURNING *`,
         [this.name, id]
       );
       return result.rows[0];
@@ -36,7 +36,7 @@ module.exports = class Party {
     try {
       const result = await pool.query(
         `DELETE FROM party
-                WHERE id = $1 RETRUNING *`,
+                WHERE id = $1 RETURNING *`,
         [id]
       );
       return result.rows[0];
@@ -47,9 +47,7 @@ module.exports = class Party {
 
   static async fetchParty() {
     try {
-      const result = await pool.query(
-        `SELECT id AS party_id, name_party from party`
-      );
+      const result = await pool.query(`SELECT id AS party_id, name_party from party`);
       return result.rows;
     } catch (err) {
       throw new Error(`Error from DB in fetchParty(): ${err.message}`);

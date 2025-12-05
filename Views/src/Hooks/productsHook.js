@@ -1,11 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import {
-  fetchAllProducts,
-  getPartys,
-  deleteItem,
-  insertItem,
-  modifyItem,
-} from '@utils/productService';
+import { fetchAllProducts, deleteItem, insertItem, modifyItem } from '@utils/productService';
+import { getParties } from '@utils/partiesService';
 import { queryItems } from '@utils/productService';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -171,12 +166,13 @@ export function useFetchItems() {
 //------------------------------ getParty
 
 export function usePartyNames() {
+  console.log('getParties importato:', getParties);
   const { data: partyNames = [] } = useQuery({
     queryKey: ['partyNames'],
-    queryFn: () => getPartys(),
+    queryFn: () => getParties(),
     staleTime: 1000 * 60 * 5,
   });
-
+  console.log(partyNames);
   return partyNames;
 }
 
